@@ -1,7 +1,9 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./Home";
-import InfoCardForm from "./components/info_cards/InfoCardForm";
+import InfoCardForm from "./components/info_cards/form/Form";
+
+import "./App.scss";
 
 const App: React.FC = () => {
   return (
