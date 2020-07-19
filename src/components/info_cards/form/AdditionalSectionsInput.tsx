@@ -1,45 +1,51 @@
-import React, { useState } from "react";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import React, { ChangeEvent } from "react";
+import { Form, Button, Col, Row } from "react-bootstrap";
 import { PlusSquare, DashSquare } from "react-bootstrap-icons";
 import Section from "../../sections/Section";
 
-const AdditionalSectionsFormGroup: React.FC = (): JSX.Element => {
-  const [additionalSections, setAdditionalSections] = useState<Section[]>([]);
+interface additionalSectionsInputProps {
+  sections: Section[];
+  onChange: (newValue: Section[]) => void;
+}
 
-  const updateSection = (index: number, value: Section): void => {
-    // immutability helper time
-  };
-
-  const removeSection = (index: number): void => {
-    setAdditionalSections(additionalSections.filter((_, i) => i !== index));
+const additionalSectionsInput: React.FC<additionalSectionsInputProps> = ({ sections, onChange }): JSX.Element => {
+  const updateSection = (index: number, event: ChangeEvent<HTMLInputElement>): void => {
+    event.persist();
+    onChange(sections.map((section, i) => {
+      if (i !== index) {
+        return section;
+      }
+      return { ...section, [event.target.name]: event.target.value }
+    }))
   };
 
   const addSection = (): void => {
-    setAdditionalSections(
-      additionalSections.concat({
-        heading: "Add a section heading...",
-        body: "",
-      })
-    );
+    onChange(sections.concat({ heading: "Add a section heading...", body: "" }))
+  }
+
+  const removeSection = (index: number): void => {
+    onChange(sections.filter((_, i) => i !== index));
   };
 
-  const mapAdditionalSectionsToInputs = (): JSX.Element => {
-    const sectionInputs = additionalSections.map((section, index) => (
+  const mapsectionsToInputs = (): JSX.Element => {
+    const sectionInputs = sections.map((section, index) => (
       <>
-        <Form.Row key={index}>
+        <Form.Row key={`section-${index}`}>
           <Form.Group
             as={Col}
-            controlId={`formCardAdditionalSectionHeading-${index}`}
+            controlId={`section-${index}-heading`}
           >
             <Form.Control
+              name="heading"
               className="border border-primary"
               type="text"
               placeholder={section.heading}
+              onChange={(event) => updateSection(index, event as any)}
             />
           </Form.Group>
           <Form.Group
             as={Col}
-            controlId={`formCardAdditionalSectionRemoveButton-${index}`}
+            controlId={`section-${index}-remove-button`}
           >
             <Button
               variant="outline-danger"
@@ -54,13 +60,15 @@ const AdditionalSectionsFormGroup: React.FC = (): JSX.Element => {
         <Form.Row>
           <Form.Group
             as={Col}
-            controlId={`formCardAdditionalSectionBody-${index}`}
+            controlId={`section-${index}-body`}
           >
             <Form.Control
+              name="body"
               className="border border-primary"
               as="textarea"
               rows={6}
               placeholder={section.body}
+              onChange={(event) => updateSection(index, event as any)}
             />
           </Form.Group>
         </Form.Row>
@@ -71,18 +79,7 @@ const AdditionalSectionsFormGroup: React.FC = (): JSX.Element => {
 
   return (
     <>
-      <Form.Row>
-        <Form.Group as={Col} controlId="formCardDescription">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            className="border border-primary"
-            as="textarea"
-            rows={6}
-            placeholder="Write away!"
-          />
-        </Form.Group>
-      </Form.Row>
-      {mapAdditionalSectionsToInputs()}
+      {mapsectionsToInputs()}
       <Row className="mt-2">
         <Col>
           <Button
@@ -100,4 +97,4 @@ const AdditionalSectionsFormGroup: React.FC = (): JSX.Element => {
   );
 };
 
-export default AdditionalSectionsFormGroup;
+export default additionalSectionsInput;

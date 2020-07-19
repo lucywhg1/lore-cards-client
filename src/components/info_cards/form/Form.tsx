@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useState, ChangeEvent } from "react";
 import { Form, Button, Container, Image, Col } from "react-bootstrap";
 import { mapCategoriesToOptions } from "../../categories/DisplayHelper";
-import AdditionalSectionsFormGroup from "./AdditionalSections";
+import AdditionalSectionsInput from "./AdditionalSectionsInput";
+import Section from "../../sections/Section";
+
+interface FormInput {
+  additionalSections: Section[];
+}
 
 const InfoCardForm: React.FC = () => {
+  const [formData, setFormData] = useState<FormInput>({ additionalSections: [] });
+
+  const handleChange = (field: string, value: unknown): void => {
+    console.log("Handling change with field " + field + ": " + JSON.stringify(value));
+    console.log("previous formdata is " + JSON.stringify(formData))
+    setFormData({ ...formData, [field]: value })
+    console.log("Form data is now\n" + JSON.stringify(formData));
+  }
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    event.persist();
+    const { name, value } = event.target;
+    handleChange(name, value);
+  };
+
   return (
     <Container className="mt-2 pl-0 pr-0 border border-dark">
       <Container fluid className="p-2 mb-2 bg-light">
@@ -69,7 +89,18 @@ const InfoCardForm: React.FC = () => {
         </Form.Row>
         <Form.Row></Form.Row>
         <hr />
-        <AdditionalSectionsFormGroup />
+        <Form.Row>
+          <Form.Group as={Col} controlId="description-section">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              className="border border-primary"
+              as="textarea"
+              rows={6}
+              placeholder="Write away!"
+            />
+          </Form.Group>
+        </Form.Row>
+        <AdditionalSectionsInput sections={formData.additionalSections} onChange={(value: Section[]) => handleChange("additionalSections", value)} />
         <hr />
         {/* Links */}
         <Form.Row>
