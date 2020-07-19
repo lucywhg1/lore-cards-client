@@ -8,49 +8,51 @@ interface additionalSectionsInputProps {
   onChange: (newValue: Section[]) => void;
 }
 
-const additionalSectionsInput: React.FC<additionalSectionsInputProps> = ({ sections, onChange }): JSX.Element => {
+const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({ sections, onChange }): JSX.Element => {
   const updateSection = (index: number, event: ChangeEvent<HTMLInputElement>): void => {
     event.persist();
     onChange(sections.map((section, i) => {
       if (i !== index) {
         return section;
       }
-      return { ...section, [event.target.name]: event.target.value }
-    }))
+      return { ...section, [ event.target.name ]: event.target.value };
+    }));
   };
 
   const addSection = (): void => {
-    onChange(sections.concat({ heading: "Add a section heading...", body: "" }))
-  }
+    onChange(sections.concat({ heading: "", body: "" }));
+  };
 
   const removeSection = (index: number): void => {
     onChange(sections.filter((_, i) => i !== index));
   };
 
-  const mapsectionsToInputs = (): JSX.Element => {
+  const mapSectionsToInputs = (): JSX.Element => {
     const sectionInputs = sections.map((section, index) => (
-      <>
-        <Form.Row key={`section-${index}`}>
+      <div key={`section-${ index }`}>
+        <Form.Row>
           <Form.Group
             as={Col}
-            controlId={`section-${index}-heading`}
+            controlId={`section-${ index }-heading`}
           >
             <Form.Control
               name="heading"
               className="border border-primary"
               type="text"
-              placeholder={section.heading}
+              placeholder="Add a section heading..."
+              value={section.heading}
               onChange={(event) => updateSection(index, event as any)}
             />
           </Form.Group>
           <Form.Group
             as={Col}
-            controlId={`section-${index}-remove-button`}
+            controlId={`section-${ index }-remove-button`}
           >
             <Button
               variant="outline-danger"
               size="sm"
               type="button"
+              title="Remove section"
               onClick={() => removeSection(index)}
             >
               <DashSquare />
@@ -60,26 +62,27 @@ const additionalSectionsInput: React.FC<additionalSectionsInputProps> = ({ secti
         <Form.Row>
           <Form.Group
             as={Col}
-            controlId={`section-${index}-body`}
+            controlId={`section-${ index }-body`}
           >
             <Form.Control
               name="body"
               className="border border-primary"
               as="textarea"
               rows={6}
-              placeholder={section.body}
+              value={section.body}
+              placeholder="...and a body."
               onChange={(event) => updateSection(index, event as any)}
             />
           </Form.Group>
         </Form.Row>
-      </>
+      </div>
     ));
     return <>{sectionInputs}</>;
   };
 
   return (
     <>
-      {mapsectionsToInputs()}
+      {mapSectionsToInputs()}
       <Row className="mt-2">
         <Col>
           <Button
@@ -97,4 +100,4 @@ const additionalSectionsInput: React.FC<additionalSectionsInputProps> = ({ secti
   );
 };
 
-export default additionalSectionsInput;
+export default AdditionalSectionsInput;

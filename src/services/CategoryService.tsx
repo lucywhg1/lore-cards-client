@@ -1,5 +1,7 @@
 const SERVER_URL = "http://localhost:3000/categories";
 
+const CATEGORIES = ["religion", "magic", "characters"];
+
 /**
  * Returns all Categories.
  */
@@ -10,7 +12,7 @@ const getAll = async (): Promise<string[]> => {
     }
     return resp.json();
   });
-  return data;
+  return CATEGORIES;
 };
 
 export default getAll;

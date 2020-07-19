@@ -1,6 +1,5 @@
 import React, { useState, ChangeEvent } from "react";
 import { Form, Button, Container, Image, Col } from "react-bootstrap";
-import { mapCategoriesToOptions } from "../../categories/DisplayHelper";
 import AdditionalSectionsInput from "./AdditionalSectionsInput";
 import Section from "../../sections/Section";
 
@@ -12,11 +11,8 @@ const InfoCardForm: React.FC = () => {
   const [formData, setFormData] = useState<FormInput>({ additionalSections: [] });
 
   const handleChange = (field: string, value: unknown): void => {
-    console.log("Handling change with field " + field + ": " + JSON.stringify(value));
-    console.log("previous formdata is " + JSON.stringify(formData))
-    setFormData({ ...formData, [field]: value })
-    console.log("Form data is now\n" + JSON.stringify(formData));
-  }
+    setFormData({ ...formData, [field]: value });
+  };
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     event.persist();
@@ -40,18 +36,7 @@ const InfoCardForm: React.FC = () => {
               placeholder="Enter card title"
             />
           </Form.Group>
-          <Form.Group as={Col} controlId="formCardCategory">
-            <Form.Label>Category</Form.Label>
-            <Form.Control
-              className="border border-primary"
-              as="select"
-              value=""
-              custom
-            >
-              <option value="">Choose...</option>
-              {mapCategoriesToOptions()}
-            </Form.Control>
-          </Form.Group>
+
         </Form.Row>
         <Form.Row>
           <Form.Group as={Col} controlId="formCardSubtitle">
