@@ -1,8 +1,10 @@
+import Entity from "./Entity";
 import Section from "./Section";
+import Category from "./Category";
 
-interface InfoCard {
+interface InfoCard extends Entity {
   title: string;
-  category: string;
+  category: Category;
   description: Section;
   summary: string;
   tags?: string[];

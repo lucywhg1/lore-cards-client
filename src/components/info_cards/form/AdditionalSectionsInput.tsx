@@ -1,22 +1,30 @@
 import React, { ChangeEvent } from "react";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import { PlusSquare, DashSquare } from "react-bootstrap-icons";
-import Section from "../../sections/Section";
+import Section from "../../../types/Section";
 
 interface additionalSectionsInputProps {
   sections: Section[];
-  onChange: (newValue: Section[]) => void;
+  onChange: (updatedSections: Section[]) => void;
 }
 
-const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({ sections, onChange }): JSX.Element => {
-  const updateSection = (index: number, event: ChangeEvent<HTMLInputElement>): void => {
+const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({
+  sections,
+  onChange,
+}): JSX.Element => {
+  const updateSection = (
+    index: number,
+    event: ChangeEvent<HTMLInputElement>
+  ): void => {
     event.persist();
-    onChange(sections.map((section, i) => {
-      if (i !== index) {
-        return section;
-      }
-      return { ...section, [ event.target.name ]: event.target.value };
-    }));
+    onChange(
+      sections.map((section, i) => {
+        if (i !== index) {
+          return section;
+        }
+        return { ...section, [event.target.name]: event.target.value };
+      })
+    );
   };
 
   const addSection = (): void => {
@@ -29,12 +37,9 @@ const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({ secti
 
   const mapSectionsToInputs = (): JSX.Element => {
     const sectionInputs = sections.map((section, index) => (
-      <div key={`section-${ index }`}>
+      <div key={`section-${index}`}>
         <Form.Row>
-          <Form.Group
-            as={Col}
-            controlId={`section-${ index }-heading`}
-          >
+          <Form.Group as={Col} controlId={`section-${index}-heading`}>
             <Form.Control
               name="heading"
               className="border border-primary"
@@ -44,10 +49,7 @@ const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({ secti
               onChange={(event) => updateSection(index, event as any)}
             />
           </Form.Group>
-          <Form.Group
-            as={Col}
-            controlId={`section-${ index }-remove-button`}
-          >
+          <Form.Group as={Col} controlId={`section-${index}-remove-button`}>
             <Button
               variant="outline-danger"
               size="sm"
@@ -60,10 +62,7 @@ const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({ secti
           </Form.Group>
         </Form.Row>
         <Form.Row>
-          <Form.Group
-            as={Col}
-            controlId={`section-${ index }-body`}
-          >
+          <Form.Group as={Col} controlId={`section-${index}-body`}>
             <Form.Control
               name="body"
               className="border border-primary"

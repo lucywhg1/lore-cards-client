@@ -1,14 +1,20 @@
 import React, { useState, ChangeEvent } from "react";
 import { Form, Button, Container, Image, Col } from "react-bootstrap";
 import AdditionalSectionsInput from "./AdditionalSectionsInput";
-import Section from "../../sections/Section";
+import Section from "../../../types/Section";
+import Category from "../../../types/Category";
+import CategorySelect from "./CategorySelect";
 
 interface FormInput {
+  category: Category;
   additionalSections: Section[];
 }
 
 const InfoCardForm: React.FC = () => {
-  const [formData, setFormData] = useState<FormInput>({ additionalSections: [] });
+  const [formData, setFormData] = useState<FormInput>({
+    category: { id: -1, title: "" },
+    additionalSections: [],
+  });
 
   const handleChange = (field: string, value: unknown): void => {
     setFormData({ ...formData, [field]: value });
@@ -36,7 +42,12 @@ const InfoCardForm: React.FC = () => {
               placeholder="Enter card title"
             />
           </Form.Group>
-
+          <CategorySelect
+            category={formData.category}
+            onChange={(categoryId) => {
+              handleChange("category", categoryId);
+            }}
+          />
         </Form.Row>
         <Form.Row>
           <Form.Group as={Col} controlId="formCardSubtitle">
@@ -85,7 +96,12 @@ const InfoCardForm: React.FC = () => {
             />
           </Form.Group>
         </Form.Row>
-        <AdditionalSectionsInput sections={formData.additionalSections} onChange={(value: Section[]) => handleChange("additionalSections", value)} />
+        <AdditionalSectionsInput
+          sections={formData.additionalSections}
+          onChange={(value: Section[]) =>
+            handleChange("additionalSections", value)
+          }
+        />
         <hr />
         {/* Links */}
         <Form.Row>
