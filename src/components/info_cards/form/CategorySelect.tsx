@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { Form, Col } from "react-bootstrap";
 import Category from "../../../types/Category";
-import { CategoryService } from "../../../services/Category";
+import CategoryService from "../../../services/CategoryService";
 
 interface CategorySelectProps {
   category: Category;

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Container, Button } from "react-bootstrap";
+import { Container, Button, Jumbotron } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import logo from "./logo.svg";
 import InfoCardForm from "./components/info_cards/form/Form";
@@ -23,6 +23,12 @@ const Home: React.FC = () => {
           <Button>New Card</Button>
         </LinkContainer>
       </Container>
+      <Jumbotron fluid>
+        <Container className="text-justify">
+          <h1 className="text-primary">Welcome to the landing page!</h1>
+          <h4 className="text-secondary">Below, I'm currently working on...</h4>
+        </Container>
+      </Jumbotron>
       <InfoCardForm />
     </>
   );

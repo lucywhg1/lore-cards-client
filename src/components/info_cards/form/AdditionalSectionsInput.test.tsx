@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import AdditionalSectionsInput from "./AdditionalSectionsInput";
 import Faker from "faker";
 import Section from "../../../types/Section";
-import SectionFactory from "../../../factories/Section";
+import SectionFactory from "../../../factories/SectionFactory";
 
 const mockOnChange = jest.fn();
 
