@@ -3,7 +3,7 @@ import React from "react";
 import { Container, Button, Jumbotron } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import logo from "./logo.svg";
-import InfoCardForm from "./components/info_cards/form/Form";
+import InfoCardForm from "./components/info_cards/form/InfoCardForm";
 
 const Home: React.FC = () => {
   return (

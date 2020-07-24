@@ -14,7 +14,7 @@ describe(AdditionalSectionsInput, () => {
     body: "...and a body.",
   };
 
-  const renderComponent = (loadedSections: Section[]): void => {
+  const renderInput = (loadedSections: Section[]): void => {
     render(
       <AdditionalSectionsInput
         sections={loadedSections}
@@ -25,7 +25,7 @@ describe(AdditionalSectionsInput, () => {
 
   describe("no sections", () => {
     beforeEach(() => {
-      renderComponent([]);
+      renderInput([]);
     });
 
     it("does not render inputs with no sections", () => {
@@ -54,7 +54,7 @@ describe(AdditionalSectionsInput, () => {
     const loadedSection = SectionFactory.build();
 
     beforeEach(() => {
-      renderComponent([loadedSection]);
+      renderInput([loadedSection]);
     });
 
     it("displays the loaded sections", () => {

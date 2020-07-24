@@ -6,13 +6,21 @@ import Category from "../../../types/Category";
 import CategorySelect from "./CategorySelect";
 
 interface FormInput {
+  title: string;
+  subtitle: string;
   category: Category;
+  summary: string;
+  description: string;
   additionalSections: Section[];
 }
 
 const InfoCardForm: React.FC = () => {
   const [formData, setFormData] = useState<FormInput>({
+    title: "",
+    subtitle: "",
     category: { id: -1, title: "" },
+    summary: "",
+    description: "",
     additionalSections: [],
   });
 
@@ -28,18 +36,20 @@ const InfoCardForm: React.FC = () => {
 
   return (
     <Container className="mt-2 pl-0 pr-0 border border-dark">
-      <Container fluid className="p-2 mb-2 bg-light">
-        <h3>Create a New Info Card</h3>
+      <Container fluid className="bg-primary">
+        <h2 className="p-4 text-light">Create a New Info Card</h2>
       </Container>
       <Form className="m-3">
-        {/* Main Attributes */}
         <Form.Row>
           <Form.Group as={Col} controlId="formCardTitle">
             <Form.Label>Title</Form.Label>
             <Form.Control
+              name="title"
               className="border border-primary"
               type="text"
               placeholder="Enter card title"
+              value={formData.title}
+              onChange={handleInputChange}
             />
           </Form.Group>
           <CategorySelect
@@ -53,8 +63,11 @@ const InfoCardForm: React.FC = () => {
           <Form.Group as={Col} controlId="formCardSubtitle">
             <Form.Label>Subtitle</Form.Label>
             <Form.Control
+              name="subtitle"
               type="text"
               placeholder="(Optional) Enter card subtitle"
+              value={formData.subtitle}
+              onChange={handleInputChange}
             />
           </Form.Group>
           <Form.Group as={Col} controlId="formCardTags">
@@ -73,9 +86,12 @@ const InfoCardForm: React.FC = () => {
           <Form.Group as={Col} sm={6} controlId="formCardSummary">
             <Form.Label>Summary</Form.Label>
             <Form.Control
+              name="summary"
               as="textarea"
               rows={2}
               placeholder="(Optional) Write a summary of this card"
+              value={formData.summary}
+              onChange={handleInputChange}
             />
             <Form.Text className="text-muted">
               Max 280 characters. No summary defaults to the first bit of your
@@ -89,10 +105,13 @@ const InfoCardForm: React.FC = () => {
           <Form.Group as={Col} controlId="description-section">
             <Form.Label>Description</Form.Label>
             <Form.Control
-              className="border border-primary"
+              name="description"
               as="textarea"
-              rows={6}
               placeholder="Write away!"
+              value={formData.description}
+              onChange={handleInputChange}
+              rows={6}
+              className="border border-primary"
             />
           </Form.Group>
         </Form.Row>
@@ -103,7 +122,6 @@ const InfoCardForm: React.FC = () => {
           }
         />
         <hr />
-        {/* Links */}
         <Form.Row>
           <Form.Group as={Col} controlId="formCardLinks">
             <Form.Label>Links</Form.Label>
@@ -117,7 +135,7 @@ const InfoCardForm: React.FC = () => {
         {/* Buttons */}
         <Container className="mt-3 d-flex">
           <Button variant="primary" type="submit">
-            Submit
+            Create
           </Button>
           <Button className="ml-auto" variant="danger" type="button">
             Cancel
