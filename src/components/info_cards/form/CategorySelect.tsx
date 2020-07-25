@@ -2,15 +2,18 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import { Form, Col } from "react-bootstrap";
 import Category from "../../../types/Category";
 import CategoryService from "../../../services/CategoryService";
+import { FieldError } from "react-hook-form";
+import { DeepMap } from "react-hook-form/dist/types/utils";
 
 interface CategorySelectProps {
-  category: Category;
+  category?: Category;
   onChange: (selectedCategory: Category) => void;
+  errors?: DeepMap<Category, FieldError>;
 }
 
 const CategorySelect: React.FC<CategorySelectProps> = ({
   category,
-  onChange,
+  onChange, errors
 }): JSX.Element => {
   const [availableCategories, setAvailableCategories] = useState<Category[]>(
     []
@@ -35,13 +38,14 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
       <Form.Label>Category</Form.Label>
       <Form.Control
         title="Select category"
-        className="border border-primary"
         as="select"
-        value={category.id}
+        custom
+        value={category ? category.id : -1}
         onChange={(event) => {
           handleChange(event as any);
         }}
-        custom
+        isInvalid={!!errors}
+        className="border border-primary"
       >
         <option value={-1}>Choose...</option>
         {availableCategories.map((category) => (
@@ -50,7 +54,10 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
           </option>
         ))}
       </Form.Control>
-    </Form.Group>
+      <Form.Control.Feedback type="invalid">
+        {errors?.id?.message}
+      </Form.Control.Feedback>
+    </Form.Group >
   );
 };
 

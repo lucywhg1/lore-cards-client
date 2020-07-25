@@ -1,9 +1,13 @@
-import React, { useState, ChangeEvent } from "react";
+import React from "react";
+import { useForm, Controller } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from '@hookform/resolvers';
 import { Form, Button, Container, Image, Col } from "react-bootstrap";
 import AdditionalSectionsInput from "./AdditionalSectionsInput";
 import Section from "../../../types/Section";
 import Category from "../../../types/Category";
 import CategorySelect from "./CategorySelect";
+import { TITLE_MAX_LENGTH, SUBTITLE_MAX_LENGTH, SUMMARY_MAX_LENGTH, sectionSchema } from "./validations";
 
 interface FormInput {
   title: string;
@@ -14,24 +18,33 @@ interface FormInput {
   additionalSections: Section[];
 }
 
+const validationSchema = yup.object().shape({
+  title: yup.string().required().max(TITLE_MAX_LENGTH),
+  subtitle: yup.string().notRequired().max(SUBTITLE_MAX_LENGTH),
+  category: yup.object().shape({ id: yup.number().min(0, "category is a required field"), title: yup.string() }),
+  summary: yup.string().notRequired().max(SUMMARY_MAX_LENGTH),
+  description: yup.string().notRequired(),
+  additionalSections: yup.array().notRequired().of(sectionSchema)
+}
+);
+
 const InfoCardForm: React.FC = () => {
-  const [formData, setFormData] = useState<FormInput>({
-    title: "",
-    subtitle: "",
-    category: { id: -1, title: "" },
-    summary: "",
-    description: "",
-    additionalSections: [],
+  const { register, control, handleSubmit, errors, reset, trigger } = useForm<FormInput>({
+    defaultValues: {
+      title: "",
+      subtitle: "",
+      category: {
+        id: -1, title: ""
+      },
+      summary: "",
+      description: "",
+      additionalSections: []
+    },
+    resolver: yupResolver(validationSchema)
   });
 
-  const handleChange = (field: string, value: unknown): void => {
-    setFormData({ ...formData, [field]: value });
-  };
-
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    event.persist();
-    const { name, value } = event.target;
-    handleChange(name, value);
+  const onSubmit = (data: FormInput) => {
+    console.log(data);
   };
 
   return (
@@ -39,7 +52,7 @@ const InfoCardForm: React.FC = () => {
       <Container fluid className="bg-primary">
         <h2 className="p-4 text-light">Create a New Info Card</h2>
       </Container>
-      <Form className="m-3">
+      <Form noValidate className="m-3" onSubmit={handleSubmit(onSubmit)}>
         <Form.Row>
           <Form.Group as={Col} controlId="formCardTitle">
             <Form.Label>Title</Form.Label>
@@ -48,15 +61,26 @@ const InfoCardForm: React.FC = () => {
               className="border border-primary"
               type="text"
               placeholder="Enter card title"
-              value={formData.title}
-              onChange={handleInputChange}
+              ref={register}
+              isInvalid={!!errors.title}
+              onChange={() => { trigger('title'); }}
             />
+            <Form.Text className="text-muted">
+              {`Max ${ TITLE_MAX_LENGTH } characters.`}
+            </Form.Text>
+            <Form.Control.Feedback type="invalid">
+              {errors.title?.message}
+            </Form.Control.Feedback>
           </Form.Group>
-          <CategorySelect
-            category={formData.category}
-            onChange={(categoryId) => {
-              handleChange("category", categoryId);
-            }}
+          <Controller
+            name="category"
+            control={control}
+            rules={{ required: true }}
+            render={({ value, onChange }) => <CategorySelect
+              category={value}
+              onChange={(category) => onChange(category)}
+              errors={errors.category}
+            />}
           />
         </Form.Row>
         <Form.Row>
@@ -65,14 +89,21 @@ const InfoCardForm: React.FC = () => {
             <Form.Control
               name="subtitle"
               type="text"
-              placeholder="(Optional) Enter card subtitle"
-              value={formData.subtitle}
-              onChange={handleInputChange}
+              placeholder="Enter card subtitle"
+              ref={register}
+              isInvalid={!!errors.subtitle}
+              onChange={() => trigger('subtitle')}
             />
+            <Form.Text className="text-muted">
+              {`Max ${ SUBTITLE_MAX_LENGTH } characters.`}
+            </Form.Text>
+            <Form.Control.Feedback type="invalid">
+              {errors.subtitle?.message}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} controlId="formCardTags">
             <Form.Label>Tags</Form.Label>
-            <Form.Control type="text" placeholder="(Optional) UNIMPLEMENTED" />
+            <Form.Control type="text" placeholder="UNIMPLEMENTED" />
           </Form.Group>
         </Form.Row>
         <Form.Row>
@@ -89,14 +120,17 @@ const InfoCardForm: React.FC = () => {
               name="summary"
               as="textarea"
               rows={2}
-              placeholder="(Optional) Write a summary of this card"
-              value={formData.summary}
-              onChange={handleInputChange}
+              placeholder="Write a summary of this card"
+              ref={register}
+              isInvalid={!!errors.summary}
+              onChange={() => { trigger('summary'); }}
             />
             <Form.Text className="text-muted">
-              Max 280 characters. No summary defaults to the first bit of your
-              Description.
+              {`Max ${ SUMMARY_MAX_LENGTH } characters. No summary defaults to the first bit of your Description.`}
             </Form.Text>
+            <Form.Control.Feedback type="invalid">
+              {errors.summary?.message}
+            </Form.Control.Feedback>
           </Form.Group>
         </Form.Row>
         <Form.Row></Form.Row>
@@ -107,25 +141,29 @@ const InfoCardForm: React.FC = () => {
             <Form.Control
               name="description"
               as="textarea"
-              placeholder="Write away!"
-              value={formData.description}
-              onChange={handleInputChange}
               rows={6}
               className="border border-primary"
+              placeholder="Write away!"
+              ref={register}
             />
           </Form.Group>
         </Form.Row>
-        <AdditionalSectionsInput
-          sections={formData.additionalSections}
-          onChange={(value: Section[]) =>
-            handleChange("additionalSections", value)
-          }
+        <Controller
+          name="additionalSections"
+          control={control}
+          render={({ value, onChange }) => <AdditionalSectionsInput
+            sections={value}
+            onChange={(sections) =>
+              onChange(sections)
+            }
+            errors={errors.additionalSections}
+          />}
         />
         <hr />
         <Form.Row>
           <Form.Group as={Col} controlId="formCardLinks">
             <Form.Label>Links</Form.Label>
-            <Form.Control type="text" placeholder="(Optional) UNIMPLEMENTED" />
+            <Form.Control type="text" placeholder="UNIMPLEMENTED" />
             <Form.Text className="text-muted">
               Add links from this card to other cards, categories, and tags.
             </Form.Text>
@@ -137,8 +175,8 @@ const InfoCardForm: React.FC = () => {
           <Button variant="primary" type="submit">
             Create
           </Button>
-          <Button className="ml-auto" variant="danger" type="button">
-            Cancel
+          <Button className="ml-auto" variant="danger" type="button" onClick={() => reset()}>
+            Clear
           </Button>
         </Container>
       </Form>

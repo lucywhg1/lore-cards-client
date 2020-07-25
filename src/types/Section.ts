@@ -1,6 +1,6 @@
 interface Section {
   heading: string;
-  body: string;
+  body?: string;
 }
 
 export default Section;
