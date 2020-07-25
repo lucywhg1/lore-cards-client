@@ -8,6 +8,8 @@ import Section from "../../../types/Section";
 import Category from "../../../types/Category";
 import CategorySelect from "./CategorySelect";
 import { TITLE_MAX_LENGTH, SUBTITLE_MAX_LENGTH, SUMMARY_MAX_LENGTH, sectionSchema } from "./validations";
+import ControlledInput from "./ControlledInput";
+import { get } from "lodash";
 
 interface FormInput {
   title: string;
@@ -43,6 +45,10 @@ const InfoCardForm: React.FC = () => {
     resolver: yupResolver(validationSchema)
   });
 
+  const getUseFormProps = (name: string) => {
+    return { "register": register, "trigger": trigger, "errors": get(errors, name) };
+  };
+
   const onSubmit = (data: FormInput) => {
     console.log(data);
   };
@@ -54,7 +60,8 @@ const InfoCardForm: React.FC = () => {
       </Container>
       <Form noValidate className="m-3" onSubmit={handleSubmit(onSubmit)}>
         <Form.Row>
-          <Form.Group as={Col} controlId="formCardTitle">
+          <ControlledInput name="title" type="text" required={true} subtext={`Max ${ TITLE_MAX_LENGTH } characters.`} validationMode='onChange' {...getUseFormProps('title')} />
+          {/* <Form.Group as={Col} controlId="formCardTitle">
             <Form.Label>Title</Form.Label>
             <Form.Control
               name="title"
@@ -66,12 +73,12 @@ const InfoCardForm: React.FC = () => {
               onChange={() => { trigger('title'); }}
             />
             <Form.Text className="text-muted">
-              {`Max ${ TITLE_MAX_LENGTH } characters.`}
+              {}
             </Form.Text>
             <Form.Control.Feedback type="invalid">
               {errors.title?.message}
             </Form.Control.Feedback>
-          </Form.Group>
+          </Form.Group> */}
           <Controller
             name="category"
             control={control}
