@@ -1,15 +1,13 @@
 import React from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, FormProvider, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers';
 import { Form, Button, Container, Image, Col } from "react-bootstrap";
 import AdditionalSectionsInput from "./AdditionalSectionsInput";
-import Section from "../../../types/Section";
-import Category from "../../../types/Category";
+import { Section, Category } from "../../../types/index";
 import CategorySelect from "./CategorySelect";
 import { TITLE_MAX_LENGTH, SUBTITLE_MAX_LENGTH, SUMMARY_MAX_LENGTH, sectionSchema } from "./validations";
-import ControlledInput from "./ControlledInput";
-import { get } from "lodash";
+import Input from "../../../helpers/form/Input";
 
 interface FormInput {
   title: string;
@@ -27,58 +25,55 @@ const validationSchema = yup.object().shape({
   summary: yup.string().notRequired().max(SUMMARY_MAX_LENGTH),
   description: yup.string().notRequired(),
   additionalSections: yup.array().notRequired().of(sectionSchema)
-}
-);
+});
 
-const InfoCardForm: React.FC = () => {
-  const { register, control, handleSubmit, errors, reset, trigger } = useForm<FormInput>({
-    defaultValues: {
-      title: "",
-      subtitle: "",
-      category: {
-        id: -1, title: ""
-      },
-      summary: "",
-      description: "",
-      additionalSections: []
-    },
+const defaultValues = {
+  title: "",
+  subtitle: "",
+  category: {
+    id: -1, title: ""
+  },
+  summary: "",
+  description: "",
+  additionalSections: []
+};
+
+interface InfoCardFormProps {
+  onSubmit: (data: FormInput) => void;
+}
+
+const InfoCardForm: React.FC<InfoCardFormProps> = ({ onSubmit }) => {
+  const formContext = useForm<FormInput>({
+    defaultValues,
     resolver: yupResolver(validationSchema)
   });
+  const { control, handleSubmit, reset } = formContext;
 
-  const getUseFormProps = (name: string) => {
-    return { "register": register, "trigger": trigger, "errors": get(errors, name) };
+  const generateSummary = (description: string): string => {
+    if (description) { // summarize first portion of description
+      return `${ description.substring(0, SUMMARY_MAX_LENGTH) }...`;
+    }
+    else {
+      return 'No description.';
+    }
   };
 
-  const onSubmit = (data: FormInput) => {
-    console.log(data);
+  const handleInput = ({ summary, ...data }: FormInput) => {
+    let formData = {
+      summary: summary || generateSummary(data.description),
+      ...data
+    };
+
+    onSubmit(formData);
   };
 
   return (
-    <Container className="mt-2 pl-0 pr-0 border border-dark">
-      <Container fluid className="bg-primary">
-        <h2 className="p-4 text-light">Create a New Info Card</h2>
-      </Container>
-      <Form noValidate className="m-3" onSubmit={handleSubmit(onSubmit)}>
+    <FormProvider {...formContext}>
+      <Form noValidate className="m-3" onSubmit={handleSubmit(handleInput)}>
         <Form.Row>
-          <ControlledInput name="title" type="text" required={true} subtext={`Max ${ TITLE_MAX_LENGTH } characters.`} validationMode='onChange' {...getUseFormProps('title')} />
-          {/* <Form.Group as={Col} controlId="formCardTitle">
-            <Form.Label>Title</Form.Label>
-            <Form.Control
-              name="title"
-              className="border border-primary"
-              type="text"
-              placeholder="Enter card title"
-              ref={register}
-              isInvalid={!!errors.title}
-              onChange={() => { trigger('title'); }}
-            />
-            <Form.Text className="text-muted">
-              {}
-            </Form.Text>
-            <Form.Control.Feedback type="invalid">
-              {errors.title?.message}
-            </Form.Control.Feedback>
-          </Form.Group> */}
+          <Form.Group as={Col} controlId="cardTitle">
+            <Input name="title" required={true} subtext={`Max ${ TITLE_MAX_LENGTH } characters.`} validationMode='onChange' />
+          </Form.Group>
           <Controller
             name="category"
             control={control}
@@ -86,27 +81,12 @@ const InfoCardForm: React.FC = () => {
             render={({ value, onChange }) => <CategorySelect
               category={value}
               onChange={(category) => onChange(category)}
-              errors={errors.category}
             />}
           />
         </Form.Row>
         <Form.Row>
-          <Form.Group as={Col} controlId="formCardSubtitle">
-            <Form.Label>Subtitle</Form.Label>
-            <Form.Control
-              name="subtitle"
-              type="text"
-              placeholder="Enter card subtitle"
-              ref={register}
-              isInvalid={!!errors.subtitle}
-              onChange={() => trigger('subtitle')}
-            />
-            <Form.Text className="text-muted">
-              {`Max ${ SUBTITLE_MAX_LENGTH } characters.`}
-            </Form.Text>
-            <Form.Control.Feedback type="invalid">
-              {errors.subtitle?.message}
-            </Form.Control.Feedback>
+          <Form.Group as={Col} controlId="cardSubtitle">
+            <Input name="subtitle" subtext={`Max ${ SUBTITLE_MAX_LENGTH } characters.`} validationMode="onChange" />
           </Form.Group>
           <Form.Group as={Col} controlId="formCardTags">
             <Form.Label>Tags</Form.Label>
@@ -121,38 +101,15 @@ const InfoCardForm: React.FC = () => {
           <Col xs={2}>
             <Image src="https://tinyurl.com/lorecardsimg" rounded fluid />
           </Col>
-          <Form.Group as={Col} sm={6} controlId="formCardSummary">
-            <Form.Label>Summary</Form.Label>
-            <Form.Control
-              name="summary"
-              as="textarea"
-              rows={2}
-              placeholder="Write a summary of this card"
-              ref={register}
-              isInvalid={!!errors.summary}
-              onChange={() => { trigger('summary'); }}
-            />
-            <Form.Text className="text-muted">
-              {`Max ${ SUMMARY_MAX_LENGTH } characters. No summary defaults to the first bit of your Description.`}
-            </Form.Text>
-            <Form.Control.Feedback type="invalid">
-              {errors.summary?.message}
-            </Form.Control.Feedback>
+          <Form.Group as={Col} controlId="cardSummary">
+            <Input name="summary" rows={2} placeholder="Write a summary of this card" subtext={`Max ${ SUMMARY_MAX_LENGTH } characters. No summary defaults to the first bit of your Description.`} validationMode="onChange" />
           </Form.Group>
         </Form.Row>
         <Form.Row></Form.Row>
         <hr />
         <Form.Row>
-          <Form.Group as={Col} controlId="description-section">
-            <Form.Label>Description</Form.Label>
-            <Form.Control
-              name="description"
-              as="textarea"
-              rows={6}
-              className="border border-primary"
-              placeholder="Write away!"
-              ref={register}
-            />
+          <Form.Group as={Col} controlId="cardDescription">
+            <Input name="description" placeholder="Write away!" />
           </Form.Group>
         </Form.Row>
         <Controller
@@ -163,7 +120,6 @@ const InfoCardForm: React.FC = () => {
             onChange={(sections) =>
               onChange(sections)
             }
-            errors={errors.additionalSections}
           />}
         />
         <hr />
@@ -177,17 +133,16 @@ const InfoCardForm: React.FC = () => {
           </Form.Group>
         </Form.Row>
         <hr />
-        {/* Buttons */}
         <Container className="mt-3 d-flex">
           <Button variant="primary" type="submit">
             Create
           </Button>
-          <Button className="ml-auto" variant="danger" type="button" onClick={() => reset()}>
+          <Button className="ml-auto" variant="danger" type="button" onClick={() => reset(defaultValues)}>
             Clear
           </Button>
         </Container>
       </Form>
-    </Container>
+    </FormProvider>
   );
 };
 

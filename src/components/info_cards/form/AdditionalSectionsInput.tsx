@@ -76,7 +76,6 @@ const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({
             <Form.Group as={Col} controlId={`section-${ index }-body`}>
               <Form.Control
                 name="body"
-                className="border border-primary"
                 as="textarea"
                 rows={6}
                 value={section.body}
