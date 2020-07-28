@@ -3,14 +3,14 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import CategorySelect from "./CategorySelect";
 import Category from "../../../types/Category";
-import CategoryFactory from "../../../factories/CategoryFactory";
 import CategoryService from "../../../services/CategoryService";
+import { CategoryFactory } from "../../../factories";
 
 const mockOnChange = jest.fn();
 jest.mock("../../../services/CategoryService");
 
 describe(CategorySelect, () => {
-  const unselectedCategory: Category = { id: -1, title: "" };
+  const unselectedCategory: Category = { id: -1, name: "" };
   const availableCategories = CategoryFactory.buildList(2);
 
   beforeAll(() => {
@@ -19,7 +19,7 @@ describe(CategorySelect, () => {
 
   beforeEach(async () => {
     render(<CategorySelect category={unselectedCategory} onChange={mockOnChange} />);
-    await screen.findByText(availableCategories[0].title);
+    await screen.findByText(availableCategories[0].name);
   });
 
   it("renders the select dropdown with default option", () => {
@@ -29,7 +29,7 @@ describe(CategorySelect, () => {
 
   it("fills dropdown with fetched categories", () => {
     availableCategories.forEach((category) => {
-      expect(screen.getByText(category.title)).toBeInTheDocument();
+      expect(screen.getByText(category.name)).toBeInTheDocument();
     });
   });
 

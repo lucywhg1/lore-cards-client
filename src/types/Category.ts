@@ -1,7 +1,7 @@
 import Entity from "./Entity";
 
 interface Category extends Entity {
-  title: string;
+  name: string;
 }
 
 export default Category;

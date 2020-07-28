@@ -50,7 +50,7 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
         <option value={-1}>Choose...</option>
         {availableCategories.map((category) => (
           <option key={category.id} value={category.id}>
-            {category.title}
+            {category.name}
           </option>
         ))}
       </Form.Control>

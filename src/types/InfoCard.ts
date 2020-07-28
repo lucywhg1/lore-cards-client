@@ -15,4 +15,13 @@ interface InfoCard extends Entity {
   additionalSections?: Section[];
 }
 
+export interface InfoCardInput {
+  title: string;
+  subtitle: string;
+  category: Category;
+  summary: string;
+  description: string;
+  additionalSections: Section[];
+}
+
 export default InfoCard;

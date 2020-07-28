@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Button, Container, Image, Col } from "react-bootstrap";
 
-const InfoCardView: React.FC = () => {
+const CardView: React.FC = () => {
   return (
     <Container className="mt-2 pl-0 pr-0 border border-dark">
       <Container fluid className="bg-primary">
@@ -12,4 +12,4 @@ const InfoCardView: React.FC = () => {
   );
 };
 
-export default InfoCardView;
+export default CardView;

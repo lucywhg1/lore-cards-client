@@ -4,46 +4,27 @@ import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers';
 import { Form, Button, Container, Image, Col } from "react-bootstrap";
 import AdditionalSectionsInput from "./AdditionalSectionsInput";
-import { Section, Category } from "../../../types/index";
 import CategorySelect from "./CategorySelect";
 import { TITLE_MAX_LENGTH, SUBTITLE_MAX_LENGTH, SUMMARY_MAX_LENGTH, sectionSchema } from "./validations";
 import Input from "../../../helpers/form/Input";
-
-interface FormInput {
-  title: string;
-  subtitle: string;
-  category: Category;
-  summary: string;
-  description: string;
-  additionalSections: Section[];
-}
+import { InfoCardInput } from "../../../types/InfoCard";
 
 const validationSchema = yup.object().shape({
   title: yup.string().required().max(TITLE_MAX_LENGTH),
   subtitle: yup.string().notRequired().max(SUBTITLE_MAX_LENGTH),
-  category: yup.object().shape({ id: yup.number().min(0, "category is a required field"), title: yup.string() }),
+  category: yup.object().shape({ id: yup.number().min(0, "category is a required field"), name: yup.string() }),
   summary: yup.string().notRequired().max(SUMMARY_MAX_LENGTH),
   description: yup.string().notRequired(),
   additionalSections: yup.array().notRequired().of(sectionSchema)
 });
 
-const defaultValues = {
-  title: "",
-  subtitle: "",
-  category: {
-    id: -1, title: ""
-  },
-  summary: "",
-  description: "",
-  additionalSections: []
-};
-
 interface InfoCardFormProps {
-  onSubmit: (data: FormInput) => void;
+  onSubmit: (data: InfoCardInput) => void;
+  defaultValues: InfoCardInput;
 }
 
-const InfoCardForm: React.FC<InfoCardFormProps> = ({ onSubmit }) => {
-  const formContext = useForm<FormInput>({
+const InfoCardForm: React.FC<InfoCardFormProps> = ({ onSubmit, defaultValues }) => {
+  const formContext = useForm<InfoCardInput>({
     defaultValues,
     resolver: yupResolver(validationSchema)
   });
@@ -58,7 +39,7 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({ onSubmit }) => {
     }
   };
 
-  const handleInput = ({ summary, ...data }: FormInput) => {
+  const handleInput = ({ summary, ...data }: InfoCardInput) => {
     let formData = {
       summary: summary || generateSummary(data.description),
       ...data
