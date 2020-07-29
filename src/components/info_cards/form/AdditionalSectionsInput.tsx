@@ -14,7 +14,7 @@ interface additionalSectionsInputProps {
 const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({
   sections = [],
   onChange,
-  errors
+  errors,
 }): JSX.Element => {
   const updateSection = (
     index: number,
@@ -42,11 +42,12 @@ const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({
   const mapSectionsToInputs = (): JSX.Element => {
     let sectionInputs: JSX.Element[] = [];
     sections.forEach((section, index) => {
-      const sectionErrors = (errors && errors.length >= index + 1) ? errors[index] : undefined;
+      const sectionErrors =
+        errors && errors.length >= index + 1 ? errors[index] : undefined;
       sectionInputs.push(
-        <div key={`section-${ index }`}>
+        <div key={`section-${index}`}>
           <Form.Row>
-            <Form.Group as={Col} controlId={`section-${ index }-heading`}>
+            <Form.Group as={Col} controlId={`section-${index}-heading`}>
               <Form.Control
                 name="heading"
                 className="border border-primary"
@@ -54,13 +55,13 @@ const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({
                 placeholder="Add a section heading..."
                 value={section.heading}
                 onChange={(event) => updateSection(index, event as any)}
-                isInvalid={!!(sectionErrors?.heading)}
+                isInvalid={!!sectionErrors?.heading}
               />
               <Form.Control.Feedback type="invalid">
                 {sectionErrors?.heading?.message}
               </Form.Control.Feedback>
             </Form.Group>
-            <Form.Group as={Col} controlId={`section-${ index }-remove-button`}>
+            <Form.Group as={Col} controlId={`section-${index}-remove-button`}>
               <Button
                 variant="outline-danger"
                 size="sm"
@@ -73,15 +74,15 @@ const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({
             </Form.Group>
           </Form.Row>
           <Form.Row>
-            <Form.Group as={Col} controlId={`section-${ index }-body`}>
+            <Form.Group as={Col} controlId={`section-${index}-body`}>
               <Form.Control
                 name="body"
                 as="textarea"
-                rows={6}
+                rows={4}
                 value={section.body}
                 placeholder="...and a body."
                 onChange={(event) => updateSection(index, event as any)}
-                isInvalid={!!(sectionErrors?.body)}
+                isInvalid={!!sectionErrors?.body}
               />
             </Form.Group>
             <Form.Control.Feedback type="invalid">

@@ -2,8 +2,8 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import { Form, Col } from "react-bootstrap";
 import Category from "../../../types/Category";
 import CategoryService from "../../../services/CategoryService";
-import { FieldError } from "react-hook-form";
 import { DeepMap } from "react-hook-form/dist/types/utils";
+import { FieldError } from "react-hook-form";
 
 interface CategorySelectProps {
   category?: Category;
@@ -13,7 +13,8 @@ interface CategorySelectProps {
 
 const CategorySelect: React.FC<CategorySelectProps> = ({
   category,
-  onChange, errors
+  onChange,
+  errors,
 }): JSX.Element => {
   const [availableCategories, setAvailableCategories] = useState<Category[]>(
     []
@@ -57,7 +58,7 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
       <Form.Control.Feedback type="invalid">
         {errors?.id?.message}
       </Form.Control.Feedback>
-    </Form.Group >
+    </Form.Group>
   );
 };
 

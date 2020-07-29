@@ -4,7 +4,7 @@ import { Form } from "react-bootstrap";
 import { useFormContext } from "react-hook-form";
 
 export interface TextAreaProps extends CommonProps {
-  as: 'textarea',
+  as: "textarea";
   rows?: number;
 }
 
@@ -19,18 +19,22 @@ interface CommonProps {
 export type InputProps = CommonProps | TextAreaProps;
 
 const Input: React.FC<InputProps> = ({
-  name, placeholder, subtext, required = false, validationMode, ...inputOptions
+  name,
+  placeholder,
+  subtext,
+  required = false,
+  validationMode,
+  ...inputOptions
 }) => {
   const { register, trigger, errors } = useFormContext();
   const inputErrors = get(errors, name);
 
   let validationProps;
-  if (validationMode === 'onBlur') {
-    validationProps = { "onBlur": () => trigger(name) };
-  } else if (validationMode === 'onChange') {
+  if (validationMode === "onBlur") {
+    validationProps = { onBlur: () => trigger(name) };
+  } else if (validationMode === "onChange") {
     validationProps = {
-      "onChange": () =>
-        trigger(name)
+      onChange: () => trigger(name),
     };
   }
 
@@ -42,7 +46,7 @@ const Input: React.FC<InputProps> = ({
         {...inputOptions}
         className={required ? "border border-primary" : undefined}
         name={name}
-        placeholder={placeholder || `Enter ${ name }`}
+        placeholder={placeholder || `Enter ${name}`}
         ref={register}
         isInvalid={!!inputErrors}
       />

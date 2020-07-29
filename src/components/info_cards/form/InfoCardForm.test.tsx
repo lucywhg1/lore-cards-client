@@ -11,68 +11,88 @@ import { InfoCardInputFactory, CategoryFactory } from "../../../factories";
 const mockOnSubmit = jest.fn();
 jest.mock("../../../services/CategoryService");
 
-const fillOutRequiredFields = () => {
-  userEvent.type(screen.getByRole("textbox", { name: 'Title' }), "Card title");
-  userEvent.selectOptions(screen.getByRole("combobox", { name: 'Category' }), ['0']);
-};
-
 describe(InfoCardForm, () => {
   const mockCategories = CategoryFactory.buildList(2);
   const emptyInputs = InfoCardInputFactory.build();
+  const filledInputs = InfoCardInputFactory.build(
+    {},
+    { transient: { filled: true } }
+  );
 
-  const renderComponent = async (defaultValues = emptyInputs): Promise<void> => {
-    render(<InfoCardForm onSubmit={mockOnSubmit} defaultValues={defaultValues} />);
+  const fillOutRequiredFields = () => {
+    const { title } = filledInputs;
 
-    await waitFor(() => expect(screen.getAllByRole("option").length).toEqual(3)); // all categories fetched
+    userEvent.type(screen.getByRole("textbox", { name: "Title" }), title);
+    userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Category" }),
+      ["0"]
+    ); // not from filledInputs
+
+    return { title, category: mockCategories[0] };
   };
 
+  const renderComponent = async (
+    defaultValues = emptyInputs
+  ): Promise<void> => {
+    render(
+      <InfoCardForm onSubmit={mockOnSubmit} defaultValues={defaultValues} />
+    );
+
+    await waitFor(() =>
+      expect(screen.getAllByRole("option").length).toEqual(3)
+    ); // all categories fetched
+  };
 
   beforeAll(() => {
-    CategoryService.prototype.getAll = jest.fn().mockResolvedValue(mockCategories);
-  });
-
-  it("displays the form", () => {
-    renderComponent();
-
-    expect(screen.getByRole("heading")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Create" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Clear" })).toBeInTheDocument();
+    CategoryService.prototype.getAll = jest
+      .fn()
+      .mockResolvedValue(mockCategories);
   });
 
   it("displays form inputs", () => {
     renderComponent();
 
-    expect(screen.getByRole("textbox", { name: 'Title' })).toBeInTheDocument();
-    expect(screen.getByRole("combobox", { name: 'Category' })).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: 'Subtitle' })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Title" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: "Category" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "Subtitle" })
+    ).toBeInTheDocument();
     expect(screen.getByLabelText("Avatar")).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: 'Summary' })).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: 'Description' })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Add Section" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "Summary" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "Description" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Add Section" })
+    ).toBeInTheDocument();
+
+    expect(screen.getByRole("button", { name: "Create" })).toBeInTheDocument();
     // links, tags
   });
 
   describe("default value population", () => {
-    const filledInputs = InfoCardInputFactory.build({}, { transient: { filled: true } });
-
     beforeEach(() => {
       renderComponent(filledInputs);
     });
 
     fit("renders with default values", () => {
-      expect(screen.getByText(filledInputs.title)).toBeInTheDocument();
-      expect(screen.getByText(filledInputs.subtitle)).toBeInTheDocument();
-      expect(screen.getByText(filledInputs.summary)).toBeInTheDocument();
-      expect(screen.getByText(filledInputs.description)).toBeInTheDocument();
-      expect(screen.getByText(filledInputs.additionalSections[0].heading)).toBeInTheDocument();
-    });
-
-    fit("Resets to default values on clear button click", () => {
-      userEvent.type(screen.getByRole("textbox", { name: 'Title' }), "Not the default!");
-      userEvent.click(screen.getByRole("button", { name: 'Clear' }));
-
-      expect(screen.queryByText('Not the default!')).toBeNull();
-      expect(screen.getByText(filledInputs.title)).toBeInTheDocument();
+      expect(screen.getByDisplayValue(filledInputs.title)).toBeInTheDocument();
+      expect(
+        screen.getByDisplayValue(filledInputs.subtitle)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByDisplayValue(filledInputs.summary)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByDisplayValue(filledInputs.description)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByDisplayValue(filledInputs.additionalSections[0].heading)
+      ).toBeInTheDocument();
     });
   });
 
@@ -85,30 +105,53 @@ describe(InfoCardForm, () => {
       createButton = screen.getByRole("button", { name: "Create" });
     });
 
+    fit("calls #onSubmit when required fields are filled", () => {
+      const requiredFormData = fillOutRequiredFields();
+      userEvent.click(createButton);
+
+      expect(mockOnSubmit).toHaveBeenCalledWith(
+        expect.objectContaining(requiredFormData)
+      );
+    });
+
+    it("calls #onSubmit with all fields filled", () => {});
+
     describe("when summary field is empty", () => {
       beforeEach(() => {
         fillOutRequiredFields();
       });
 
-      it('generates from description if provided', async () => {
+      it("generates from description if provided", async () => {
         const largeParagraph = Faker.lorem.words(SUMMARY_MAX_LENGTH); // more than enough
-        const paragraphSubstring = `${ largeParagraph.substring(0, SUMMARY_MAX_LENGTH) }...`;
+        const paragraphSubstring = `${largeParagraph.substring(
+          0,
+          SUMMARY_MAX_LENGTH
+        )}...`;
 
-        userEvent.type(screen.getByRole("textbox", { name: 'Description' }), largeParagraph);
+        userEvent.type(
+          screen.getByRole("textbox", { name: "Description" }),
+          largeParagraph
+        );
         userEvent.click(createButton);
 
-        await waitFor(() => expect(mockOnSubmit).toHaveBeenCalledWith(expect.objectContaining({ summary: paragraphSubstring })));
+        await waitFor(() =>
+          expect(mockOnSubmit).toHaveBeenCalledWith(
+            expect.objectContaining({ summary: paragraphSubstring })
+          )
+        );
       });
 
-      it('generates warning summary if no description', async () => {
+      it("generates warning summary if no description", async () => {
         userEvent.click(createButton);
 
-        await waitFor(() => expect(mockOnSubmit).toHaveBeenCalledWith(expect.objectContaining({ summary: 'No description.' })));
+        await waitFor(() =>
+          expect(mockOnSubmit).toHaveBeenCalledWith(
+            expect.objectContaining({ summary: "No description." })
+          )
+        );
       });
     });
-
   });
-
 });
 
 // interface FormInput {

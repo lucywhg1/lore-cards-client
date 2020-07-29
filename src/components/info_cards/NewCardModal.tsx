@@ -1,31 +1,47 @@
-import React from "react";
-import { Container } from "react-bootstrap";
+import React, { useState } from "react";
+import { Modal, Button } from "react-bootstrap";
 import { InfoCardInput } from "../../types/InfoCard";
 import InfoCardForm from "./form/InfoCardForm";
 
-const emptyFields: InfoCardInput = {
-  title: "",
-  subtitle: "",
-  category: {
-    id: -1, name: ""
-  },
-  summary: "",
-  description: "",
-  additionalSections: []
-};
-
 const NewCardModal: React.FC = () => {
+  const [show, setShow] = useState(false);
+
   const create = (data: InfoCardInput): void => {
     console.log("Creating card with " + JSON.stringify(data));
+    triggerModal();
+  };
+
+  const triggerModal = () => {
+    console.log("triggered");
+    setShow(!show);
   };
 
   return (
-    <Container className="mt-2 pl-0 pr-0 border border-dark">
-      <Container fluid className="bg-primary">
-        <h2 className="p-4 text-light">Create a New Info Card</h2>
-      </Container>
-      <InfoCardForm onSubmit={create} defaultValues={emptyFields} />
-    </Container>
+    <>
+      <Button variant="primary" onClick={triggerModal}>
+        New Info Card
+      </Button>
+
+      <Modal
+        show={show}
+        onHide={triggerModal}
+        animation={false}
+        backdrop="static"
+        size="lg"
+      >
+        <Modal.Header closeButton className="bg-primary">
+          <Modal.Title className="text-light">Create an Info Card</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <InfoCardForm onSubmit={create} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={triggerModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 };
 
