@@ -17,6 +17,7 @@
     "@types/react-router-bootstrap": "^0.24.5",
     "@types/react-router-dom": "^5.1.5",
     "@types/yup": "^0.29.3",
+    "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "bootstrap-icons": "^1.0.0-alpha5",
     "faker": "^4.1.0",
@@ -32,6 +33,7 @@
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-select": "^3.1.0",
     "typescript": "^3.9.6",
     "yup": "^0.29.1"
   },
@@ -58,6 +60,8 @@
   },
   "devDependencies": {
     "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-jest-dom": "^3.1.4",
+    "eslint-plugin-testing-library": "^3.3.2",
     "jest-environment-jsdom-sixteen": "^1.0.3"
   }
 }

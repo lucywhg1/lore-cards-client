@@ -2,9 +2,8 @@ import React from "react";
 
 import { Container, Button, Jumbotron } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import logo from "./logo.svg";
+import logo from "./assets/logo.svg";
 import NewCardModal from "./components/info_cards/NewCardModal";
-import InfoCardForm from "./components/info_cards/form/InfoCardForm";
 
 const Home: React.FC = () => {
   return (

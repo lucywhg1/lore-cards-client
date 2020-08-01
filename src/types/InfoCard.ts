@@ -9,7 +9,7 @@ interface InfoCard extends Entity {
   summary: string;
   tags?: string[];
   subtitle?: string;
-  avatarUrl?: string;
+  avatar?: string;
   relatedTo?: Section;
   linkedTo?: Section;
   additionalSections?: Section[];
@@ -22,6 +22,7 @@ export interface InfoCardInput {
   summary: string;
   description: string;
   additionalSections: Section[];
+  avatar?: string;
 }
 
 export default InfoCard;

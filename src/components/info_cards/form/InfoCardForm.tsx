@@ -1,7 +1,7 @@
 import React from "react";
 
 import * as yup from "yup";
-import { Form, Button, Container, Image, Col } from "react-bootstrap";
+import { Form, Button, Container, Col } from "react-bootstrap";
 import AdditionalSectionsInput from "./AdditionalSectionsInput";
 import CategorySelect from "./CategorySelect";
 import {
@@ -14,6 +14,7 @@ import Input from "../../form/Input";
 import { InfoCardInput } from "../../../types/InfoCard";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
+import ImageUpload from "../../form/ImageUpload";
 
 const validationSchema = yup.object().shape({
   title: yup.string().required().max(TITLE_MAX_LENGTH),
@@ -23,12 +24,14 @@ const validationSchema = yup.object().shape({
     name: yup.string(),
   }),
   summary: yup.string().notRequired().max(SUMMARY_MAX_LENGTH),
+  avatar: yup.string().notRequired().url(),
   description: yup.string().notRequired(),
   additionalSections: yup.array().notRequired().of(sectionSchema),
 });
 
 interface InfoCardFormProps {
   onSubmit: (data: InfoCardInput) => void;
+  onCancel: () => void;
   defaultValues?: InfoCardInput;
 }
 
@@ -40,12 +43,14 @@ const emptyFields: InfoCardInput = {
     name: "",
   },
   summary: "",
+  avatar: "",
   description: "",
   additionalSections: [],
 };
 
 const InfoCardForm: React.FC<InfoCardFormProps> = ({
   onSubmit,
+  onCancel,
   defaultValues = emptyFields,
 }) => {
   const formContext = useForm<InfoCardInput>({
@@ -115,13 +120,9 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
           </Form.Group>
         </Form.Row>
         <Form.Row>
-          <Form.Group as={Col} sm={4} controlId="formCardAvatar">
-            <Form.Label>Avatar</Form.Label>
-            <Form.File />
+          <Form.Group as={Col} controlId="cardAvatar">
+            <ImageUpload name="avatar" />
           </Form.Group>
-          <Col xs={2}>
-            <Image src="https://tinyurl.com/lorecardsimg" rounded fluid />
-          </Col>
           <Form.Group as={Col} controlId="cardSummary">
             <Input
               name="summary"
@@ -169,6 +170,9 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
         <Container className="mt-3 d-flex">
           <Button variant="primary" type="submit">
             Create
+          </Button>
+          <Button variant="danger" type="button" onClick={onCancel}>
+            Cancel
           </Button>
         </Container>
       </Form>

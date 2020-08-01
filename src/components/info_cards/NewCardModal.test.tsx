@@ -3,6 +3,8 @@ import NewCardModal from "./NewCardModal";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+jest.mock("./form/InfoCardForm");
+
 describe(NewCardModal, () => {
   beforeEach(() => {
     render(<NewCardModal />);
@@ -15,39 +17,29 @@ describe(NewCardModal, () => {
     ).toBeNull();
   });
 
-  it("shows modal with new card form on button click", async () => {
-    userEvent.click(screen.getByRole("button"));
-    await screen.findByRole("dialog");
-
-    expect(screen.getByRole("document")).toBeInTheDocument();
-    expect(screen.getByTestId("info-card-form")).toBeInTheDocument();
-  });
-
   describe("with the modal open", () => {
     beforeEach(async () => {
       userEvent.click(screen.getByRole("button"));
 
-      await waitFor(() => expect(screen.findByTestId("info-card-form"));
+      await waitFor(() =>
+        expect(screen.getByTestId("info-card-form")).toBeInTheDocument()
+      );
     });
 
-    it("closes when explicit Close button is clicked", async () => {
-      userEvent.click(screen.getAllByRole("button", { name: "Close" })[1]); // first is in-line
+    it("closes when Cancel button is clicked", async () => {
+      userEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
       await waitFor(() =>
         expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
       );
     });
 
-    it("closes when form Create button is clicked", async () => {
-      userEvent.click(screen.getAllByRole("button", { name: "Create" })[0]);
+    it("closes when form submitted with Create", async () => {
+      userEvent.click(screen.getByRole("button", { name: "Create" }));
 
       await waitFor(() =>
         expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
       );
     });
   });
-
-  /**
-   * Closes the modal on button close, and submit
-   */
 });

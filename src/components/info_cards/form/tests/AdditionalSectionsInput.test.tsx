@@ -1,10 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import AdditionalSectionsInput from "./AdditionalSectionsInput";
 import Faker from "faker";
-import { Section } from "../../../types";
-import { SectionFactory } from "../../../factories";
+import AdditionalSectionsInput from "../AdditionalSectionsInput";
+import { Section } from "../../../../types";
+import { SectionFactory } from "../../../../factories";
 
 const mockOnChange = jest.fn();
 

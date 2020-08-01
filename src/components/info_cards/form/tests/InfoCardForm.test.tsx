@@ -1,15 +1,24 @@
 import React from "react";
 
-import InfoCardForm from "./InfoCardForm";
+import InfoCardForm from "../InfoCardForm";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Faker from "faker";
-import { SUMMARY_MAX_LENGTH } from "./validations";
-import CategoryService from "../../../services/CategoryService";
-import { InfoCardInputFactory, CategoryFactory } from "../../../factories";
+import { SUMMARY_MAX_LENGTH } from "../validations";
+import { InfoCardInputFactory, CategoryFactory } from "../../../../factories";
+import CategoryService from "../../../../services/CategoryService";
+
+jest.mock("../../../services/CategoryService");
 
 const mockOnSubmit = jest.fn();
-jest.mock("../../../services/CategoryService");
+const mockOnCancel = jest.fn();
+
+export const fillOutRequiredFields = (title: string): void => {
+  userEvent.type(screen.getByRole("textbox", { name: "Title" }), title);
+  userEvent.selectOptions(screen.getByRole("combobox", { name: "Category" }), [
+    "0",
+  ]); // not from filledInputs
+};
 
 describe(InfoCardForm, () => {
   const mockCategories = CategoryFactory.buildList(2);
@@ -19,23 +28,15 @@ describe(InfoCardForm, () => {
     { transient: { filled: true } }
   );
 
-  const fillOutRequiredFields = () => {
-    const { title } = filledInputs;
-
-    userEvent.type(screen.getByRole("textbox", { name: "Title" }), title);
-    userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Category" }),
-      ["0"]
-    ); // not from filledInputs
-
-    return { title, category: mockCategories[0] };
-  };
-
   const renderComponent = async (
     defaultValues = emptyInputs
   ): Promise<void> => {
     render(
-      <InfoCardForm onSubmit={mockOnSubmit} defaultValues={defaultValues} />
+      <InfoCardForm
+        onSubmit={mockOnSubmit}
+        onCancel={mockOnCancel}
+        defaultValues={defaultValues}
+      />
     );
 
     await waitFor(() =>
@@ -79,7 +80,7 @@ describe(InfoCardForm, () => {
       renderComponent(filledInputs);
     });
 
-    fit("renders with default values", () => {
+    it("renders with default values", () => {
       expect(screen.getByDisplayValue(filledInputs.title)).toBeInTheDocument();
       expect(
         screen.getByDisplayValue(filledInputs.subtitle)
@@ -96,6 +97,14 @@ describe(InfoCardForm, () => {
     });
   });
 
+  it("calls #onCancel when button is clicked", () => {
+    renderComponent();
+
+    userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+
+    expect(mockOnCancel).toHaveBeenCalled();
+  });
+
   describe("Create button", () => {
     let createButton: HTMLElement;
 
@@ -105,12 +114,15 @@ describe(InfoCardForm, () => {
       createButton = screen.getByRole("button", { name: "Create" });
     });
 
-    fit("calls #onSubmit when required fields are filled", () => {
-      const requiredFormData = fillOutRequiredFields();
+    it("calls #onSubmit when required fields are filled", () => {
+      fillOutRequiredFields(filledInputs.title);
       userEvent.click(createButton);
 
       expect(mockOnSubmit).toHaveBeenCalledWith(
-        expect.objectContaining(requiredFormData)
+        expect.objectContaining({
+          title: filledInputs.title,
+          category: mockCategories[0],
+        })
       );
     });
 
@@ -118,7 +130,7 @@ describe(InfoCardForm, () => {
 
     describe("when summary field is empty", () => {
       beforeEach(() => {
-        fillOutRequiredFields();
+        fillOutRequiredFields(filledInputs.title);
       });
 
       it("generates from description if provided", async () => {

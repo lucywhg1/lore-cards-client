@@ -1,10 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import CategorySelect from "./CategorySelect";
-import Category from "../../../types/Category";
-import CategoryService from "../../../services/CategoryService";
-import { CategoryFactory } from "../../../factories";
+import CategorySelect from "../CategorySelect";
+import { Category } from "../../../../types";
+import { CategoryFactory } from "../../../../factories";
+import CategoryService from "../../../../services/CategoryService";
 
 const mockOnChange = jest.fn();
 jest.mock("../../../services/CategoryService");
@@ -14,11 +14,15 @@ describe(CategorySelect, () => {
   const availableCategories = CategoryFactory.buildList(2);
 
   beforeAll(() => {
-    CategoryService.prototype.getAll = jest.fn().mockResolvedValue(availableCategories);
+    CategoryService.prototype.getAll = jest
+      .fn()
+      .mockResolvedValue(availableCategories);
   });
 
   beforeEach(async () => {
-    render(<CategorySelect category={unselectedCategory} onChange={mockOnChange} />);
+    render(
+      <CategorySelect category={unselectedCategory} onChange={mockOnChange} />
+    );
     await screen.findByText(availableCategories[0].name);
   });
 

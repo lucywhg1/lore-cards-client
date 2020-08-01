@@ -2,29 +2,35 @@ import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { InfoCardInput } from "../../types/InfoCard";
 import InfoCardForm from "./form/InfoCardForm";
+import InfoCardService from "../../services/InfoCardService";
 
 const NewCardModal: React.FC = () => {
   const [show, setShow] = useState(false);
+  const infoCardService = new InfoCardService();
 
   const create = (data: InfoCardInput): void => {
-    console.log("Creating card with " + JSON.stringify(data));
-    triggerModal();
+    infoCardService.post(data);
+    setShow(false);
   };
 
-  const triggerModal = () => {
-    console.log("triggered");
-    setShow(!show);
+  const cancel = () => {
+    setShow(false);
   };
 
   return (
     <>
-      <Button variant="primary" onClick={triggerModal}>
+      <Button
+        variant="primary"
+        onClick={() => {
+          setShow(true);
+        }}
+      >
         New Info Card
       </Button>
 
       <Modal
         show={show}
-        onHide={triggerModal}
+        onHide={cancel}
         animation={false}
         backdrop="static"
         size="lg"
@@ -33,13 +39,8 @@ const NewCardModal: React.FC = () => {
           <Modal.Title className="text-light">Create an Info Card</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <InfoCardForm onSubmit={create} />
+          <InfoCardForm onSubmit={create} onCancel={cancel} />
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={triggerModal}>
-            Close
-          </Button>
-        </Modal.Footer>
       </Modal>
     </>
   );
