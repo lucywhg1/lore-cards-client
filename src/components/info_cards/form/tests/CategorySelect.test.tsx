@@ -7,7 +7,7 @@ import { CategoryFactory } from "../../../../factories";
 import CategoryService from "../../../../services/CategoryService";
 
 const mockOnChange = jest.fn();
-jest.mock("../../../services/CategoryService");
+jest.mock("../../../../services/CategoryService");
 
 describe(CategorySelect, () => {
   const unselectedCategory: Category = { id: -1, name: "" };

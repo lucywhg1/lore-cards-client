@@ -2,28 +2,29 @@ import React from "react";
 import Input from "../Input";
 import { render, screen, fireEvent } from "@testing-library/react";
 import MockHookForm, { MockHookFormProps } from "./MockHookForm";
-import userEvent from "@testing-library/user-event";
 import * as yup from "yup";
-
+import { fillOutFieldByElement } from "./helpers";
 
 describe(Input, () => {
   let inputComponent: Element;
 
-  const renderComponent = ({ ...formProps }: Partial<MockHookFormProps>): void => {
-    render(<MockHookForm name='input' {...formProps} />);
+  const renderComponent = ({
+    ...formProps
+  }: Partial<MockHookFormProps>): void => {
+    render(<MockHookForm name="input" {...formProps} />);
 
     inputComponent = screen.getByRole("textbox");
   };
 
   it("displays the input with default values", () => {
-    renderComponent({ defaultValue: 'default' });
+    renderComponent({ defaultValue: "default" });
 
     expect(screen.getByLabelText("Input")).toBeInTheDocument();
     expect(screen.getByDisplayValue("default")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Enter input")).toBeInTheDocument();
 
-    expect(screen.getByTestId("inputSubtext")).toBeEmpty();
-    expect(screen.getByTestId("inputErrors")).toBeEmpty();
+    expect(screen.queryByTestId("inputSubtext")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("inputErrors")).not.toBeInTheDocument();
   });
 
   it("displays input with overridden subtext and placeholder", () => {
@@ -36,7 +37,7 @@ describe(Input, () => {
   it("updates input when user types", () => {
     renderComponent({});
 
-    userEvent.type(inputComponent, "Hey there!");
+    fillOutFieldByElement(inputComponent, "Hey there!");
 
     expect(screen.getByDisplayValue("Hey there!")).toBeInTheDocument();
   });
@@ -45,35 +46,45 @@ describe(Input, () => {
     const invalidOnLength = { input: yup.string().max(2) };
 
     it("triggers with #validationMode onChange", async () => {
-      renderComponent({ validationMode: "onChange", "validationSchema": invalidOnLength });
+      renderComponent({
+        validationMode: "onChange",
+        validationSchema: invalidOnLength,
+      });
 
-      userEvent.type(inputComponent, "Hey there!");
+      fillOutFieldByElement(inputComponent, "Hey there!");
 
-      expect(await screen.findByText("input must be at most 2 characters")).toBeInTheDocument();
+      expect(
+        await screen.findByText("input must be at most 2 characters")
+      ).toBeInTheDocument();
     });
 
     it("triggers with #validationMode onBlur", async () => {
-      renderComponent({ validationMode: "onBlur", "validationSchema": invalidOnLength });
+      renderComponent({
+        validationMode: "onBlur",
+        validationSchema: invalidOnLength,
+      });
 
-      userEvent.type(inputComponent, "Hey there!");
-      expect(screen.getByTestId("inputErrors")).toBeEmpty(); // still focused
+      fillOutFieldByElement(inputComponent, "Hey there!");
+      expect(screen.queryByTestId("inputErrors")).not.toBeInTheDocument(); // still focused
 
       fireEvent.blur(inputComponent);
 
-      expect(await screen.findByText("input must be at most 2 characters")).toBeInTheDocument();
+      expect(
+        await screen.findByText("input must be at most 2 characters")
+      ).toBeInTheDocument();
     });
   });
 
   describe("when text area", () => {
     it("displays input as textarea with default values", () => {
-      renderComponent({ as: 'textarea' });
+      renderComponent({ as: "textarea" });
 
       expect(screen.getByRole("textbox")).toBeInTheDocument();
       expect(screen.getByRole("textbox")).not.toHaveAttribute("rows");
     });
 
     it("displays input as textarea with rows", () => {
-      renderComponent({ 'as': 'textarea', 'rows': 2 });
+      renderComponent({ as: "textarea", rows: 2 });
 
       expect(screen.getByRole("textbox")).toHaveAttribute("rows", "2");
     });

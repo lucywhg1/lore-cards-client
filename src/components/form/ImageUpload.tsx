@@ -1,58 +1,76 @@
-import React, { useState } from "react";
-import { startCase, get } from "lodash";
-import { Form, Image } from "react-bootstrap";
-import { useFormContext } from "react-hook-form";
+import React, { useState, ChangeEvent } from "react";
+import { startCase } from "lodash";
+import { Form, Image, Col, Row } from "react-bootstrap";
 
-const PLACEHOLDER_URL =
+export const PLACEHOLDER_SRC =
   "https://www.pngkit.com/png/detail/1007-10071948_woman-avatar-female-profile-picture-placeholder.png";
+
+interface Preview {
+  label: string;
+  url: string;
+}
 
 interface ImageUploadProps {
   name: string;
-  required?: boolean;
-  placeholder?: string;
+  onChange: (updatedFile: File) => void;
   subtext?: string;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
   name,
-  placeholder,
+  onChange,
   subtext,
-  required = false,
 }) => {
-  const [preview, setPreview] = useState<string>();
+  const empty: Preview = {
+    label: `upload ${name}`,
+    url: "",
+  };
+  const [preview, setPreview] = useState<Preview>(empty);
 
-  const { register, trigger, errors } = useFormContext();
-  const inputErrors = get(errors, name);
+  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    if (preview.url) {
+      URL.revokeObjectURL(preview.url); // release previous data
+    }
 
-  const handleBlur = (event: React.FocusEvent<HTMLInputElement>): void => {
-    trigger(name); // call validation
-    setPreview(event.target.value);
+    if (event.target.files) {
+      const file = event.target.files[0];
+
+      setPreview({ label: file.name, url: URL.createObjectURL(file) });
+      onChange(file);
+    } else {
+      setPreview(empty);
+    }
   };
 
   return (
     <>
-      <Form.Label>{startCase(name)}</Form.Label>
-      <Form.Control
-        className={required ? "border border-primary" : undefined}
-        name={name}
-        placeholder={placeholder || `Enter ${name} URL`}
-        ref={register}
-        onBlur={handleBlur}
-        isInvalid={!!inputErrors}
-      />
-      <Form.Text className="text-muted" data-testid="imageUploadSubtext">
-        {subtext}
-      </Form.Text>
-      <Form.Control.Feedback type="invalid" data-testid="imageUploadErrors">
-        {inputErrors?.message}
-      </Form.Control.Feedback>
-      <Image
-        src={preview || PLACEHOLDER_URL}
-        alt="avatar preview"
-        onError={() => setPreview("")}
-        className="w-25"
-        thumbnail
-      />
+      <Form.Label htmlFor={name}>{startCase(name)}</Form.Label>
+      <Row>
+        <Col>
+          <Form.File
+            name={name}
+            id={name}
+            label={preview.label}
+            onChange={handleChange}
+            className="overflow-hidden"
+            custom
+          />
+          {subtext && (
+            <Form.Text className="text-muted" data-testid="imageUploadSubtext">
+              {subtext}
+            </Form.Text>
+          )}
+        </Col>
+        <Col>
+          <Image
+            src={preview.url || PLACEHOLDER_SRC}
+            alt={`${name} preview`}
+            className="h-75"
+            fluid
+            thumbnail
+          />
+        </Col>
+      </Row>
     </>
   );
 };

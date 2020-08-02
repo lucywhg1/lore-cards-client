@@ -14,7 +14,7 @@ describe(NewCardModal, () => {
     expect(screen.getByRole("button")).toBeInTheDocument();
     expect(
       screen.queryByRole("heading", { name: "Create an Info Card" })
-    ).toBeNull();
+    ).not.toBeInTheDocument();
   });
 
   describe("with the modal open", () => {

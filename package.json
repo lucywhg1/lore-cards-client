@@ -4,10 +4,10 @@
   "private": true,
   "dependencies": {
     "@hookform/resolvers": "^0.1.0",
-    "@testing-library/dom": "^7.20.0",
+    "@testing-library/dom": "^7.21.7",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^10.4.5",
-    "@testing-library/user-event": "^7.1.2",
+    "@testing-library/user-event": "^12.1.0",
     "@types/faker": "^4.1.12",
     "@types/jest": "^24.0.0",
     "@types/lodash": "^4.14.158",
@@ -63,5 +63,8 @@
     "eslint-plugin-jest-dom": "^3.1.4",
     "eslint-plugin-testing-library": "^3.3.2",
     "jest-environment-jsdom-sixteen": "^1.0.3"
+  },
+  "jest": {
+    "clearMocks": true
   }
 }

@@ -7,14 +7,15 @@ import Faker from "faker";
 import { SUMMARY_MAX_LENGTH } from "../validations";
 import { InfoCardInputFactory, CategoryFactory } from "../../../../factories";
 import CategoryService from "../../../../services/CategoryService";
+import { fillOutFieldByElement } from "../../../form/tests/helpers";
 
-jest.mock("../../../services/CategoryService");
+jest.mock("../../../../services/CategoryService");
 
 const mockOnSubmit = jest.fn();
 const mockOnCancel = jest.fn();
 
 export const fillOutRequiredFields = (title: string): void => {
-  userEvent.type(screen.getByRole("textbox", { name: "Title" }), title);
+  fillOutFieldByElement(screen.getByRole("textbox", { name: "Title" }), title);
   userEvent.selectOptions(screen.getByRole("combobox", { name: "Category" }), [
     "0",
   ]); // not from filledInputs
@@ -140,7 +141,7 @@ describe(InfoCardForm, () => {
           SUMMARY_MAX_LENGTH
         )}...`;
 
-        userEvent.type(
+        fillOutFieldByElement(
           screen.getByRole("textbox", { name: "Description" }),
           largeParagraph
         );

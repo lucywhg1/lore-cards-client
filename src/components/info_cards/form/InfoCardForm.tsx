@@ -10,11 +10,10 @@ import {
   SUMMARY_MAX_LENGTH,
   sectionSchema,
 } from "./validations";
-import Input from "../../form/Input";
 import { InfoCardInput } from "../../../types/InfoCard";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
-import ImageUpload from "../../form/ImageUpload";
+import { Input, ImageUpload } from "../../form";
 
 const validationSchema = yup.object().shape({
   title: yup.string().required().max(TITLE_MAX_LENGTH),
@@ -24,7 +23,6 @@ const validationSchema = yup.object().shape({
     name: yup.string(),
   }),
   summary: yup.string().notRequired().max(SUMMARY_MAX_LENGTH),
-  avatar: yup.string().notRequired().url(),
   description: yup.string().notRequired(),
   additionalSections: yup.array().notRequired().of(sectionSchema),
 });
@@ -43,7 +41,7 @@ const emptyFields: InfoCardInput = {
     name: "",
   },
   summary: "",
-  avatar: "",
+  avatar: null,
   description: "",
   additionalSections: [],
 };
@@ -120,8 +118,17 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
           </Form.Group>
         </Form.Row>
         <Form.Row>
-          <Form.Group as={Col} controlId="cardAvatar">
-            <ImageUpload name="avatar" />
+          <Form.Group as={Col}>
+            <Controller
+              name="avatar"
+              control={control}
+              render={({ onChange }) => (
+                <ImageUpload
+                  name="avatar"
+                  onChange={(image) => onChange(image)}
+                />
+              )}
+            />
           </Form.Group>
           <Form.Group as={Col} controlId="cardSummary">
             <Input
@@ -168,7 +175,7 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
         </Form.Row>
         <hr />
         <Container className="mt-3 d-flex">
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" className="mr-auto">
             Create
           </Button>
           <Button variant="danger" type="button" onClick={onCancel}>

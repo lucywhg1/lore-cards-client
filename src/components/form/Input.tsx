@@ -50,12 +50,16 @@ const Input: React.FC<InputProps> = ({
         ref={register}
         isInvalid={!!inputErrors}
       />
-      <Form.Text className="text-muted" data-testid="inputSubtext">
-        {subtext}
-      </Form.Text>
-      <Form.Control.Feedback type="invalid" data-testid="inputErrors">
-        {inputErrors?.message}
-      </Form.Control.Feedback>
+      {subtext && (
+        <Form.Text className="text-muted" data-testid="inputSubtext">
+          {subtext}
+        </Form.Text>
+      )}
+      {inputErrors && (
+        <Form.Control.Feedback type="invalid" data-testid="inputErrors">
+          {inputErrors.message}
+        </Form.Control.Feedback>
+      )}
     </>
   );
 };

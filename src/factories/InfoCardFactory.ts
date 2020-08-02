@@ -2,6 +2,7 @@ import { Factory } from "fishery";
 import Faker from "faker";
 import { InfoCardInput } from "../types/InfoCard";
 import SectionFactory from "./SectionFactory";
+import ImageFactory from "./FileFactory";
 
 interface InputTransientParams {
   filled?: boolean;
@@ -10,13 +11,14 @@ interface InputTransientParams {
 export const InfoCardInputFactory = Factory.define<
   InfoCardInput,
   InputTransientParams
->(({ params, transientParams }) => {
+>(({ transientParams }) => {
   const { filled = false } = transientParams;
 
   if (!filled) {
     return {
       title: "",
       category: { id: -1, name: "Choose..." },
+      avatar: null,
       subtitle: "",
       summary: "",
       description: "",
@@ -29,6 +31,7 @@ export const InfoCardInputFactory = Factory.define<
         id: -1,
         name: "",
       },
+      avatar: ImageFactory.build(),
       subtitle: Faker.company.catchPhraseDescriptor(),
       summary: Faker.lorem.words(10),
       description: Faker.lorem.paragraphs(2),

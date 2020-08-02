@@ -1,10 +1,11 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Faker from "faker";
 import AdditionalSectionsInput from "../AdditionalSectionsInput";
 import { Section } from "../../../../types";
 import { SectionFactory } from "../../../../factories";
+import { fillOutFieldByElement } from "../../../form/tests/helpers";
 
 const mockOnChange = jest.fn();
 
@@ -68,9 +69,9 @@ describe(AdditionalSectionsInput, () => {
       const heading = Faker.company.bsNoun();
       const headingInput = screen.getByPlaceholderText(placeholder.heading);
 
-      userEvent.type(headingInput, heading);
+      fillOutFieldByElement(headingInput, heading);
 
-      expect(mockOnChange).toHaveBeenCalledWith([
+      expect(mockOnChange).toHaveBeenLastCalledWith([
         { ...loadedSection, heading },
       ]);
     });
@@ -79,7 +80,7 @@ describe(AdditionalSectionsInput, () => {
       const body = Faker.lorem.paragraph();
       const bodyInput = screen.getByPlaceholderText(placeholder.body);
 
-      userEvent.type(bodyInput, body);
+      fillOutFieldByElement(bodyInput, body);
 
       expect(mockOnChange).toHaveBeenCalledWith([{ ...loadedSection, body }]);
     });

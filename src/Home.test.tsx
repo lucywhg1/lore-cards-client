@@ -13,9 +13,9 @@ describe(Home, () => {
     );
   });
 
-  it("displays the welcome header", () => {
+  it("displays the welcome header", async () => {
     expect(
-      screen.getByText("Welcome to the landing page!")
+      await screen.findByText("Welcome to the landing page!")
     ).toBeInTheDocument();
   });
 });
