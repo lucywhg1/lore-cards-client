@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
-import { OptionsType } from 'react-select';
+import { OptionsType, StylesConfig } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
 import ApiService from '../../../services/ApiService';
-import TagBase, { TagInput } from '../../../types/Tag';
+import TagBase, { TagInput, isTagInput } from '../../../types/Tag';
+import { primary, warning } from '../../../theme';
 
 type TagOption = {
   label: string;
@@ -18,6 +19,17 @@ const getAsOptions = (tags: TagBase[]): OptionsType<TagOption> => {
     value: `option-${tag.name}`,
     data: tag
   }));
+};
+
+const optionStyle: StylesConfig = {
+  multiValue: (provided, { data }) => {
+    const color = isTagInput(data.data) ? warning : primary; // custom color for pending tag creation
+    return {
+      ...provided,
+      backgroundColor: color.alpha(0.3).css(),
+      color: color.css()
+    };
+  }
 };
 
 interface TagMultiSelectProps {
@@ -65,6 +77,7 @@ const TagMultiSelect: React.FC<TagMultiSelectProps> = ({
         formatCreateLabel={(inputValue) =>
           `create "${inputValue.toLowerCase()}"`
         }
+        styles={optionStyle}
       />
     </>
   );
