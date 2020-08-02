@@ -1,20 +1,15 @@
-import axios from "axios";
+import HttpClient from './HttpClient';
+import { Tag, Category } from '../types';
 
-class ApiService {
-  private path: string;
-
-  constructor(routePath: string) {
-    this.path = `http://localhost:3000${routePath}`;
+class ApiService extends HttpClient {
+  public constructor() {
+    super();
   }
 
-  protected async post(data: Record<string, any>) {
-    try {
-      const response = await axios.post(this.path, data);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  public getCategories = async () =>
+    await this.instance.get<Category[]>('/categories');
+
+  public getTags = async () => await this.instance.get<Tag[]>('/tags');
 }
 
 export default ApiService;

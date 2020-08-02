@@ -1,13 +1,14 @@
 import Entity from "./Entity";
 
-interface Tag extends Entity {
-  name: string;
-}
-
 export interface TagInput {
   name: string;
 }
 
-export type TagBase = Tag | TagInput;
+type Tag = Entity & TagInput;
 
-export default Tag;
+/**
+ * Type that includes created and pending tags.
+ */
+type TagBase = Tag | TagInput;
+
+export default TagBase;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { Form, Col } from "react-bootstrap";
 import Category from "../../../types/Category";
-import CategoryService from "../../../services/CategoryService";
+import ApiService from "../../../services/ApiService";
 import { DeepMap } from "react-hook-form/dist/types/utils";
 import { FieldError } from "react-hook-form";
 
@@ -22,8 +22,8 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const categoryService = new CategoryService();
-      setAvailableCategories(await categoryService.getAll());
+      const apiService = new ApiService();
+      setAvailableCategories(await apiService.getCategories());
     };
 
     fetchCategories();

@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from "react";
-import CreatableSelect from "react-select/creatable";
-import { OptionsType } from "react-select";
-import { TagInput, TagBase } from "../../../types/Tag";
-import { TagFactory } from "../../../factories";
+import React, { useState, useEffect } from 'react';
+import CreatableSelect from 'react-select/creatable';
+import { OptionsType } from 'react-select';
+import TagBase, { TagInput } from '../../../types/Tag';
+import ApiService from '../../../services/ApiService';
 
 type TagOption = {
   label: string;
-  value: TagBase;
+  value: string;
+  data: TagBase;
 };
 
 const getAsOptions = (tags: TagBase[]): OptionsType<TagOption> => {
   return tags.map((tag) => ({
-    label: tag.name.toLowerCase(),
-    value: tag,
+    label: tag.name,
+    value: `option-${tag.name}`,
+    data: tag
   }));
 };
 
@@ -23,20 +25,23 @@ interface TagMultiSelectProps {
 
 const TagMultiSelect: React.FC<TagMultiSelectProps> = ({
   onChange,
-  selected,
+  selected
 }): JSX.Element => {
   const [loadedTags, setLoadedTags] = useState<TagBase[]>([]);
 
   useEffect(() => {
     const fetchTags = async (): Promise<void> => {
-      setLoadedTags(TagFactory.buildList(4));
+      const apiService = new ApiService();
+
+      setLoadedTags(await apiService.getTags());
     };
 
     fetchTags();
   }, []);
 
   const handleChange = (newOptions: OptionsType<TagOption> | null): void => {
-    onChange(newOptions?.map((option) => option.value) || []);
+    console.log('changed');
+    onChange(newOptions?.map((option) => option.data) || []);
   };
 
   const handleCreate = (inputValue: string): void => {

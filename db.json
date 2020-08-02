@@ -1,3 +1,13 @@
 {
-  "cards": []
+  "cards": [],
+  "categories": [
+    { "id": 0, "name": "Religion" },
+    { "id": 1, "name": "Magic" },
+    { "id": 2, "name": "Rumors" }
+  ],
+  "tags": [
+    { "id": 0, "name": "gold" },
+    { "id": 1, "name": "adamantine" },
+    { "id": 2, "name": "wood" }
+  ]
 }

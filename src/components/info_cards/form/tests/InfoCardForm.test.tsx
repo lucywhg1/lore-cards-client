@@ -6,10 +6,10 @@ import userEvent from "@testing-library/user-event";
 import Faker from "faker";
 import { SUMMARY_MAX_LENGTH } from "../validations";
 import { InfoCardInputFactory, CategoryFactory } from "../../../../factories";
-import CategoryService from "../../../../services/CategoryService";
+import ApiService from "../../../../services/ApiService";
 import { fillOutFieldByElement } from "../../../form/tests/helpers";
 
-jest.mock("../../../../services/CategoryService");
+jest.mock("../../../../services/ApiService");
 
 const mockOnSubmit = jest.fn();
 const mockOnCancel = jest.fn();
@@ -46,7 +46,7 @@ describe(InfoCardForm, () => {
   };
 
   beforeAll(() => {
-    CategoryService.prototype.getAll = jest
+    ApiService.prototype.getCategories = jest
       .fn()
       .mockResolvedValue(mockCategories);
   });

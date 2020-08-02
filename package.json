@@ -42,7 +42,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "json-server": "json-server --watch db.json",
+    "dev": "concurrently \"yarn start\" \"yarn json-server\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -60,10 +62,12 @@
     ]
   },
   "devDependencies": {
+    "concurrently": "^5.2.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-jest-dom": "^3.1.4",
     "eslint-plugin-testing-library": "^3.3.2",
-    "jest-environment-jsdom-sixteen": "^1.0.3"
+    "jest-environment-jsdom-sixteen": "^1.0.3",
+    "react-select-event": "^5.0.0"
   },
   "jest": {
     "clearMocks": true

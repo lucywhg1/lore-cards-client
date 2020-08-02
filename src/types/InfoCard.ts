@@ -1,7 +1,8 @@
 import Entity from "./Entity";
 import Section from "./Section";
 import Category from "./Category";
-import Tag, { TagBase } from "./Tag";
+import { Tag } from ".";
+import TagBase from "./Tag";
 
 interface InfoCard extends Entity {
   title: string;
