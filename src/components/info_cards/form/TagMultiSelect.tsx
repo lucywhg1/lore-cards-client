@@ -17,7 +17,7 @@ const getAsOptions = (tags: TagBase[]): OptionsType<TagOption> => {
 };
 
 interface TagMultiSelectProps {
-  onChange: (selectedTags: TagBase[]) => void;
+  onChange: (selected: TagBase[]) => void;
   selected: TagBase[];
 }
 
