@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { InfoCardInput } from "../../types/InfoCard";
 import InfoCardForm from "./form/InfoCardForm";
-import InfoCardService from "../../services/InfoCardService";
 
 const NewCardModal: React.FC = () => {
   const [show, setShow] = useState(false);
-  const infoCardService = new InfoCardService();
 
   const create = (data: InfoCardInput): void => {
-    infoCardService.post(data);
     setShow(false);
   };
 

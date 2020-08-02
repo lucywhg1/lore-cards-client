@@ -7,7 +7,7 @@ import { FieldError } from "react-hook-form";
 
 interface CategorySelectProps {
   category?: Category;
-  onChange: (selectedCategory: Category) => void;
+  onChange: (selectedValue: Category) => void;
   errors?: DeepMap<Category, FieldError>;
 }
 

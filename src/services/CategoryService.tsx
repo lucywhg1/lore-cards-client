@@ -14,5 +14,5 @@ export default class CategoryService {
     //   return resp.json;
     // });
     return CATEGORIES;
-  };
+  }
 }

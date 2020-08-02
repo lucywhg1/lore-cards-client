@@ -7,7 +7,7 @@ import { FieldError } from "react-hook-form";
 
 interface additionalSectionsInputProps {
   sections?: Section[];
-  onChange: (updatedSections: Section[]) => void;
+  onChange: (updatedValues: Section[]) => void;
   errors?: (DeepMap<Section, FieldError> | undefined)[];
 }
 

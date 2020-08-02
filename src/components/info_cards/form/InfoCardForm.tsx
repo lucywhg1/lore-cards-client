@@ -14,6 +14,7 @@ import { InfoCardInput } from "../../../types/InfoCard";
 import { useForm, FormProvider, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers";
 import { Input, ImageUpload } from "../../form";
+import TagMultiSelect from "./TagMultiSelect";
 
 const validationSchema = yup.object().shape({
   title: yup.string().required().max(TITLE_MAX_LENGTH),
@@ -40,6 +41,7 @@ const emptyFields: InfoCardInput = {
     id: -1,
     name: "",
   },
+  tags: [],
   summary: "",
   avatar: null,
   description: "",
@@ -114,7 +116,16 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
           </Form.Group>
           <Form.Group as={Col} controlId="formCardTags">
             <Form.Label>Tags</Form.Label>
-            <Form.Control type="text" placeholder="UNIMPLEMENTED" />
+            <Controller
+              name="tags"
+              control={control}
+              render={({ value, onChange }) => (
+                <TagMultiSelect
+                  onChange={(tags) => onChange(tags)}
+                  selected={value}
+                />
+              )}
+            />
           </Form.Group>
         </Form.Row>
         <Form.Row>
