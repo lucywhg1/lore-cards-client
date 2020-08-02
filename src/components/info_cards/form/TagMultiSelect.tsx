@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import CreatableSelect from 'react-select/creatable';
+import React, { useEffect, useState } from 'react';
+import { Form } from 'react-bootstrap';
 import { OptionsType } from 'react-select';
-import TagBase, { TagInput } from '../../../types/Tag';
+import CreatableSelect from 'react-select/creatable';
+
 import ApiService from '../../../services/ApiService';
+import TagBase, { TagInput } from '../../../types/Tag';
 
 type TagOption = {
   label: string;
@@ -40,7 +42,6 @@ const TagMultiSelect: React.FC<TagMultiSelectProps> = ({
   }, []);
 
   const handleChange = (newOptions: OptionsType<TagOption> | null): void => {
-    console.log('changed');
     onChange(newOptions?.map((option) => option.data) || []);
   };
 
@@ -51,17 +52,21 @@ const TagMultiSelect: React.FC<TagMultiSelectProps> = ({
   };
 
   return (
-    <CreatableSelect
-      isMulti
-      isClearable
-      options={getAsOptions(loadedTags)}
-      value={getAsOptions(selected)}
-      onCreateOption={handleCreate}
-      onChange={(newOptions) =>
-        handleChange(newOptions as OptionsType<TagOption>)
-      }
-      formatCreateLabel={(inputValue) => `create "${inputValue.toLowerCase()}"`}
-    />
+    <>
+      <Form.Label>Tags</Form.Label>
+      <CreatableSelect
+        isMulti
+        options={getAsOptions(loadedTags)}
+        value={getAsOptions(selected)}
+        onCreateOption={handleCreate}
+        onChange={(newOptions) =>
+          handleChange(newOptions as OptionsType<TagOption>)
+        }
+        formatCreateLabel={(inputValue) =>
+          `create "${inputValue.toLowerCase()}"`
+        }
+      />
+    </>
   );
 };
 

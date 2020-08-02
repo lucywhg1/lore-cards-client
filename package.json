@@ -65,7 +65,7 @@
     "concurrently": "^5.2.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-jest-dom": "^3.1.4",
-    "eslint-plugin-testing-library": "^3.3.2",
+    "eslint-plugin-testing-library": "^3.4.0",
     "jest-environment-jsdom-sixteen": "^1.0.3",
     "react-select-event": "^5.0.0"
   },

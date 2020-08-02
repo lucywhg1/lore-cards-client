@@ -1,9 +1,9 @@
-import React, { ChangeEvent } from "react";
-import { Form, Button, Col, Row } from "react-bootstrap";
-import { PlusSquare, DashSquare } from "react-bootstrap-icons";
-import Section from "../../../types/Section";
-import { DeepMap } from "react-hook-form/dist/types/utils";
-import { FieldError } from "react-hook-form";
+import React, { ChangeEvent } from 'react';
+import { Form, Button, Col } from 'react-bootstrap';
+import { PlusSquare, DashSquare } from 'react-bootstrap-icons';
+import Section from '../../../types/Section';
+import { DeepMap } from 'react-hook-form/dist/types/utils';
+import { FieldError } from 'react-hook-form';
 
 interface additionalSectionsInputProps {
   sections?: Section[];
@@ -14,7 +14,7 @@ interface additionalSectionsInputProps {
 const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({
   sections = [],
   onChange,
-  errors,
+  errors
 }): JSX.Element => {
   const updateSection = (
     index: number,
@@ -32,7 +32,7 @@ const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({
   };
 
   const addSection = (): void => {
-    onChange(sections.concat({ heading: "", body: "" }));
+    onChange(sections.concat({ heading: '', body: '' }));
   };
 
   const removeSection = (index: number): void => {
@@ -41,32 +41,34 @@ const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({
 
   const mapSectionsToInputs = (): JSX.Element => {
     let sectionInputs: JSX.Element[] = [];
+
     sections.forEach((section, index) => {
       const sectionErrors =
-        errors && errors.length >= index + 1 ? errors[index] : undefined;
+        errors && errors.length >= index + 1 ? errors[index] : undefined; // retrieve nested
+
       sectionInputs.push(
         <div key={`section-${index}`}>
           <Form.Row>
             <Form.Group as={Col} controlId={`section-${index}-heading`}>
               <Form.Control
-                name="heading"
-                className="border border-primary"
-                type="text"
-                placeholder="Add a section heading..."
+                name='heading'
+                className='border border-primary'
+                type='text'
+                placeholder='Add a section heading...'
                 value={section.heading}
                 onChange={(event) => updateSection(index, event as any)}
                 isInvalid={!!sectionErrors?.heading}
               />
-              <Form.Control.Feedback type="invalid">
+              <Form.Control.Feedback type='invalid'>
                 {sectionErrors?.heading?.message}
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group as={Col} controlId={`section-${index}-remove-button`}>
               <Button
-                variant="outline-danger"
-                size="sm"
-                type="button"
-                title="Remove section"
+                variant='outline-danger'
+                size='sm'
+                type='button'
+                title='Remove section'
                 onClick={() => removeSection(index)}
               >
                 <DashSquare />
@@ -76,16 +78,16 @@ const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({
           <Form.Row>
             <Form.Group as={Col} controlId={`section-${index}-body`}>
               <Form.Control
-                name="body"
-                as="textarea"
+                name='body'
+                as='textarea'
                 rows={4}
                 value={section.body}
-                placeholder="...and a body."
+                placeholder='...and a body.'
                 onChange={(event) => updateSection(index, event as any)}
                 isInvalid={!!sectionErrors?.body}
               />
             </Form.Group>
-            <Form.Control.Feedback type="invalid">
+            <Form.Control.Feedback type='invalid'>
               {sectionErrors?.body?.message}
             </Form.Control.Feedback>
           </Form.Row>
@@ -99,19 +101,15 @@ const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({
   return (
     <>
       {mapSectionsToInputs()}
-      <Row className="mt-2">
-        <Col>
-          <Button
-            variant="outline-secondary"
-            size="sm"
-            type="button"
-            onClick={addSection}
-          >
-            <PlusSquare className="mr-2" />
-            Add Section
-          </Button>
-        </Col>
-      </Row>
+      <Button
+        variant='outline-secondary'
+        size='sm'
+        type='button'
+        onClick={addSection}
+      >
+        <PlusSquare className='mr-2' />
+        Add Section
+      </Button>
     </>
   );
 };

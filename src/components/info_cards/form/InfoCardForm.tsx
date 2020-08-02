@@ -1,31 +1,32 @@
-import React from "react";
+import React from 'react';
+import { Button, Col, Container, Form } from 'react-bootstrap';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
+import * as yup from 'yup';
 
-import * as yup from "yup";
-import { Form, Button, Container, Col } from "react-bootstrap";
-import AdditionalSectionsInput from "./AdditionalSectionsInput";
-import CategorySelect from "./CategorySelect";
+import { yupResolver } from '@hookform/resolvers';
+
+import { InfoCardInput } from '../../../types/InfoCard';
+import { ImageUpload, Input } from '../../form';
+import AdditionalSectionsInput from './AdditionalSectionsInput';
+import CategorySelect from './CategorySelect';
+import TagMultiSelect from './TagMultiSelect';
 import {
-  TITLE_MAX_LENGTH,
+  sectionSchema,
   SUBTITLE_MAX_LENGTH,
   SUMMARY_MAX_LENGTH,
-  sectionSchema,
-} from "./validations";
-import { InfoCardInput } from "../../../types/InfoCard";
-import { useForm, FormProvider, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers";
-import { Input, ImageUpload } from "../../form";
-import TagMultiSelect from "./TagMultiSelect";
+  TITLE_MAX_LENGTH
+} from './validations';
 
 const validationSchema = yup.object().shape({
   title: yup.string().required().max(TITLE_MAX_LENGTH),
   subtitle: yup.string().notRequired().max(SUBTITLE_MAX_LENGTH),
   category: yup.object().shape({
-    id: yup.number().min(0, "category is a required field"),
-    name: yup.string(),
+    id: yup.number().min(0, 'category is a required field'),
+    name: yup.string()
   }),
   summary: yup.string().notRequired().max(SUMMARY_MAX_LENGTH),
   description: yup.string().notRequired(),
-  additionalSections: yup.array().notRequired().of(sectionSchema),
+  additionalSections: yup.array().notRequired().of(sectionSchema)
 });
 
 interface InfoCardFormProps {
@@ -35,27 +36,27 @@ interface InfoCardFormProps {
 }
 
 const emptyFields: InfoCardInput = {
-  title: "",
-  subtitle: "",
+  title: '',
+  subtitle: '',
   category: {
     id: -1,
-    name: "",
+    name: ''
   },
   tags: [],
-  summary: "",
+  summary: '',
   avatar: null,
-  description: "",
-  additionalSections: [],
+  description: '',
+  additionalSections: []
 };
 
 const InfoCardForm: React.FC<InfoCardFormProps> = ({
   onSubmit,
   onCancel,
-  defaultValues = emptyFields,
+  defaultValues = emptyFields
 }) => {
   const formContext = useForm<InfoCardInput>({
     defaultValues,
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchema)
   });
   const { control, handleSubmit, reset } = formContext;
 
@@ -64,14 +65,14 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
       // summarize first portion of description
       return `${description.substring(0, SUMMARY_MAX_LENGTH)}...`;
     } else {
-      return "No description.";
+      return 'No description.';
     }
   };
 
   const handleInput = ({ summary, ...data }: InfoCardInput) => {
     let formData = {
       summary: summary || generateSummary(data.description),
-      ...data,
+      ...data
     };
 
     onSubmit(formData);
@@ -82,42 +83,43 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
     <FormProvider {...formContext}>
       <Form
         noValidate
-        className="m-3"
+        className='m-3'
         onSubmit={handleSubmit(handleInput)}
-        data-testid="info-card-form"
+        data-testid='info-card-form'
       >
         <Form.Row>
-          <Form.Group as={Col} controlId="cardTitle">
+          <Form.Group as={Col} controlId='cardTitle'>
             <Input
-              name="title"
+              name='title'
               required={true}
               subtext={`Max ${TITLE_MAX_LENGTH} characters.`}
-              validationMode="onChange"
+              validationMode='onChange'
             />
           </Form.Group>
-          <Controller
-            name="category"
-            control={control}
-            render={({ value, onChange }) => (
-              <CategorySelect
-                category={value}
-                onChange={(category) => onChange(category)}
-              />
-            )}
-          />
+          <Form.Group as={Col} controlId='cardCategory'>
+            <Controller
+              name='category'
+              control={control}
+              render={({ value, onChange }) => (
+                <CategorySelect
+                  category={value}
+                  onChange={(category) => onChange(category)}
+                />
+              )}
+            />
+          </Form.Group>
         </Form.Row>
         <Form.Row>
-          <Form.Group as={Col} controlId="cardSubtitle">
+          <Form.Group as={Col} controlId='cardSubtitle'>
             <Input
-              name="subtitle"
+              name='subtitle'
               subtext={`Max ${SUBTITLE_MAX_LENGTH} characters.`}
-              validationMode="onChange"
+              validationMode='onChange'
             />
           </Form.Group>
-          <Form.Group as={Col} controlId="formCardTags">
-            <Form.Label>Tags</Form.Label>
+          <Form.Group as={Col} controlId='cardTags'>
             <Controller
-              name="tags"
+              name='tags'
               control={control}
               render={({ value, onChange }) => (
                 <TagMultiSelect
@@ -131,41 +133,41 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
         <Form.Row>
           <Form.Group as={Col}>
             <Controller
-              name="avatar"
+              name='avatar'
               control={control}
               render={({ onChange }) => (
                 <ImageUpload
-                  name="avatar"
+                  name='avatar'
                   onChange={(image) => onChange(image)}
                 />
               )}
             />
           </Form.Group>
-          <Form.Group as={Col} controlId="cardSummary">
+          <Form.Group as={Col} controlId='cardSummary'>
             <Input
-              name="summary"
-              as="textarea"
+              name='summary'
+              as='textarea'
               rows={2}
-              placeholder="Write a summary of this card"
+              placeholder='Write a summary of this card'
               subtext={`Max ${SUMMARY_MAX_LENGTH} characters. No summary defaults to the first bit of your Description.`}
-              validationMode="onChange"
+              validationMode='onChange'
             />
           </Form.Group>
         </Form.Row>
         <Form.Row></Form.Row>
         <hr />
         <Form.Row>
-          <Form.Group as={Col} controlId="cardDescription">
+          <Form.Group as={Col} controlId='cardDescription'>
             <Input
-              as="textarea"
+              as='textarea'
               rows={6}
-              name="description"
-              placeholder="Write away!"
+              name='description'
+              placeholder='Write away!'
             />
           </Form.Group>
         </Form.Row>
         <Controller
-          name="additionalSections"
+          name='additionalSections'
           control={control}
           render={({ value, onChange }) => (
             <AdditionalSectionsInput
@@ -176,20 +178,20 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
         />
         <hr />
         <Form.Row>
-          <Form.Group as={Col} controlId="formCardLinks">
+          <Form.Group as={Col} controlId='formCardLinks'>
             <Form.Label>Links</Form.Label>
-            <Form.Control type="text" placeholder="UNIMPLEMENTED" />
-            <Form.Text className="text-muted">
+            <Form.Control type='text' placeholder='UNIMPLEMENTED' />
+            <Form.Text className='text-muted'>
               Add links from this card to other cards, categories, and tags.
             </Form.Text>
           </Form.Group>
         </Form.Row>
         <hr />
-        <Container className="mt-3 d-flex">
-          <Button variant="primary" type="submit" className="mr-auto">
+        <Container className='mt-3 d-flex'>
+          <Button variant='primary' type='submit' className='mr-auto'>
             Create
           </Button>
-          <Button variant="danger" type="button" onClick={onCancel}>
+          <Button variant='danger' type='button' onClick={onCancel}>
             Cancel
           </Button>
         </Container>
