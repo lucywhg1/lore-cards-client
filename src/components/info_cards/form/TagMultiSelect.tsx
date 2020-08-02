@@ -55,18 +55,9 @@ const TagMultiSelect: React.FC<TagMultiSelectProps> = ({
       onChange={(newOptions) =>
         handleChange(newOptions as OptionsType<TagOption>)
       }
-      formatCreateLabel={(inputValue) => `create ${inputValue.toLowerCase()}`}
+      formatCreateLabel={(inputValue) => `create "${inputValue.toLowerCase()}"`}
     />
   );
 };
 
 export default TagMultiSelect;
-// on remove value, if createdTags, remove. Gives whole new selected
-// on create diff than select, can add to createdTags
-
-/**
- * If the tag is already created, don't create it again. Pass it up to the form with all the info.
- * If it's not already created, pass the input up. Type for EITHER input or complete.
- * When the InfoCard is created, loop over attached tags. If they don't exist, create them before assigning.
- * On the front-end, store tags by adding to selection; selected shown should be fetched.
- */
