@@ -6,6 +6,7 @@ import CreatableSelect from 'react-select/creatable';
 import ApiService from '../../../services/ApiService';
 import TagBase, { TagInput, isTagInput } from '../../../types/Tag';
 import { primary, warning } from '../../../theme';
+import { toast } from 'react-toastify';
 
 type TagOption = {
   label: string;
@@ -47,7 +48,10 @@ const TagMultiSelect: React.FC<TagMultiSelectProps> = ({
     const fetchTags = async (): Promise<void> => {
       const apiService = new ApiService();
 
-      setLoadedTags(await apiService.getTags());
+      apiService
+        .getTags()
+        .then((response) => setLoadedTags(response))
+        .catch((e: Error) => toast.error(`Unable to get Tags. ${e.message}`));
     };
 
     fetchTags();

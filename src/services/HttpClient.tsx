@@ -1,6 +1,6 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
-declare module "axios" {
+declare module 'axios' {
   interface AxiosResponse<T = any> extends Promise<T> {}
 }
 
@@ -9,11 +9,11 @@ abstract class HttpClient {
 
   public constructor() {
     this.instance = axios.create({
-      baseURL: "http://localhost:3000",
-      responseType: "json",
+      baseURL: 'http://localhost:3000',
+      responseType: 'json',
       headers: {
-        "Content-Type": "application/json",
-      },
+        'Content-Type': 'application/json'
+      }
     });
 
     this.initializeResponseIntercepter();
@@ -27,7 +27,7 @@ abstract class HttpClient {
   };
 
   private handleResponse = ({ data }: AxiosResponse) => data;
-  private handleError = (error: any) => Promise.reject(error);
+  private handleError = (error: Error) => Promise.reject(error);
 }
 
 export default HttpClient;
