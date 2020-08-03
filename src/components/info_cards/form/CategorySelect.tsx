@@ -55,9 +55,14 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
           </option>
         ))}
       </Form.Control>
-      <Form.Control.Feedback type='invalid'>
-        {errors?.id?.message}
-      </Form.Control.Feedback>
+      {errors?.id && (
+        <Form.Control.Feedback
+          type='invalid'
+          data-testid='category-select-errors'
+        >
+          {errors.id.message}
+        </Form.Control.Feedback>
+      )}
     </>
   );
 };

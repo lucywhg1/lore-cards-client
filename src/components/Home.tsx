@@ -9,7 +9,7 @@ import InfoCardForm from './info_cards/form/InfoCardForm';
 const Home: React.FC = () => {
   return (
     <>
-      <Container className='p-2 bg-info text-light d-flex' fluid>
+      <Container className='p-2 bg-secondary text-light d-flex' fluid>
         <img
           alt='logo'
           src={logo}

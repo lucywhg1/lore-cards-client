@@ -59,9 +59,14 @@ const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({
                 onChange={(event) => updateSection(index, event as any)}
                 isInvalid={!!sectionErrors?.heading}
               />
-              <Form.Control.Feedback type='invalid'>
-                {sectionErrors?.heading?.message}
-              </Form.Control.Feedback>
+              {sectionErrors?.heading && (
+                <Form.Control.Feedback
+                  type='invalid'
+                  data-testid={`section-${index}-heading-errors`}
+                >
+                  {sectionErrors.heading.message}
+                </Form.Control.Feedback>
+              )}
             </Form.Group>
             <Form.Group as={Col} controlId={`section-${index}-remove-button`}>
               <Button
@@ -87,9 +92,6 @@ const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({
                 isInvalid={!!sectionErrors?.body}
               />
             </Form.Group>
-            <Form.Control.Feedback type='invalid'>
-              {sectionErrors?.body?.message}
-            </Form.Control.Feedback>
           </Form.Row>
         </div>
       );

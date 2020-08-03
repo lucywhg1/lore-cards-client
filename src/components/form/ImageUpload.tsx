@@ -1,9 +1,6 @@
-import React, { useState, ChangeEvent } from "react";
-import { startCase } from "lodash";
-import { Form, Image, Col, Row } from "react-bootstrap";
-
-export const PLACEHOLDER_SRC =
-  "https://www.pngkit.com/png/detail/1007-10071948_woman-avatar-female-profile-picture-placeholder.png";
+import React, { useState, ChangeEvent } from 'react';
+import { startCase } from 'lodash';
+import { Form, Image, Col, Row } from 'react-bootstrap';
 
 interface Preview {
   label: string;
@@ -12,34 +9,39 @@ interface Preview {
 
 interface ImageUploadProps {
   name: string;
-  onChange: (updatedFile: File) => void;
+  onChange: (updatedFile: File | null) => void;
+  value: File;
   subtext?: string;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
   name,
   onChange,
-  subtext,
+  subtext
 }) => {
   const empty: Preview = {
     label: `upload ${name}`,
-    url: "",
+    url:
+      'https://www.pngkit.com/png/detail/1007-10071948_woman-avatar-female-profile-picture-placeholder.png'
   };
   const [preview, setPreview] = useState<Preview>(empty);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+  const updatePreview = (file: File | null): void => {
     if (preview.url) {
       URL.revokeObjectURL(preview.url); // release previous data
     }
 
-    if (event.target.files) {
-      const file = event.target.files[0];
-
+    if (file) {
       setPreview({ label: file.name, url: URL.createObjectURL(file) });
-      onChange(file);
     } else {
       setPreview(empty);
     }
+  };
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    const file = event.target.files?.item(0) || null;
+    updatePreview(file);
+    onChange(file);
   };
 
   return (
@@ -52,20 +54,20 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             id={name}
             label={preview.label}
             onChange={handleChange}
-            className="overflow-hidden"
+            className='overflow-hidden'
             custom
           />
           {subtext && (
-            <Form.Text className="text-muted" data-testid="imageUploadSubtext">
+            <Form.Text className='text-muted' data-testid='imageUploadSubtext'>
               {subtext}
             </Form.Text>
           )}
         </Col>
         <Col>
           <Image
-            src={preview.url || PLACEHOLDER_SRC}
+            src={preview.url}
             alt={`${name} preview`}
-            className="h-75"
+            className='h-75'
             fluid
             thumbnail
           />

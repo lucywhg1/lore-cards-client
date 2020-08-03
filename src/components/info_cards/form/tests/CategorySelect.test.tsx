@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import CategorySelect from '../CategorySelect';
@@ -13,6 +13,8 @@ describe(CategorySelect, () => {
   const unselectedCategory: Category = { id: -1, name: '' };
   const availableCategories = CategoryFactory.buildList(2);
 
+  let rerender: (ui: ReactElement) => void;
+
   beforeAll(() => {
     mockApiService.prototype.getCategories = jest
       .fn()
@@ -20,15 +22,36 @@ describe(CategorySelect, () => {
   });
 
   beforeEach(async () => {
-    render(
+    rerender = render(
       <CategorySelect category={unselectedCategory} onChange={mockOnChange} />
-    );
+    ).rerender;
+
     await screen.findByText(availableCategories[0].name);
   });
 
-  it('renders the select dropdown with default option', () => {
+  it('displays the select dropdown with default option', () => {
     expect(screen.getByTitle('Select category')).toBeInTheDocument();
     expect(screen.getByText('Choose...')).toBeInTheDocument();
+  });
+
+  it('displays errors', () => {
+    expect(
+      screen.queryByTestId('category-select-errors')
+    ).not.toBeInTheDocument();
+
+    const requiredError = {
+      id: { message: 'category is a required field', type: 'min' }
+    };
+
+    rerender(
+      <CategorySelect
+        category={unselectedCategory}
+        onChange={mockOnChange}
+        errors={requiredError}
+      />
+    );
+
+    expect(screen.getByText(requiredError.id.message)).toBeInTheDocument();
   });
 
   it('fills dropdown with fetched categories', () => {

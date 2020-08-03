@@ -58,7 +58,13 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
     defaultValues,
     resolver: yupResolver(validationSchema)
   });
-  const { control, handleSubmit, reset } = formContext;
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isDirty },
+    errors
+  } = formContext;
 
   const generateSummary = (description: string): string => {
     if (description) {
@@ -77,6 +83,20 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
 
     onSubmit(formData);
     reset(defaultValues);
+  };
+
+  const handleCancel = (): void => {
+    if (isDirty) {
+      if (
+        !window.confirm(
+          'Are you sure you want to do that? You will lose your changes.'
+        )
+      ) {
+        return;
+      }
+    }
+    reset(defaultValues);
+    onCancel();
   };
 
   return (
@@ -104,6 +124,7 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
                 <CategorySelect
                   category={value}
                   onChange={(category) => onChange(category)}
+                  errors={errors.category}
                 />
               )}
             />
@@ -122,10 +143,7 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
               name='tags'
               control={control}
               render={({ value, onChange }) => (
-                <TagMultiSelect
-                  onChange={(tags) => onChange(tags)}
-                  selected={value}
-                />
+                <TagMultiSelect onChange={onChange} selected={value} />
               )}
             />
           </Form.Group>
@@ -135,11 +153,8 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
             <Controller
               name='avatar'
               control={control}
-              render={({ onChange }) => (
-                <ImageUpload
-                  name='avatar'
-                  onChange={(image) => onChange(image)}
-                />
+              render={({ onChange, value }) => (
+                <ImageUpload name='avatar' onChange={onChange} value={value} />
               )}
             />
           </Form.Group>
@@ -173,6 +188,7 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
             <AdditionalSectionsInput
               sections={value}
               onChange={(sections) => onChange(sections)}
+              errors={errors.additionalSections}
             />
           )}
         />
@@ -191,7 +207,7 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
           <Button variant='primary' type='submit' className='mr-auto'>
             Create
           </Button>
-          <Button variant='danger' type='button' onClick={onCancel}>
+          <Button variant='danger' type='button' onClick={handleCancel}>
             Cancel
           </Button>
         </Container>

@@ -1,10 +1,10 @@
-import React from "react";
-import { startCase, get } from "lodash";
-import { Form } from "react-bootstrap";
-import { useFormContext } from "react-hook-form";
+import React from 'react';
+import { startCase, get } from 'lodash';
+import { Form } from 'react-bootstrap';
+import { useFormContext } from 'react-hook-form';
 
 export interface TextAreaProps extends CommonProps {
-  as: "textarea";
+  as: 'textarea';
   rows?: number;
 }
 
@@ -13,7 +13,7 @@ interface CommonProps {
   required?: boolean;
   placeholder?: string;
   subtext?: string;
-  validationMode?: "onBlur" | "onChange";
+  validationMode?: 'onBlur' | 'onChange';
 }
 
 export type InputProps = CommonProps | TextAreaProps;
@@ -30,11 +30,11 @@ const Input: React.FC<InputProps> = ({
   const inputErrors = get(errors, name);
 
   let validationProps;
-  if (validationMode === "onBlur") {
+  if (validationMode === 'onBlur') {
     validationProps = { onBlur: () => trigger(name) };
-  } else if (validationMode === "onChange") {
+  } else if (validationMode === 'onChange') {
     validationProps = {
-      onChange: () => trigger(name),
+      onChange: () => trigger(name)
     };
   }
 
@@ -44,19 +44,19 @@ const Input: React.FC<InputProps> = ({
       <Form.Control
         {...validationProps}
         {...inputOptions}
-        className={required ? "border border-primary" : undefined}
+        className={required ? 'border border-primary' : undefined}
         name={name}
         placeholder={placeholder || `Enter ${name}`}
-        ref={register}
+        ref={register()}
         isInvalid={!!inputErrors}
       />
       {subtext && (
-        <Form.Text className="text-muted" data-testid="inputSubtext">
+        <Form.Text className='text-muted' data-testid='input-subtext'>
           {subtext}
         </Form.Text>
       )}
       {inputErrors && (
-        <Form.Control.Feedback type="invalid" data-testid="inputErrors">
+        <Form.Control.Feedback type='invalid' data-testid='input-errors'>
           {inputErrors.message}
         </Form.Control.Feedback>
       )}
