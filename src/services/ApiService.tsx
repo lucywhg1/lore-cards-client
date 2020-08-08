@@ -1,15 +1,26 @@
 import HttpClient from './HttpClient';
-import { Tag, Category } from '../types';
+import Entity from '../types/Entity';
 
 class ApiService extends HttpClient {
-  public constructor() {
+  protected readonly routeUrl: string;
+
+  public constructor(routeUrl: string) {
     super();
+
+    this.routeUrl = routeUrl;
   }
 
-  public getCategories = async () =>
-    await this.instance.get<Category[]>('/categories');
+  protected async createModel<T>(input: T): Promise<T> {
+    return await this.instance.post<T>(this.routeUrl, input);
+  }
 
-  public getTags = async () => await this.instance.get<Tag[]>('/tags');
+  protected async getModel<T extends Entity>(id: number): Promise<T> {
+    return await this.instance.get<T>(`${this.routeUrl}/${id}`);
+  }
+
+  protected async getAllModels<T extends Entity>(): Promise<T[]> {
+    return await this.instance.get<T[]>(this.routeUrl);
+  }
 }
 
 export default ApiService;

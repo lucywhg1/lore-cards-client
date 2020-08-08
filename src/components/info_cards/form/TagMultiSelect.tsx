@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { OptionsType, StylesConfig } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
-
-import ApiService from '../../../services/ApiService';
-import TagBase, { TagInput, isTagInput } from '../../../types/Tag';
-import { primary, warning } from '../../../theme';
 import { toast } from 'react-toastify';
 
-type TagOption = {
+import TagService from '../../../services/TagService';
+import { primary, warning } from '../../../theme';
+import { isTagInput, TagBase, TagInput } from '../../../types/Tag';
+
+interface TagOption {
   label: string;
   value: string;
   data: TagBase;
-};
+}
 
 const getAsOptions = (tags: TagBase[]): OptionsType<TagOption> => {
   return tags.map((tag) => ({
@@ -46,10 +46,10 @@ const TagMultiSelect: React.FC<TagMultiSelectProps> = ({
 
   useEffect(() => {
     const fetchTags = async (): Promise<void> => {
-      const apiService = new ApiService();
+      const tagService = new TagService();
 
-      apiService
-        .getTags()
+      tagService
+        .getAll()
         .then((response) => setLoadedTags(response))
         .catch((e: Error) => toast.error(`Unable to get Tags. ${e.message}`));
     };

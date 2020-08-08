@@ -1,10 +1,10 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { Form } from 'react-bootstrap';
 import Category from '../../../types/Category';
-import ApiService from '../../../services/ApiService';
 import { DeepMap } from 'react-hook-form/dist/types/utils';
 import { FieldError } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import CategoryService from '../../../services/CategoryService';
 
 interface CategorySelectProps {
   category?: Category;
@@ -23,10 +23,10 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const apiService = new ApiService();
+      const categoryService = new CategoryService();
 
-      apiService
-        .getCategories()
+      categoryService
+        .getAll()
         .then((response) => setAvailableCategories(response))
         .catch((e: Error) =>
           toast.error(`Unable to get Categories. ${e.message}`)

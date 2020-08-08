@@ -1,6 +1,17 @@
-import InfoCard, { InfoCardInput } from "./InfoCard";
-import Category from "./Category";
-import Section from "./Section";
-import Tag from "./Tag";
+import { TagBase, TagInput, Tag } from './Tag';
+import Relation from './Relation';
+import InfoCard, { InfoCardInput, InfoCardPreview } from './InfoCard';
+import Category from './Category';
+import Section from './Section';
 
-export type { Category, Section, Tag, InfoCardInput, InfoCard };
+export type {
+  Category,
+  Section,
+  TagBase,
+  TagInput,
+  Tag,
+  InfoCardInput,
+  InfoCardPreview,
+  InfoCard,
+  Relation
+};

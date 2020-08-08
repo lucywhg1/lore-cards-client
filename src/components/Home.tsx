@@ -4,9 +4,12 @@ import { Container, Button, Jumbotron } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import logo from '../assets/logo.svg';
 import NewCardModal from './info_cards/NewCardModal';
-import InfoCardForm from './info_cards/form/InfoCardForm';
+import CardSearch from './info_cards/CardSearch';
+import { useHistory } from 'react-router-dom';
 
 const Home: React.FC = () => {
+  const history = useHistory();
+
   return (
     <>
       <Container className='p-2 bg-secondary text-light d-flex' fluid>
@@ -31,7 +34,7 @@ const Home: React.FC = () => {
         </Container>
       </Jumbotron>
       <Container>
-        <InfoCardForm onCancel={() => {}} onSubmit={() => {}} />
+        <CardSearch onChange={(id) => history.push(`/info_cards/${id}`)} />
       </Container>
     </>
   );

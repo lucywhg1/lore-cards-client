@@ -4,6 +4,7 @@ import Home from './components/Home';
 import { ToastContainer } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
+import ShowCardPage from './components/info_cards/ShowCardPage';
 
 const App: React.FC = () => {
   return (
@@ -12,6 +13,9 @@ const App: React.FC = () => {
         <Switch>
           <Route exact path='/'>
             <Home />
+          </Route>
+          <Route path='/info_cards/:id'>
+            <ShowCardPage />
           </Route>
         </Switch>
       </BrowserRouter>
