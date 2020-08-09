@@ -1,9 +1,23 @@
+import { InfoCardPreview } from './../types/InfoCard';
 import { Factory } from 'fishery';
 import Faker from 'faker';
 import { InfoCardInput } from '../types/InfoCard';
 import SectionFactory from './SectionFactory';
 import ImageFactory from './FileFactory';
 import TagFactory from './TagFactory';
+import CategoryFactory from './CategoryFactory';
+
+export const InfoCardPreviewFactory = Factory.define<InfoCardPreview>(
+  ({ sequence }) => ({
+    id: sequence - 1,
+    title: Faker.company.companyName(),
+    subtitle: Faker.company.catchPhrase(),
+    category: CategoryFactory.build(),
+    avatarUrl:
+      'https://i.pinimg.com/736x/53/3f/06/533f067180680761bb42ca3208243348.jpg',
+    summary: Faker.lorem.paragraph()
+  })
+);
 
 interface InputTransientParams {
   filled?: boolean;
@@ -24,8 +38,8 @@ export const InfoCardInputFactory = Factory.define<
       subtitle: '',
       summary: '',
       description: '',
-      additionalSections: [],
-      relations: []
+      additionalSections: []
+      // relations: []
     };
   } else {
     return {
@@ -39,8 +53,8 @@ export const InfoCardInputFactory = Factory.define<
       subtitle: Faker.company.catchPhraseDescriptor(),
       summary: Faker.lorem.words(10),
       description: Faker.lorem.paragraphs(2),
-      additionalSections: SectionFactory.buildList(2),
-      relations: []
+      additionalSections: SectionFactory.buildList(2)
+      // relations: []
     };
   }
 });

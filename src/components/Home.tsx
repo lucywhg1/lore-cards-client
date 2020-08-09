@@ -4,8 +4,8 @@ import { Container, Button, Jumbotron } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import logo from '../assets/logo.svg';
 import NewCardModal from './info_cards/NewCardModal';
-import CardSearch from './info_cards/CardSearch';
 import { useHistory } from 'react-router-dom';
+import Search from './search/Search';
 
 const Home: React.FC = () => {
   const history = useHistory();
@@ -34,7 +34,7 @@ const Home: React.FC = () => {
         </Container>
       </Jumbotron>
       <Container>
-        <CardSearch onChange={(id) => history.push(`/info_cards/${id}`)} />
+        <Search />
       </Container>
     </>
   );

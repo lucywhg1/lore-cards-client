@@ -1,9 +1,9 @@
-import { InfoCard, InfoCardInput } from '../types';
+import { InfoCard, InfoCardInput, InfoCardPreview } from '../types';
 import ApiService from './ApiService';
 
 class InfoCardService extends ApiService {
   public constructor() {
-    super('/info_cards');
+    super('/cards');
   }
 
   public async create(input: InfoCardInput): Promise<InfoCardInput> {
@@ -14,8 +14,8 @@ class InfoCardService extends ApiService {
     return await super.getModel<InfoCard>(id);
   }
 
-  public async getAll(): Promise<InfoCard[]> {
-    return await super.getAllModels<InfoCard>();
+  public async getAll(): Promise<InfoCardPreview[]> {
+    return await super.getAllModels<InfoCardPreview>();
   }
 }
 
