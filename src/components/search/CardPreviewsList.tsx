@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Form, ListGroup } from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 import { InfoCardPreview } from '../../types';
 import InfoCardService from '../../services/InfoCardService';
 import { toast } from 'react-toastify';
 import CardPreview from './CardPreview';
 import { useHistory } from 'react-router-dom';
 
-const Search: React.FC = (): JSX.Element => {
+interface CardPreviewsListProps {
+  input: string;
+}
+
+const CardPreviewsList: React.FC<CardPreviewsListProps> = ({
+  input
+}): JSX.Element => {
   const history = useHistory();
   const [availableCards, setAvailableCards] = useState<InfoCardPreview[]>([]);
-  const [input, setInput] = useState('');
 
   useEffect(() => {
     const fetchPreviews = async (): Promise<void> => {
@@ -26,8 +31,13 @@ const Search: React.FC = (): JSX.Element => {
     fetchPreviews();
   }, []);
 
+  const handleSelect = (cardId: number): void => {
+    history.push(`/cards/${cardId}`);
+  };
+
   const filterCards = (): InfoCardPreview[] => {
     const query = input.toLowerCase();
+
     return availableCards.filter(
       (card) =>
         card.title.toLowerCase().includes(query) ||
@@ -36,32 +46,17 @@ const Search: React.FC = (): JSX.Element => {
     );
   };
 
-  const handleSelect = (cardId: number): void => {
-    history.push(`/cards/${cardId}`);
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setInput(event.target.value);
-  };
-
   return (
-    <Form inline>
-      <Form.Control
-        type='text'
-        placeholder='Search for a card...'
-        onChange={handleChange}
-      />
-      <ListGroup variant='flush'>
-        {filterCards().map((preview) => (
-          <CardPreview
-            key={preview.id}
-            preview={preview}
-            onClick={handleSelect}
-          />
-        ))}
-      </ListGroup>
-    </Form>
+    <ListGroup variant='flush'>
+      {filterCards().map((preview) => (
+        <CardPreview
+          key={preview.id}
+          preview={preview}
+          onClick={handleSelect}
+        />
+      ))}
+    </ListGroup>
   );
 };
 
-export default Search;
+export default CardPreviewsList;

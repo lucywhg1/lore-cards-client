@@ -4,12 +4,10 @@ import { Container, Button, Jumbotron } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import logo from '../assets/logo.svg';
 import NewCardModal from './info_cards/NewCardModal';
-import { useHistory } from 'react-router-dom';
-import Search from './search/Search';
+import SearchBar from './search/SearchBar';
+import CardPreviewsList from './search/CardPreviewsList';
 
 const Home: React.FC = () => {
-  const history = useHistory();
-
   return (
     <>
       <Container className='p-2 bg-secondary text-light d-flex' fluid>
@@ -34,7 +32,9 @@ const Home: React.FC = () => {
         </Container>
       </Jumbotron>
       <Container>
-        <Search />
+        <SearchBar
+          renderFiltered={(input) => <CardPreviewsList input={input} />}
+        />
       </Container>
     </>
   );

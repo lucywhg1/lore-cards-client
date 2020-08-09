@@ -1,5 +1,6 @@
 import React from 'react';
-import { Image, Badge, ListGroup, Col, Card, Row } from 'react-bootstrap';
+import { Badge, Card, Col, Image, ListGroup, Row } from 'react-bootstrap';
+
 import { PREVIEW_IMG } from '../../theme';
 import { InfoCardPreview } from '../../types';
 
@@ -15,7 +16,11 @@ const CardPreview: React.FC<CardPreviewProps> = ({
   const { id, title, subtitle, summary, category, avatarUrl } = preview;
 
   return (
-    <ListGroup.Item action onClick={() => onClick(id)}>
+    <ListGroup.Item
+      action
+      onClick={() => onClick(id)}
+      data-testid='card-preview-item'
+    >
       <Card>
         <Card.Body>
           <Row>
@@ -27,11 +32,11 @@ const CardPreview: React.FC<CardPreviewProps> = ({
                 </Badge>
               </Card.Title>
               <Card.Subtitle>{subtitle}</Card.Subtitle>
-              <Card.Text className='mt-1'>
+              <Card.Text className='mt-1 d-none d-sm-block'>
                 <em>{summary}</em>
               </Card.Text>
             </Col>
-            <Col xs={3} lg={2} xl={1} className='mt-auto mb-auto'>
+            <Col xs={3} lg={2} className='align-self-center'>
               <Image src={avatarUrl || PREVIEW_IMG} fluid />
             </Col>
           </Row>
@@ -40,7 +45,5 @@ const CardPreview: React.FC<CardPreviewProps> = ({
     </ListGroup.Item>
   );
 };
-/**
- * Fill the row that is already filled by the card
- */
+
 export default CardPreview;
