@@ -10,4 +10,4 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-serviceWorker.register(); // unregister by default
+serviceWorker.unregister(); // unregister by default

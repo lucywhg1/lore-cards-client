@@ -7,11 +7,13 @@ import { ToastContainer } from 'react-toastify';
 
 import Home from './components/Home';
 import ShowCardPage from './components/info_cards/ShowCardPage';
+import NavBar from './components/layout/NavBar';
 
 const App: React.FC = () => {
   return (
     <>
       <BrowserRouter>
+        <NavBar />
         <Switch>
           <Route exact path='/'>
             <Home />

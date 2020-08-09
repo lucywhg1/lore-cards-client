@@ -5,7 +5,7 @@ import CreatableSelect from 'react-select/creatable';
 import { toast } from 'react-toastify';
 
 import TagService from '../../../services/TagService';
-import { primary, warning } from '../../../theme';
+import { colors } from '../../../theme';
 import { isTagInput, TagBase, TagInput } from '../../../types/Tag';
 
 interface TagOption {
@@ -24,7 +24,7 @@ const getAsOptions = (tags: TagBase[]): OptionsType<TagOption> => {
 
 const optionStyle: StylesConfig = {
   multiValue: (provided, { data }) => {
-    const color = isTagInput(data.data) ? warning : primary; // custom color for pending tag creation
+    const color = isTagInput(data.data) ? colors.info : colors.dark; // custom color for pending tag creation
     return {
       ...provided,
       backgroundColor: color.alpha(0.3).css(),
