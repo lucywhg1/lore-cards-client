@@ -25,9 +25,9 @@ const CardPreview: React.FC<CardPreviewProps> = ({
         <Card.Body>
           <Row>
             <Col>
-              <Card.Title>
-                {title}
-                <Badge variant='secondary' className='ml-2'>
+              <Card.Title className='text-primary'>
+                <strong>{title}</strong>
+                <Badge variant='secondary' className='ml-2 text-light'>
                   {category.name}
                 </Badge>
               </Card.Title>

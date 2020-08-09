@@ -19,13 +19,13 @@ const Home: React.FC = () => {
           className='align-self-center ml-1 mr-auto border border-light rounded'
         />
         <LinkContainer to='/'>
-          <Button>Home</Button>
+          <Button variant='warning'>Home</Button>
         </LinkContainer>
       </Container>
-      <Jumbotron fluid>
+      <Jumbotron className='bg-light' fluid>
         <Container className='text-justify mb-3'>
           <h1 className='text-primary'>Welcome to the landing page!</h1>
-          <h4 className='text-secondary'>Below, I'm currently working on...</h4>
+          <h3 className='text-secondary'>Below, I'm currently working on...</h3>
         </Container>
         <Container className='m-auto'>
           <NewCardModal />

@@ -1,9 +1,11 @@
+import './styles/App.scss';
+import 'react-toastify/dist/ReactToastify.css';
+
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import Home from './components/Home';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import 'react-toastify/dist/ReactToastify.css';
+import Home from './components/Home';
 import ShowCardPage from './components/info_cards/ShowCardPage';
 
 const App: React.FC = () => {

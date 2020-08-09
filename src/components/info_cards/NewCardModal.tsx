@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Modal, Button } from "react-bootstrap";
-import { InfoCardInput } from "../../types/InfoCard";
-import InfoCardForm from "./form/InfoCardForm";
+import React, { useState } from 'react';
+import { Modal, Button } from 'react-bootstrap';
+import { InfoCardInput } from '../../types/InfoCard';
+import InfoCardForm from './form/InfoCardForm';
 
 const NewCardModal: React.FC = () => {
   const [show, setShow] = useState(false);
@@ -17,7 +17,8 @@ const NewCardModal: React.FC = () => {
   return (
     <>
       <Button
-        variant="primary"
+        variant='primary'
+        className='text-light'
         onClick={() => {
           setShow(true);
         }}
@@ -29,11 +30,11 @@ const NewCardModal: React.FC = () => {
         show={show}
         onHide={cancel}
         animation={false}
-        backdrop="static"
-        size="lg"
+        backdrop='static'
+        size='lg'
       >
-        <Modal.Header closeButton className="bg-primary">
-          <Modal.Title className="text-light">Create an Info Card</Modal.Title>
+        <Modal.Header closeButton className='bg-primary'>
+          <Modal.Title className='text-light'>Create an Info Card</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <InfoCardForm onSubmit={create} onCancel={cancel} />
