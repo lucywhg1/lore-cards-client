@@ -11,11 +11,13 @@ interface CategorySelectProps {
   onChange: (selectedValue: Category) => void;
   className?: string;
   isInvalid?: boolean;
+  placeholder?: string;
 }
 
 const CategorySelect: React.FC<CategorySelectProps> = ({
   category,
   onChange,
+  placeholder = 'Choose...',
   ...controlProps
 }): JSX.Element => {
   const [availableCategories, setAvailableCategories] = useState<Category[]>(
@@ -58,7 +60,7 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
         }}
         {...controlProps}
       >
-        <option value={-1}>Choose...</option>
+        <option value={-1}>{placeholder}</option>
         {availableCategories.map((category) => (
           <option key={category.id} value={category.id}>
             {category.name}

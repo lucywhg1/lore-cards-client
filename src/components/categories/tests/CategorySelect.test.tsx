@@ -20,7 +20,13 @@ describe(CategorySelect, () => {
   const availableCategories = CategoryFactory.buildList(2);
 
   const renderComponent = (): void => {
-    render(<CategorySelect category={emptyCategory} onChange={mockOnChange} />);
+    render(
+      <CategorySelect
+        category={emptyCategory}
+        onChange={mockOnChange}
+        placeholder='placeholder'
+      />
+    );
   };
 
   describe('when category fetching fails', () => {
@@ -44,9 +50,9 @@ describe(CategorySelect, () => {
       await screen.findByText(availableCategories[0].name);
     });
 
-    it('displays the select dropdown with default option', () => {
+    it('displays the select dropdown with placeholder option text', () => {
       expect(screen.getByTitle('Select category')).toBeInTheDocument();
-      expect(screen.getByText('Choose...')).toBeInTheDocument();
+      expect(screen.getByText('placeholder')).toBeInTheDocument();
     });
 
     it('fills dropdown with fetched categories', () => {

@@ -37,6 +37,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
             <CategorySelect
               onChange={handleCategoryChange}
               category={categoryFilter}
+              placeholder='By category...'
+              className='bg-secondary text-light'
             />
           </InputGroup.Append>
         </InputGroup>
