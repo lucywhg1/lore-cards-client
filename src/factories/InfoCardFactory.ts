@@ -1,3 +1,4 @@
+import { emptyCategory } from './../types/Category';
 import { InfoCardPreview } from './../types/InfoCard';
 import { Factory } from 'fishery';
 import Faker from 'faker';
@@ -32,7 +33,7 @@ export const InfoCardInputFactory = Factory.define<
   if (!filled) {
     return {
       title: '',
-      category: { id: -1, name: 'Choose...' },
+      category: emptyCategory,
       tags: [],
       avatar: null,
       subtitle: '',
@@ -44,10 +45,7 @@ export const InfoCardInputFactory = Factory.define<
   } else {
     return {
       title: Faker.company.companyName(),
-      category: {
-        id: -1,
-        name: ''
-      },
+      category: CategoryFactory.build(),
       tags: TagFactory.buildList(2),
       avatar: ImageFactory.build(),
       subtitle: Faker.company.catchPhraseDescriptor(),

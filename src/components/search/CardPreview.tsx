@@ -21,7 +21,7 @@ const CardPreview: React.FC<CardPreviewProps> = ({
       onClick={() => onClick(id)}
       data-testid='card-preview-item'
     >
-      <Card>
+      <Card className='border-mid-width border-primary'>
         <Card.Body>
           <Row>
             <Col>

@@ -8,7 +8,7 @@ import { yupResolver } from '@hookform/resolvers';
 import { InfoCardInput } from '../../../types/InfoCard';
 import { ImageUpload, Input } from '../../form';
 import AdditionalSectionsInput from './AdditionalSectionsInput';
-import CategorySelect from './CategorySelect';
+import CategoryInput from './CategoryInput';
 import TagMultiSelect from './TagMultiSelect';
 import {
   sectionSchema,
@@ -16,6 +16,7 @@ import {
   SUMMARY_MAX_LENGTH,
   TITLE_MAX_LENGTH
 } from './validations';
+import { emptyCategory } from '../../../types/Category';
 
 const validationSchema = yup.object().shape({
   title: yup.string().required().max(TITLE_MAX_LENGTH),
@@ -38,10 +39,7 @@ interface InfoCardFormProps {
 const emptyFields: InfoCardInput = {
   title: '',
   subtitle: '',
-  category: {
-    id: -1,
-    name: ''
-  },
+  category: emptyCategory,
   tags: [],
   summary: '',
   avatar: null,
@@ -121,7 +119,7 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
               name='category'
               control={control}
               render={({ value, onChange }) => (
-                <CategorySelect
+                <CategoryInput
                   category={value}
                   onChange={(category) => onChange(category)}
                   errors={errors.category}

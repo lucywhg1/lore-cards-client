@@ -1,21 +1,22 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
-import Category from '../../../types/Category';
-import { DeepMap } from 'react-hook-form/dist/types/utils';
-import { FieldError } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import CategoryService from '../../../services/CategoryService';
+
+import CategoryService from '../../services/CategoryService';
+import { Category } from '../../types';
+import { emptyCategory } from '../../types/Category';
 
 interface CategorySelectProps {
-  category?: Category;
+  category: Category;
   onChange: (selectedValue: Category) => void;
-  errors?: DeepMap<Category, FieldError>;
+  className?: string;
+  isInvalid?: boolean;
 }
 
 const CategorySelect: React.FC<CategorySelectProps> = ({
   category,
   onChange,
-  errors
+  ...controlProps
 }): JSX.Element => {
   const [availableCategories, setAvailableCategories] = useState<Category[]>(
     []
@@ -38,12 +39,15 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>): void => {
     event.persist();
-    onChange(availableCategories[Number(event.target.value)]);
+
+    const categoryId = Number(event.target.value);
+    onChange(
+      categoryId === -1 ? emptyCategory : availableCategories[categoryId]
+    );
   };
 
   return (
     <>
-      <Form.Label>Category</Form.Label>
       <Form.Control
         title='Select category'
         as='select'
@@ -52,8 +56,7 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
         onChange={(event) => {
           handleChange(event as any);
         }}
-        isInvalid={!!errors}
-        className='border border-primary'
+        {...controlProps}
       >
         <option value={-1}>Choose...</option>
         {availableCategories.map((category) => (
@@ -62,14 +65,6 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
           </option>
         ))}
       </Form.Control>
-      {errors?.id && (
-        <Form.Control.Feedback
-          type='invalid'
-          data-testid='category-select-errors'
-        >
-          {errors.id.message}
-        </Form.Control.Feedback>
-      )}
     </>
   );
 };
