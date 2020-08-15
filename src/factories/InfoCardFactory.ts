@@ -16,7 +16,8 @@ export const InfoCardPreviewFactory = Factory.define<InfoCardPreview>(
     category: CategoryFactory.build(),
     avatarUrl:
       'https://i.pinimg.com/736x/53/3f/06/533f067180680761bb42ca3208243348.jpg',
-    summary: Faker.lorem.paragraph()
+    summary: Faker.lorem.paragraph(),
+    tags: TagFactory.buildList(2)
   })
 );
 
@@ -40,7 +41,6 @@ export const InfoCardInputFactory = Factory.define<
       summary: '',
       description: '',
       additionalSections: []
-      // relations: []
     };
   } else {
     return {
@@ -52,7 +52,6 @@ export const InfoCardInputFactory = Factory.define<
       summary: Faker.lorem.words(10),
       description: Faker.lorem.paragraphs(2),
       additionalSections: SectionFactory.buildList(2)
-      // relations: []
     };
   }
 });

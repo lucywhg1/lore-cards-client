@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
-import { InfoCardPreview } from '../../types';
+import { InfoCardPreview, Tag } from '../../types';
 import InfoCardService from '../../services/InfoCardService';
 import { toast } from 'react-toastify';
 import CardPreview from './CardPreview';
 import { useHistory } from 'react-router-dom';
+import { isInCardBody, hasTags } from '../../types/InfoCard';
 
 interface CardPreviewsListProps {
   categoryId?: number;
   input: string;
+  tagsFilter: Tag[];
 }
 
 const CardPreviewsList: React.FC<CardPreviewsListProps> = ({ categoryId,
-  input
+  input, tagsFilter
 }): JSX.Element => {
   const history = useHistory();
   const [availableCards, setAvailableCards] = useState<InfoCardPreview[]>([]);
@@ -36,26 +38,30 @@ const CardPreviewsList: React.FC<CardPreviewsListProps> = ({ categoryId,
     history.push(`/cards/${ cardId }`);
   };
 
-  const filterCards = (): InfoCardPreview[] => {
+  const filteredCards = (): JSX.Element[] => {
     const query = input.toLowerCase();
+    const filtered: JSX.Element = [];
 
-    return availableCards.filter(
-      (card) =>
-        card.title.toLowerCase().includes(query) ||
-        card.subtitle?.toLowerCase().includes(query) ||
-        card.summary.toLowerCase().includes(query)
+    availableCards.forEach(
+      (card) => {
+        if (isInCardBody(card, query) && hasTags(card, tagsFilter)) {
+          filtered.push(
+            <CardPreview
+              key={card.id}
+              preview={card}
+              onClick={handleSelect}
+            />
+          );
+        }
+      }
     );
+
+    return filtered;
   };
 
   return (
     <ListGroup variant='flush'>
-      {filterCards().map((preview) => (
-        <CardPreview
-          key={preview.id}
-          preview={preview}
-          onClick={handleSelect}
-        />
-      ))}
+      {filteredCards()}
     </ListGroup>
   );
 };

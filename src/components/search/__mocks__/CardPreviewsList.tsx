@@ -4,10 +4,10 @@ import { Tag } from "../../../types";
 interface MockCardPreviewsListProps {
   input: string;
   categoryId: number;
-  tags: Tag[];
+  tagsFilter: Tag[];
 }
 
-const MockCardPreviewsList: React.FC<MockCardPreviewsListProps> = ({ input, categoryId, tags }): JSX.Element => {
+const MockCardPreviewsList: React.FC<MockCardPreviewsListProps> = ({ input, categoryId, tagsFilter }): JSX.Element => {
   return (
     <ul>
       <li>{input.toUpperCase()}</li>

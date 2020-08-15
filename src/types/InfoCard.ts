@@ -19,7 +19,7 @@ interface InfoCard extends Entity {
   category: Category;
   description: Section;
   summary: string;
-  tags?: Tag[];
+  tags: Tag[];
   subtitle?: string;
   avatarUrl?: string;
   additionalSections?: Section[];
@@ -34,5 +34,22 @@ export interface InfoCardPreview
       InfoCard,
       'title' | 'subtitle' | 'summary' | 'avatarUrl' | 'category' | 'tags'
     > {}
+
+export const isInCardBody = (card: InfoCardPreview, query: string): boolean => (card.title.toLowerCase().includes(query) ||
+  card.subtitle?.toLowerCase().includes(query) ||
+  card.summary.toLowerCase().includes(query));
+
+export const hasTags = (card: InfoCardPreview, tags: Tag[]): boolean => {
+  let tagsMatch = true;
+
+  for (let index = 0; index < tags.length; index += 1) {
+    if (!card.tags?.includes(tags[index])) {
+      tagsMatch = false;
+      break;
+    }
+  }
+
+  return tagsMatch;
+};
 
 export default InfoCard;

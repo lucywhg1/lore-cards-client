@@ -37,7 +37,7 @@ const CardSearchBar: React.FC<SearchBarProps> = ({ categoryId
           </InputGroup.Append>
         </InputGroup>
       </Form>
-      <CardPreviewsList input={input} tags={tagsFilter} categoryId={categoryId} />
+      <CardPreviewsList input={input} tagsFilter={tagsFilter} categoryId={categoryId} />
     </>
   );
 };
