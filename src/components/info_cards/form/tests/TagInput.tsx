@@ -7,7 +7,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { TagFactory } from '../../../../factories';
-import TagMultiSelect from '../TagMultiSelect';
+import TagInput from '../TagInput';
 import { toast as mockToast } from 'react-toastify';
 
 const mockGetAll = jest.fn();
@@ -19,14 +19,14 @@ jest.mock('../../../../services/TagService', () => {
 
 const mockOnChange = jest.fn();
 
-describe(TagMultiSelect, () => {
+describe(TagInput, () => {
   const loadedTags = TagFactory.buildList(2);
   const capitalizedInput = Faker.name.firstName();
 
   let multiSelect: HTMLElement;
 
   const renderComponent = (): void => {
-    render(<TagMultiSelect onChange={mockOnChange} selected={[]} />);
+    render(<TagInput onChange={mockOnChange} selected={[]} />);
 
     multiSelect = screen.getByRole('textbox');
   };
@@ -63,7 +63,7 @@ describe(TagMultiSelect, () => {
     it('displays create label when user is typing', () => {
       userEvent.type(multiSelect, capitalizedInput);
       expect(
-        screen.getByText(`create "${capitalizedInput.toLowerCase()}"`)
+        screen.getByText(`create "${ capitalizedInput.toLowerCase() }"`)
       ).toBeInTheDocument();
     });
 

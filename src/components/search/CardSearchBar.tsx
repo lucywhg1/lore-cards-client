@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Form } from 'react-bootstrap';
+import { Form, InputGroup } from 'react-bootstrap';
 import CardPreviewsList from './CardPreviewsList';
+import { Tag } from '../../types';
+import TagMultiSelect from '../tags/TagMultiSelect';
 
 interface SearchBarProps {
   categoryId: number;
@@ -9,6 +11,7 @@ interface SearchBarProps {
 const CardSearchBar: React.FC<SearchBarProps> = ({ categoryId
 }): JSX.Element => {
   const [input, setInput] = useState('');
+  const [tagsFilter, setTagsFilter] = useState<Tag[]>([]);
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -16,16 +19,25 @@ const CardSearchBar: React.FC<SearchBarProps> = ({ categoryId
     setInput(event.target.value);
   };
 
+  const handleSelectChange = (selected: Tag[]): void => {
+    setTagsFilter(selected);
+  };
+
   return (
     <>
       <Form inline>
-        <Form.Control
-          type='text'
-          placeholder='Search for a card...'
-          onChange={handleInputChange}
-        />
+        <InputGroup>
+          <Form.Control
+            type='text'
+            placeholder='Search for a card...'
+            onChange={handleInputChange}
+          />
+          <InputGroup.Append>
+            <TagMultiSelect selected={tagsFilter} onChange={handleSelectChange} />
+          </InputGroup.Append>
+        </InputGroup>
       </Form>
-      <CardPreviewsList input={input} categoryId={categoryId} />
+      <CardPreviewsList input={input} tags={tagsFilter} categoryId={categoryId} />
     </>
   );
 };

@@ -9,7 +9,7 @@ import { InfoCardInput } from '../../../types/InfoCard';
 import { ImageUpload, Input } from '../../form';
 import AdditionalSectionsInput from './AdditionalSectionsInput';
 import CategoryInput from './CategoryInput';
-import TagMultiSelect from './TagMultiSelect';
+import TagInput from './TagInput';
 import {
   sectionSchema,
   SUBTITLE_MAX_LENGTH,
@@ -67,7 +67,7 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
   const generateSummary = (description: string): string => {
     if (description) {
       // summarize first portion of description
-      return `${description.substring(0, SUMMARY_MAX_LENGTH)}...`;
+      return `${ description.substring(0, SUMMARY_MAX_LENGTH) }...`;
     } else {
       return 'No description.';
     }
@@ -110,7 +110,7 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
             <Input
               name='title'
               required={true}
-              subtext={`Max ${TITLE_MAX_LENGTH} characters.`}
+              subtext={`Max ${ TITLE_MAX_LENGTH } characters.`}
               validationMode='onChange'
             />
           </Form.Group>
@@ -132,7 +132,7 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
           <Form.Group as={Col} controlId='cardSubtitle'>
             <Input
               name='subtitle'
-              subtext={`Max ${SUBTITLE_MAX_LENGTH} characters.`}
+              subtext={`Max ${ SUBTITLE_MAX_LENGTH } characters.`}
               validationMode='onChange'
             />
           </Form.Group>
@@ -141,7 +141,7 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
               name='tags'
               control={control}
               render={({ value, onChange }) => (
-                <TagMultiSelect onChange={onChange} selected={value} />
+                <TagInput onChange={onChange} selected={value} />
               )}
             />
           </Form.Group>
@@ -162,7 +162,7 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
               as='textarea'
               rows={2}
               placeholder='Write a summary of this card'
-              subtext={`Max ${SUMMARY_MAX_LENGTH} characters. No summary defaults to the first bit of your Description.`}
+              subtext={`Max ${ SUMMARY_MAX_LENGTH } characters. No summary defaults to the first bit of your Description.`}
               validationMode='onChange'
             />
           </Form.Group>

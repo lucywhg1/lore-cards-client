@@ -1,7 +1,6 @@
 import Entity from './Entity';
 import Section from './Section';
 import Category from './Category';
-import Relation from './Relation';
 import { Tag, TagBase } from './Tag';
 
 export interface InfoCardInput {
@@ -12,7 +11,6 @@ export interface InfoCardInput {
   summary: string;
   description: string;
   additionalSections: Section[];
-  // relations: Relation[];
   avatar: File | null;
 }
 
@@ -25,7 +23,6 @@ interface InfoCard extends Entity {
   subtitle?: string;
   avatarUrl?: string;
   additionalSections?: Section[];
-  // relations?: Relation[];
 }
 
 /**
@@ -35,7 +32,7 @@ export interface InfoCardPreview
   extends Entity,
     Pick<
       InfoCard,
-      'title' | 'subtitle' | 'summary' | 'avatarUrl' | 'category'
+      'title' | 'subtitle' | 'summary' | 'avatarUrl' | 'category' | 'tags'
     > {}
 
 export default InfoCard;

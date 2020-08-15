@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
-import { OptionsType, StylesConfig } from 'react-select';
+import { OptionsType, StylesConfig, ValueType } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { toast } from 'react-toastify';
 
@@ -17,7 +17,7 @@ interface TagOption {
 const getAsOptions = (tags: TagBase[]): OptionsType<TagOption> => {
   return tags.map((tag) => ({
     label: tag.name,
-    value: `option-${tag.name}`,
+    value: `option-${ tag.name }`,
     data: tag
   }));
 };
@@ -33,12 +33,12 @@ const optionStyle: StylesConfig = {
   }
 };
 
-interface TagMultiSelectProps {
+interface TagInputProps {
   onChange: (selected: TagBase[]) => void;
   selected: TagBase[];
 }
 
-const TagMultiSelect: React.FC<TagMultiSelectProps> = ({
+const TagInput: React.FC<TagInputProps> = ({
   onChange,
   selected
 }): JSX.Element => {
@@ -51,14 +51,14 @@ const TagMultiSelect: React.FC<TagMultiSelectProps> = ({
       tagService
         .getAll()
         .then((response) => setLoadedTags(response))
-        .catch((e: Error) => toast.error(`Unable to get Tags. ${e.message}`));
+        .catch((e: Error) => toast.error(`Unable to get Tags. ${ e.message }`));
     };
 
     fetchTags();
   }, []);
 
-  const handleChange = (newOptions: OptionsType<TagOption> | null): void => {
-    onChange(newOptions?.map((option) => option.data) || []);
+  const handleChange = (newOptions: ValueType<TagOption>): void => {
+    onChange((newOptions as OptionsType<TagOption>).map((option) => option.data) || []);
   };
 
   const handleCreate = (inputValue: string): void => {
@@ -75,11 +75,9 @@ const TagMultiSelect: React.FC<TagMultiSelectProps> = ({
         options={getAsOptions(loadedTags)}
         value={getAsOptions(selected)}
         onCreateOption={handleCreate}
-        onChange={(newOptions) =>
-          handleChange(newOptions as OptionsType<TagOption>)
-        }
+        onChange={handleChange}
         formatCreateLabel={(inputValue) =>
-          `create "${inputValue.toLowerCase()}"`
+          `create "${ inputValue.toLowerCase() }"`
         }
         styles={optionStyle}
       />
@@ -87,4 +85,4 @@ const TagMultiSelect: React.FC<TagMultiSelectProps> = ({
   );
 };
 
-export default TagMultiSelect;
+export default TagInput;
