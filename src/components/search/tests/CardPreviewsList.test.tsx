@@ -27,8 +27,8 @@ describe(CardPreviewsList, () => {
     InfoCardPreviewFactory.build({ title: uniqueTitle.toUpperCase() })
   ];
 
-  const renderComponent = async (input: string = ''): Promise<void> => {
-    render(<CardPreviewsList input={input} />);
+  const renderComponent = async (input: string = '', categoryId?: number): Promise<void> => {
+    render(<CardPreviewsList input={input} categoryId={categoryId} />);
 
     await screen.findAllByTestId('card-preview-item');
   };
@@ -36,6 +36,21 @@ describe(CardPreviewsList, () => {
   beforeAll(() => {
     mockGetAll.mockResolvedValue(cardList);
   });
+
+  describe("fetching cards", () => {
+    it('calls #InfoCardService with no category id', () => {
+      renderComponent('', 1);
+
+      expect(mockGetAll).toHaveBeenCalledWith(1);
+    });
+
+    it('calls #InfoCardService with category id', () => {
+      renderComponent('');
+
+      expect(mockGetAll).toHaveBeenLastCalledWith(undefined);
+    });
+  });
+
 
   it('loads all available cards with no input', async () => {
     await renderComponent();
@@ -59,6 +74,6 @@ describe(CardPreviewsList, () => {
     await renderComponent();
     userEvent.click(screen.getByText(cardList[0].title));
 
-    expect(mockHistoryPush).toHaveBeenCalledWith(`/cards/${cardList[0].id}`);
+    expect(mockHistoryPush).toHaveBeenCalledWith(`/cards/${ cardList[0].id }`);
   });
 });

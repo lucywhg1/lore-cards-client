@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Jumbotron } from 'react-bootstrap';
 
 import CardPreviewsList from './search/CardPreviewsList';
-import SearchBar from './search/SearchBar';
+import CardSearchBar from './search/CardSearchBar';
 import NewCardModal from './info_cards/NewCardModal';
 
 const Home: React.FC = () => {
@@ -16,9 +16,8 @@ const Home: React.FC = () => {
         </Container>
       </Jumbotron>
       <Container>
-        <SearchBar
-          renderFiltered={(input) => <CardPreviewsList input={input} />}
-        />
+        <CardSearchBar
+          categoryId={1} />
       </Container>
     </>
   );

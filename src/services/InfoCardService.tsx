@@ -14,8 +14,8 @@ class InfoCardService extends ApiService {
     return await super.getModel<InfoCard>(id);
   }
 
-  public async getAll(): Promise<InfoCardPreview[]> {
-    return await super.getAllModels<InfoCardPreview>();
+  public async getAll(categoryId?: number): Promise<InfoCardPreview[]> {
+    return await super.getAllModels<InfoCardPreview>({ categoryId });
   }
 }
 

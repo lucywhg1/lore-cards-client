@@ -15,11 +15,11 @@ class ApiService extends HttpClient {
   }
 
   protected async getModel<T extends Entity>(id: number): Promise<T> {
-    return await this.instance.get<T>(`${this.routeUrl}/${id}`);
+    return await this.instance.get<T>(`${ this.routeUrl }/${ id }`);
   }
 
-  protected async getAllModels<T extends Entity>(): Promise<T[]> {
-    return await this.instance.get<T[]>(this.routeUrl);
+  protected async getAllModels<T extends Entity>(params?: {}): Promise<T[]> {
+    return await this.instance.get<T[]>(this.routeUrl, { params });
   }
 }
 

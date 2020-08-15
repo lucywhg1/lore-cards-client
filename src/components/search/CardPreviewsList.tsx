@@ -7,10 +7,11 @@ import CardPreview from './CardPreview';
 import { useHistory } from 'react-router-dom';
 
 interface CardPreviewsListProps {
+  categoryId?: number;
   input: string;
 }
 
-const CardPreviewsList: React.FC<CardPreviewsListProps> = ({
+const CardPreviewsList: React.FC<CardPreviewsListProps> = ({ categoryId,
   input
 }): JSX.Element => {
   const history = useHistory();
@@ -21,18 +22,18 @@ const CardPreviewsList: React.FC<CardPreviewsListProps> = ({
       const infoCardService = new InfoCardService();
 
       infoCardService
-        .getAll()
+        .getAll(categoryId)
         .then((response) => {
           setAvailableCards(response);
         })
-        .catch((e: Error) => toast.error(`Failed to get Cards. ${e.message}`));
+        .catch((e: Error) => toast.error(`Failed to get Cards. ${ e.message }`));
     };
 
     fetchPreviews();
   }, []);
 
   const handleSelect = (cardId: number): void => {
-    history.push(`/cards/${cardId}`);
+    history.push(`/cards/${ cardId }`);
   };
 
   const filterCards = (): InfoCardPreview[] => {

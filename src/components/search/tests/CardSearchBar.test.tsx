@@ -4,20 +4,28 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import SearchBar from '../SearchBar';
+import CardSearchBar from '../CardSearchBar';
 
-describe(SearchBar, () => {
+jest.mock('../CardPreviewsList');
+
+describe(CardSearchBar, () => {
+  const categoryId = 1;
+
   beforeEach(() => {
     render(
-      <SearchBar renderFiltered={(input) => <ul>{input.toUpperCase()}</ul>} />
+      <CardSearchBar categoryId={categoryId} />
     );
   });
 
-  it('displays search box with child', () => {
+  it('displays search box with preview list', () => {
     expect(
       screen.getByPlaceholderText('Search for a card...')
     ).toBeInTheDocument();
     expect(screen.getByRole('list')).toBeInTheDocument();
+  });
+
+  it("passes categoryId to previews list", () => {
+    expect(screen.getByText(String(categoryId))).toBeInTheDocument();
   });
 
   it('updates child based on input', () => {
