@@ -33,12 +33,12 @@ const optionStyle: StylesConfig = {
   }
 };
 
-interface TagInputProps {
+interface TagCreatableSelectProps {
   onChange: (selected: TagBase[]) => void;
   selected: TagBase[];
 }
 
-const TagInput: React.FC<TagInputProps> = ({
+const TagCreatableSelect: React.FC<TagCreatableSelectProps> = ({
   onChange,
   selected
 }): JSX.Element => {
@@ -58,7 +58,9 @@ const TagInput: React.FC<TagInputProps> = ({
   }, []);
 
   const handleChange = (newOptions: ValueType<TagOption>): void => {
-    onChange((newOptions as OptionsType<TagOption>).map((option) => option.data) || []);
+    const selectedOptions = newOptions !== null ? (newOptions as OptionsType<TagOption>) : [];
+
+    onChange((selectedOptions).map((option) => option.data) || []);
   };
 
   const handleCreate = (inputValue: string): void => {
@@ -85,4 +87,4 @@ const TagInput: React.FC<TagInputProps> = ({
   );
 };
 
-export default TagInput;
+export default TagCreatableSelect;

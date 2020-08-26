@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { OptionsType, ValueType } from 'react-select';
+import Select from 'react-select';
+
+import { OptionsType, ValueType, createFilter } from 'react-select';
 import { toast } from 'react-toastify';
 import { Tag } from '../../types';
-import Select from 'react-select/src/Select';
 import TagService from '../../services/TagService';
 
 interface TagOption {
@@ -29,6 +30,7 @@ const TagMultiSelect: React.FC<TagMultiSelectProps> = ({
   selected
 }): JSX.Element => {
   const [loadedTags, setLoadedTags] = useState<Tag[]>([]);
+  const filterConfig = createFilter({ ignoreCase: true });
 
   useEffect(() => {
     const fetchTags = async (): Promise<void> => {
@@ -44,7 +46,7 @@ const TagMultiSelect: React.FC<TagMultiSelectProps> = ({
   }, []);
 
   const handleChange = (newOptions: ValueType<TagOption>): void => {
-    onChange((newOptions as OptionsType<TagOption>).map((option) => option.data) || []);
+    onChange((newOptions as OptionsType<TagOption> || []).map((option) => option.data) || []);
   };
 
   return (
@@ -53,7 +55,7 @@ const TagMultiSelect: React.FC<TagMultiSelectProps> = ({
       options={getAsOptions(loadedTags)}
       value={getAsOptions(selected)}
       onChange={handleChange}
-      data-testid="tag-multi-select"
+      filterOption={filterConfig}
     />
   );
 };

@@ -3,10 +3,9 @@ import React from 'react';
 
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-Tag;
-
 import CardSearchBar from '../CardSearchBar';
 import { TagFactory } from '../../../factories';
+import selectEvent from 'react-select-event';
 
 jest.mock('../CardPreviewsList');
 
@@ -25,17 +24,20 @@ describe(CardSearchBar, () => {
     mockGetAll.mockResolvedValue(loadedTags);
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     render(
       <CardSearchBar categoryId={categoryId} />
     );
+
+    selectEvent.openMenu(screen.getByText("Select..."));
+    await screen.findByText(loadedTags[0].name);
   });
 
   it('displays with preview list', () => {
     expect(
       screen.getByPlaceholderText('Search for a card...')
     ).toBeInTheDocument();
-    expect(screen.getByTestId("tag-multi-select")).toBeInTheDocument();
+
     expect(screen.getByRole('list')).toBeInTheDocument();
   });
 
@@ -45,17 +47,19 @@ describe(CardSearchBar, () => {
 
   it('updates input in previews list', () => {
     const input = Faker.company.companyName();
-    userEvent.type(screen.getByRole('textbox'), input);
+    userEvent.type(screen.getByPlaceholderText('Search for a card...'), input);
 
     expect(screen.queryByText(input)).not.toBeInTheDocument();
     expect(screen.getByText(input.toUpperCase())).toBeInTheDocument();
   });
 
   it('updates tag selection in previews list', async () => {
-    expect(screen.queryByText(loadedTags[0].name)).not.toBeInTheDocument();
+    const mockTagText = `Tag name is ${ loadedTags[0].name }`;
 
-    await selectEvent.select(screen.getByTestId("tag-multi-select"), loadedTags[0].name);
+    expect(screen.queryByText(mockTagText)).not.toBeInTheDocument();
 
-    expect(screen.getByText(loadedTags[0].name)).toBeInTheDocument();
+    await selectEvent.select(screen.getByText("Select..."), loadedTags[0].name);
+
+    expect(screen.getByText(mockTagText)).toBeInTheDocument();
   });
 });

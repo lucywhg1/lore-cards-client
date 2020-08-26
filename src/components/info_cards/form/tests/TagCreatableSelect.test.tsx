@@ -7,7 +7,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { TagFactory } from '../../../../factories';
-import TagInput from '../TagInput';
+import TagCreatableSelect from '../TagCreatableSelect';
 import { toast as mockToast } from 'react-toastify';
 
 const mockGetAll = jest.fn();
@@ -19,16 +19,16 @@ jest.mock('../../../../services/TagService', () => {
 
 const mockOnChange = jest.fn();
 
-describe(TagInput, () => {
+describe(TagCreatableSelect, () => {
   const loadedTags = TagFactory.buildList(2);
   const capitalizedInput = Faker.name.firstName();
 
-  let multiSelect: HTMLElement;
+  let creatableSelect: HTMLElement;
 
   const renderComponent = (): void => {
-    render(<TagInput onChange={mockOnChange} selected={[]} />);
+    render(<TagCreatableSelect onChange={mockOnChange} selected={[]} />);
 
-    multiSelect = screen.getByRole('textbox');
+    creatableSelect = screen.getByRole('textbox');
   };
 
   describe('when tag fetching fails', () => {
@@ -49,19 +49,19 @@ describe(TagInput, () => {
     beforeEach(async () => {
       renderComponent();
 
-      selectEvent.openMenu(multiSelect);
+      selectEvent.openMenu(creatableSelect);
       await screen.findByText(loadedTags[0].name);
     });
 
     it('displays a multi select with loaded options', () => {
-      expect(multiSelect).toBeInTheDocument();
+      expect(creatableSelect).toBeInTheDocument();
       loadedTags.forEach((tag) => {
         expect(screen.getByText(tag.name)).toBeInTheDocument();
       });
     });
 
     it('displays create label when user is typing', () => {
-      userEvent.type(multiSelect, capitalizedInput);
+      userEvent.type(creatableSelect, capitalizedInput);
       expect(
         screen.getByText(`create "${ capitalizedInput.toLowerCase() }"`)
       ).toBeInTheDocument();
@@ -69,13 +69,13 @@ describe(TagInput, () => {
 
     describe('#onChange behavior', () => {
       it('invokes when tag is selected', async () => {
-        await selectEvent.select(multiSelect, loadedTags[0].name);
+        await selectEvent.select(creatableSelect, loadedTags[0].name);
 
         expect(mockOnChange).toHaveBeenCalledWith([loadedTags[0]]);
       });
 
       it('invokes with lowercased input on tag creation', async () => {
-        selectEvent.create(multiSelect, capitalizedInput, {
+        selectEvent.create(creatableSelect, capitalizedInput, {
           createOptionText: /create/
         });
 

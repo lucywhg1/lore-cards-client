@@ -9,7 +9,7 @@ import { InfoCardInput } from '../../../types/InfoCard';
 import { ImageUpload, Input } from '../../form';
 import AdditionalSectionsInput from './AdditionalSectionsInput';
 import CategoryInput from './CategoryInput';
-import TagInput from './TagInput';
+import TagCreatableSelect from './TagCreatableSelect';
 import {
   sectionSchema,
   SUBTITLE_MAX_LENGTH,
@@ -141,7 +141,7 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
               name='tags'
               control={control}
               render={({ value, onChange }) => (
-                <TagInput onChange={onChange} selected={value} />
+                <TagCreatableSelect onChange={onChange} selected={value} />
               )}
             />
           </Form.Group>

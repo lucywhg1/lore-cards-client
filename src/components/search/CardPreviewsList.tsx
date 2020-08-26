@@ -19,6 +19,8 @@ const CardPreviewsList: React.FC<CardPreviewsListProps> = ({ categoryId,
   const history = useHistory();
   const [availableCards, setAvailableCards] = useState<InfoCardPreview[]>([]);
 
+  console.log("tags filter is " + JSON.stringify(tagsFilter));
+
   useEffect(() => {
     const fetchPreviews = async (): Promise<void> => {
       const infoCardService = new InfoCardService();
@@ -32,7 +34,7 @@ const CardPreviewsList: React.FC<CardPreviewsListProps> = ({ categoryId,
     };
 
     fetchPreviews();
-  }, []);
+  }, [categoryId]);
 
   const handleSelect = (cardId: number): void => {
     history.push(`/cards/${ cardId }`);
@@ -40,7 +42,7 @@ const CardPreviewsList: React.FC<CardPreviewsListProps> = ({ categoryId,
 
   const filteredCards = (): JSX.Element[] => {
     const query = input.toLowerCase();
-    const filtered: JSX.Element = [];
+    const filtered: JSX.Element[] = [];
 
     availableCards.forEach(
       (card) => {

@@ -5,32 +5,67 @@
       "title": "Shar",
       "subtitle": "The One Below",
       "summary": "Goddess of darkness, chaos, redemption, etc. All-around fairly cool lady/divinity.",
-      "category": { "id": 0, "name": "Religion" },
-      "avatarUrl": "https://i2.wp.com/standsinthefire.com/wp-content/uploads/2015/03/255mysteris.jpg?fit=1600%2C628&ssl=1"
+      "category": {
+        "id": 0,
+        "name": "Religion"
+      },
+      "avatarUrl": "https://i2.wp.com/standsinthefire.com/wp-content/uploads/2015/03/255mysteris.jpg?fit=1600%2C628&ssl=1",
+      "tags": []
     },
     {
       "id": 1,
       "title": "Selune",
       "subtitle": "The One Above",
       "summary": "Goddess of moonlight, serenity, etc. Watches over every single Lunelle ever and has great croissant recipes.",
-      "category": { "id": 0, "name": "Religion" },
-      "avatarUrl": "https://i.pinimg.com/564x/39/f6/c9/39f6c9282aef73df69039a3160d9fb98.jpg"
+      "category": {
+        "id": 0,
+        "name": "Religion"
+      },
+      "avatarUrl": "https://i.pinimg.com/564x/39/f6/c9/39f6c9282aef73df69039a3160d9fb98.jpg",
+      "tags": []
     },
     {
       "id": 2,
       "title": "Selune and Shar are sisters",
       "summary": "You heard Selune and Shar are.... sisters!",
-      "category": { "id": 2, "name": "Rumors" }
+      "category": {
+        "id": 2,
+        "name": "Rumors"
+      },
+      "tags": [
+        {
+          "id": 0,
+          "name": "gold"
+        }
+      ]
     }
   ],
   "categories": [
-    { "id": 0, "name": "Religion" },
-    { "id": 1, "name": "Magic" },
-    { "id": 2, "name": "Rumors" }
+    {
+      "id": 0,
+      "name": "Religion"
+    },
+    {
+      "id": 1,
+      "name": "Magic"
+    },
+    {
+      "id": 2,
+      "name": "Rumors"
+    }
   ],
   "tags": [
-    { "id": 0, "name": "gold" },
-    { "id": 1, "name": "adamantine" },
-    { "id": 2, "name": "wood" }
+    {
+      "id": 0,
+      "name": "gold"
+    },
+    {
+      "id": 1,
+      "name": "adamantine"
+    },
+    {
+      "id": 2,
+      "name": "wood"
+    }
   ]
 }

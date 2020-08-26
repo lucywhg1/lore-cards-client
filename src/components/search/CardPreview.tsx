@@ -13,7 +13,7 @@ const CardPreview: React.FC<CardPreviewProps> = ({
   preview,
   onClick
 }): JSX.Element => {
-  const { id, title, subtitle, summary, category, avatarUrl } = preview;
+  const { id, title, subtitle, summary, category, avatarUrl, tags } = preview;
 
   return (
     <ListGroup.Item

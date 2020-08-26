@@ -10,10 +10,10 @@ interface MockCardPreviewsListProps {
 const MockCardPreviewsList: React.FC<MockCardPreviewsListProps> = ({ input, categoryId, tagsFilter }): JSX.Element => {
   return (
     <ul>
-      <li>{input.toUpperCase()}</li>
-      <li>{categoryId}</li>
-      {tags.map(tag => (
-        <li>{tag.name}</li>
+      <li key="input">{input.toUpperCase()}</li>
+      <li key="category">{categoryId}</li>
+      {tagsFilter.map(tag => (
+        <li key="filtered-tag">{`Tag name is ${ tag.name }`}</li>
       ))}
     </ul>
   );

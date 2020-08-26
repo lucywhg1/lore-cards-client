@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container, Jumbotron } from 'react-bootstrap';
 
-import CardPreviewsList from './search/CardPreviewsList';
 import CardSearchBar from './search/CardSearchBar';
 import NewCardModal from './info_cards/NewCardModal';
 
