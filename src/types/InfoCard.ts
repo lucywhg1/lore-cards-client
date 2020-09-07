@@ -20,7 +20,7 @@ interface InfoCard extends Entity {
   description: Section;
   summary: string;
   tags: Tag[];
-  subtitle?: string;
+  subtitle: string;
   avatarUrl?: string;
   additionalSections?: Section[];
 }
@@ -35,21 +35,22 @@ export interface InfoCardPreview
       'title' | 'subtitle' | 'summary' | 'avatarUrl' | 'category' | 'tags'
     > {}
 
-export const isInCardBody = (card: InfoCardPreview, query: string): boolean => (card.title.toLowerCase().includes(query) ||
-  card.subtitle?.toLowerCase().includes(query) ||
-  card.summary.toLowerCase().includes(query));
+export const isInPreviewBody = (
+  card: InfoCardPreview,
+  query: string
+): boolean =>
+  card.title.toLowerCase().includes(query) ||
+  card.subtitle.toLowerCase().includes(query) ||
+  card.summary.toLowerCase().includes(query);
 
-export const hasTags = (card: InfoCardPreview, tags: Tag[]): boolean => {
-  let tagsMatch = true;
-
-  for (let index = 0; index < tags.length; index += 1) {
-    if (!card.tags?.includes(tags[index])) {
-      tagsMatch = false;
-      break;
-    }
-  }
-
-  return tagsMatch;
+export const hasAllTags = (card: InfoCardPreview, tags: Tag[]): boolean => {
+  return tags.every((filterTag) =>
+    card.tags?.find((cardTag) => cardTag.id === filterTag.id)
+  );
 };
 
 export default InfoCard;
+
+// 3 tags, does the card have ALL of them? Is this tag set a subset of the main set?
+// look for each tag, if matches, add 1 to len
+// break when all

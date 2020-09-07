@@ -1,6 +1,6 @@
-import React from "react";
-import { InfoCardInput } from "../../../../types/InfoCard";
-import { InfoCardInputFactory } from "../../../../factories";
+import React from 'react';
+import { InfoCardInput } from '../../../../types/InfoCard';
+import { InfoCardInputFactory } from '../../../../factories';
 
 const MockInfoCardForm: React.FC<{
   onSubmit: (data: InfoCardInput) => void;
@@ -13,9 +13,9 @@ const MockInfoCardForm: React.FC<{
   );
 
   return (
-    <form data-testid="info-card-form">
+    <form data-testid='info-card-form'>
       <button
-        type="submit"
+        type='submit'
         onClick={(event) => {
           event.preventDefault();
           onSubmit(mockSubmitData);

@@ -1,5 +1,5 @@
 import { emptyCategory } from './../types/Category';
-import { InfoCardPreview } from './../types/InfoCard';
+import { InfoCardPreview } from '../types/InfoCard';
 import { Factory } from 'fishery';
 import Faker from 'faker';
 import { InfoCardInput } from '../types/InfoCard';

@@ -11,4 +11,5 @@ export type {
   Tag,
   InfoCardInput,
   InfoCardPreview,
-  InfoCard};
+  InfoCard
+};

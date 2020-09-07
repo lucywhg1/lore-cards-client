@@ -1,6 +1,15 @@
-import CategoryFactory from "./CategoryFactory";
-import { InfoCardInputFactory } from "./InfoCardFactory";
-import SectionFactory from "./SectionFactory";
-import TagFactory from "./TagFactory";
+import CategoryFactory from './CategoryFactory';
+import {
+  InfoCardInputFactory,
+  InfoCardPreviewFactory
+} from './InfoCardFactory';
+import SectionFactory from './SectionFactory';
+import TagFactory from './TagFactory';
 
-export { CategoryFactory, InfoCardInputFactory, SectionFactory, TagFactory };
+export {
+  CategoryFactory,
+  InfoCardInputFactory,
+  InfoCardPreviewFactory,
+  SectionFactory,
+  TagFactory
+};

@@ -1,18 +1,14 @@
 import React from 'react';
-import { Form, Navbar } from 'react-bootstrap';
-import Logo from './Logo';
+import { Navbar } from 'react-bootstrap';
+import Icon from './Icon';
+import logo from '../../assets/logo.png';
 
 const NavBar: React.FC = (): JSX.Element => {
   return (
-    <Navbar variant='dark' bg='primary'>
-      <Navbar.Brand href='/' className='rounded bg-secondary ' role='button'>
-        <Logo />
+    <Navbar sticky='top' variant='dark' bg='primary'>
+      <Navbar.Brand href='/' className='rounded bg-secondary' role='button'>
+        <Icon src={logo} text='Lore Cards' />
       </Navbar.Brand>
-      <div className='ml-auto'>
-        <Form inline>
-          <Form.Control type='text' placeholder='Search for a card...' />
-        </Form>
-      </div>
     </Navbar>
   );
 };
