@@ -1,16 +1,22 @@
 import React from 'react';
-import { ListGroup } from 'react-bootstrap';
+import { Category } from '../../types';
+
 import CategoryButtonList from './CategoryButtonList';
 
-const SideBar: React.FC = (): JSX.Element => {
+interface SideBarProps {
+  setCategory: (category?: Category) => void;
+  category?: Category;
+}
+
+const SideBar: React.FC<SideBarProps> = ({ setCategory }): JSX.Element => {
+  const handleCategorySelect = (category?: Category) => {
+    setCategory(category);
+  };
+
   return (
-    <ListGroup
-      variant='flush'
-      className='flex-column border-mid-width border-primary'
-      defaultActiveKey='all'
-    >
-      <CategoryButtonList />
-    </ListGroup>
+    <div>
+      <CategoryButtonList onSelect={handleCategorySelect} />
+    </div>
   );
 };
 

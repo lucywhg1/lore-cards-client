@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ListGroup from 'react-bootstrap/ListGroup';
 import { toast } from 'react-toastify';
 
 import CategoryService from '../../services/CategoryService';
@@ -6,10 +7,19 @@ import { Category } from '../../types';
 import CategoryButton from './CategoryButton';
 import NavButton from './NavButton';
 
-const CategoryButtonList: React.FC = (): JSX.Element => {
+const ALL_CATEGORIES_KEY = 'category-all';
+
+interface CategoryButtonList {
+  onSelect: (category?: Category) => void;
+}
+
+const CategoryButtonList: React.FC<CategoryButtonList> = ({
+  onSelect
+}): JSX.Element => {
   const [availableCategories, setAvailableCategories] = useState<Category[]>(
     []
   );
+  const [activeKey, setActiveKey] = useState(ALL_CATEGORIES_KEY);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -26,27 +36,34 @@ const CategoryButtonList: React.FC = (): JSX.Element => {
     fetchCategories();
   }, []);
 
-  const handleCategorySelect = (id: number) => {
-    console.log(id);
-    // alert(`/categories/${key}`);
+  const getButtonKey = (category?: Category): string =>
+    category ? `category-${category.id}` : 'category-all';
+
+  const handleCategorySelect = (category?: Category) => {
+    setActiveKey(getButtonKey(category));
+    onSelect(category);
   };
 
   return (
-    <>
+    <ListGroup
+      variant='flush'
+      className='flex-column border-mid-width border-primary'
+    >
       <NavButton
-        key={-1}
-        onClick={() => handleCategorySelect(-1)}
-        iconSrc='https://image.flaticon.com/icons/png/512/130/130304.png'
+        key={ALL_CATEGORIES_KEY}
+        onClick={() => handleCategorySelect()}
         text='All Categories'
+        active={activeKey === getButtonKey()}
       />
       {availableCategories.map((category) => (
         <CategoryButton
-          key={category.id}
+          key={getButtonKey(category)}
           category={category}
-          onClick={() => handleCategorySelect(category.id)}
+          onClick={() => handleCategorySelect(category)}
+          active={activeKey === getButtonKey(category)}
         />
       ))}
-    </>
+    </ListGroup>
   );
 };
 
