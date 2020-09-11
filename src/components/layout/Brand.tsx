@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 
-interface IconProps {
-  src?: string;
+interface BrandProps {
+  renderIcon?: () => React.ReactNode;
   text: string;
 }
 
-const Icon: React.FC<IconProps> = ({ src, text }): JSX.Element => {
+// Displays text with an icon as child or, if none provided, an auto-generated initials icon.
+const Brand: React.FC<BrandProps> = ({ renderIcon, text }): JSX.Element => {
   const [initials, setInitials] = useState('?');
 
   useEffect(() => {
-    if (!src) {
+    if (!renderIcon) {
       setInitials(text.substr(0, 2));
     }
-  }, [src, text]);
+  }, [renderIcon, text]);
 
   return (
     <Container>
       <span className='mr-2'>
-        {src ? (
-          <img alt={`${text} Icon`} src={src} width='32' height='32' />
+        {renderIcon ? (
+          renderIcon()
         ) : (
           <span className='font-weight-bold rounded-pill border-mid-width p-1'>
             {initials}
@@ -31,4 +32,4 @@ const Icon: React.FC<IconProps> = ({ src, text }): JSX.Element => {
   );
 };
 
-export default Icon;
+export default Brand;

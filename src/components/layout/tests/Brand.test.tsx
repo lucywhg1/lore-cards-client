@@ -2,21 +2,21 @@ import React from 'react';
 
 import { render, screen } from '@testing-library/react';
 
-import Icon from '../Icon';
+import Brand from '../Brand';
 
-describe(Icon, () => {
+describe(Brand, () => {
   it('displays text and initials with no image', () => {
-    render(<Icon text='Some Text' />);
+    render(<Brand text='Some Text' />);
 
     expect(screen.getByText('Some Text')).toBeInTheDocument();
     expect(screen.getByText('So')).toBeInTheDocument(); // initials and full text
     expect(screen.queryByRole('img')).not.toBeInTheDocument();
   });
 
-  it('displays text and image when src provided', () => {
-    render(<Icon src='fake' text='Some Text' />);
+  it('displays text and icon component when src provided', () => {
+    render(<Brand renderIcon={() => <img src='fake' />} text='Some Text' />);
 
-    expect(screen.getByRole('img')).toBeInTheDocument();
+    expect(screen.getByRole('img')).toHaveAttribute('src', 'fake');
     expect(screen.getByText('Some Text')).toBeInTheDocument();
   });
 });

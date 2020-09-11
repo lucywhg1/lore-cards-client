@@ -1,6 +1,6 @@
 import React from 'react';
 import { ListGroup } from 'react-bootstrap';
-import Icon from '../layout/Icon';
+import Brand from '../layout/Brand';
 
 interface NavButtonProps {
   iconSrc?: string;
@@ -17,6 +17,10 @@ const NavButton: React.FC<NavButtonProps> = ({
   className,
   variant
 }): JSX.Element => {
+  const renderIcon = (): React.ReactNode => (
+    <img alt={`${text} Icon`} src={iconSrc} width='32' height='32' />
+  );
+
   return (
     <ListGroup.Item
       className={className}
@@ -24,7 +28,7 @@ const NavButton: React.FC<NavButtonProps> = ({
       variant={variant}
       onClick={onClick}
     >
-      <Icon src={iconSrc} text={text} />
+      <Brand renderIcon={renderIcon} text={text} />
     </ListGroup.Item>
   );
 };
