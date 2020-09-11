@@ -31,7 +31,14 @@ const CardPreview: React.FC<CardPreviewProps> = ({
                   {category.name}
                 </Badge>
               </Card.Title>
-              <Card.Subtitle>{subtitle}</Card.Subtitle>
+              <Card.Subtitle>
+                {subtitle}
+                {tags.map((tag) => (
+                  <Badge pill variant='info' key={tag.id}>
+                    {tag.name}
+                  </Badge>
+                ))}
+              </Card.Subtitle>
               <Card.Text className='mt-1 d-none d-sm-block'>
                 <em>{summary}</em>
               </Card.Text>

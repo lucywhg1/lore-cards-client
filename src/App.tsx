@@ -6,7 +6,6 @@ import { ToastContainer } from 'react-toastify';
 
 import Home from './components/Home';
 import ShowCardPage from './components/info_cards/ShowCardPage';
-import NavBar from './components/layout/NavBar';
 import Dashboard from './components/layout/Dashboard';
 
 const CustomToastContainer: React.FC = () => {
@@ -29,7 +28,6 @@ const App: React.FC = () => {
   return (
     <>
       <BrowserRouter>
-        <NavBar />
         <Dashboard />
         <Switch>
           <Route exact path='/'>

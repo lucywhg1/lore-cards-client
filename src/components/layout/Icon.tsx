@@ -1,29 +1,33 @@
-import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Container } from 'react-bootstrap';
 
 interface IconProps {
   src?: string;
   text: string;
 }
 
-/**
- * Displays an icon with text that responsively hides on small screens.
- * If no icon is given, uses first letters of given text.
- */
 const Icon: React.FC<IconProps> = ({ src, text }): JSX.Element => {
+  const [initials, setInitials] = useState('?');
+
+  useEffect(() => {
+    if (!src) {
+      setInitials(text.substr(0, 2));
+    }
+  }, [src, text]);
+
   return (
-    <Row className='ml-auto mr-auto'>
-      <Col xs={1}>
+    <Container>
+      <span className='mr-2'>
         {src ? (
           <img alt={`${text} Icon`} src={src} width='32' height='32' />
         ) : (
-          <div />
+          <span className='font-weight-bold rounded-pill border-mid-width p-1'>
+            {initials}
+          </span>
         )}
-      </Col>
-      <Col xs={{ offset: 1 }} className='d-none d-md-block'>
-        <span className='font-weight-lighter'>{text}</span>
-      </Col>
-    </Row>
+      </span>
+      <span className='d-none d-md-inline align-middle'>{text}</span>
+    </Container>
   );
 };
 
