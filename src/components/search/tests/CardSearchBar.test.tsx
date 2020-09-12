@@ -7,6 +7,8 @@ import CardSearchBar from '../CardSearchBar';
 import { TagFactory } from '../../../factories';
 import selectEvent from 'react-select-event';
 
+const mockSetFilter = jest.fn();
+
 jest.mock('../CardPreviewsList');
 
 const mockGetAll = jest.fn();
@@ -16,50 +18,57 @@ jest.mock('../../../services/TagService', () => {
   });
 });
 
+/**
+ * It updates body and tags, calls setFilter with each using updated
+ */
+
 describe(CardSearchBar, () => {
-  const categoryId = 1;
-  const loadedTags = TagFactory.buildList(2);
+  const body = Faker.lorem.word();
+  const [includedTag, excludedTag] = TagFactory.buildList(2);
+
+  let searchInput: HTMLElement;
+  let selectMenu: HTMLElement;
 
   beforeAll(() => {
-    mockGetAll.mockResolvedValue(loadedTags);
+    mockGetAll.mockResolvedValue([includedTag, excludedTag]);
   });
 
   beforeEach(async () => {
     render(
-      <CardSearchBar categoryId={categoryId} />
+      <CardSearchBar
+        filter={{ body, tags: [includedTag] }}
+        setFilter={mockSetFilter}
+      />
     );
 
-    selectEvent.openMenu(screen.getByText("Select..."));
-    await screen.findByText(loadedTags[0].name);
+    searchInput = screen.getByPlaceholderText('Search for a card...');
+    selectMenu = await screen.findByText(includedTag.name);
   });
 
-  it('displays with preview list', () => {
-    expect(
-      screen.getByPlaceholderText('Search for a card...')
-    ).toBeInTheDocument();
-
-    expect(screen.getByRole('list')).toBeInTheDocument();
+  it('displays input with passed in body', () => {
+    expect(searchInput).toHaveAttribute('value', body);
   });
 
-  it("passes categoryId to previews list", () => {
-    expect(screen.getByText(String(categoryId))).toBeInTheDocument();
+  it('displays tag filter with passed in tags', () => {
+    expect(screen.getByText(includedTag.name)).toBeInTheDocument();
+    expect(screen.queryByText(excludedTag.name)).not.toBeInTheDocument();
   });
 
-  it('updates input in previews list', () => {
-    const input = Faker.company.companyName();
-    userEvent.type(screen.getByPlaceholderText('Search for a card...'), input);
+  it('invokes #setFilter with updated input', () => {
+    userEvent.type(searchInput, 'a');
 
-    expect(screen.queryByText(input)).not.toBeInTheDocument();
-    expect(screen.getByText(input.toUpperCase())).toBeInTheDocument();
+    expect(mockSetFilter).toHaveBeenCalledWith({
+      body: body + 'a',
+      tags: [includedTag]
+    });
   });
 
-  it('updates tag selection in previews list', async () => {
-    const mockTagText = `Tag name is ${ loadedTags[0].name }`;
+  it('invokes #setFilter with updated tags', async () => {
+    await selectEvent.select(selectMenu, excludedTag.name);
 
-    expect(screen.queryByText(mockTagText)).not.toBeInTheDocument();
-
-    await selectEvent.select(screen.getByText("Select..."), loadedTags[0].name);
-
-    expect(screen.getByText(mockTagText)).toBeInTheDocument();
+    expect(mockSetFilter).toHaveBeenCalledWith({
+      body,
+      tags: [includedTag, excludedTag]
+    });
   });
 });

@@ -1,12 +1,10 @@
 import 'react-toastify/dist/ReactToastify.css';
 
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import Home from './components/Home';
-import ShowCardPage from './components/info_cards/ShowCardPage';
-import Dashboard from './components/layout/Dashboard';
+import Routes from './Routes';
 
 const CustomToastContainer: React.FC = () => {
   return (
@@ -28,15 +26,7 @@ const App: React.FC = () => {
   return (
     <>
       <BrowserRouter>
-        <Dashboard />
-        <Switch>
-          <Route exact path='/'>
-            <Home />
-          </Route>
-          <Route path='/cards/:id'>
-            <ShowCardPage />
-          </Route>
-        </Switch>
+        <Routes />
       </BrowserRouter>
       <CustomToastContainer />
     </>

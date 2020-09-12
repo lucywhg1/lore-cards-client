@@ -1,6 +1,10 @@
 import { InfoCard, InfoCardInput, InfoCardPreview } from '../types';
 import ApiService from './ApiService';
 
+interface InfoCardFilter {
+  categoryId?: number;
+}
+
 class InfoCardService extends ApiService {
   public constructor() {
     super('/cards');
@@ -14,8 +18,13 @@ class InfoCardService extends ApiService {
     return await super.getModel<InfoCard>(id);
   }
 
-  public async getAll(categoryId?: number): Promise<InfoCardPreview[]> {
-    return await super.getAllModels<InfoCardPreview>({ categoryId });
+  public async getAll(filter: InfoCardFilter): Promise<InfoCardPreview[]> {
+    if (filter.categoryId) {
+      return await super.getAllModels<InfoCardPreview>(
+        `?category.id=${filter.categoryId}`
+      );
+    }
+    return await super.getAllModels<InfoCardPreview>();
   }
 }
 

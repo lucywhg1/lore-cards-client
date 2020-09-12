@@ -76,5 +76,6 @@
   },
   "jest": {
     "clearMocks": true
-  }
+  },
+  "jestrunner.jestCommand": "yarn test --"
 }

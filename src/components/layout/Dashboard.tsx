@@ -1,9 +1,9 @@
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import React, { useState } from 'react';
-import Home from '../Home';
-import SideBar from '../navigation/SideBar';
+import SideBar from '../nav_bar/SideBar';
 import { Category } from '../../types';
+import PreviewPanel from './PreviewPanel';
 
 const Dashboard: React.FC = (): JSX.Element => {
   const [category, setCategory] = useState<Category>();
@@ -13,8 +13,8 @@ const Dashboard: React.FC = (): JSX.Element => {
       <Col xs={2}>
         <SideBar category={category} setCategory={setCategory} />
       </Col>
-      <Col>
-        <Home />
+      <Col className='bg-light p-2' md={4}>
+        <PreviewPanel categoryId={category?.id} />
       </Col>
     </Row>
   );

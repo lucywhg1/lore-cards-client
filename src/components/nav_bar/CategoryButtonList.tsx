@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ListGroup from 'react-bootstrap/ListGroup';
 import { toast } from 'react-toastify';
 
 import CategoryService from '../../services/CategoryService';
@@ -45,10 +44,7 @@ const CategoryButtonList: React.FC<CategoryButtonList> = ({
   };
 
   return (
-    <ListGroup
-      variant='flush'
-      className='flex-column border-mid-width border-primary'
-    >
+    <>
       <NavButton
         key={ALL_CATEGORIES_KEY}
         onClick={() => handleCategorySelect()}
@@ -63,7 +59,7 @@ const CategoryButtonList: React.FC<CategoryButtonList> = ({
           active={activeKey === getButtonKey(category)}
         />
       ))}
-    </ListGroup>
+    </>
   );
 };
 

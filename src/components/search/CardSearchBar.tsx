@@ -1,44 +1,49 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form, InputGroup } from 'react-bootstrap';
-import CardPreviewsList from './CardPreviewsList';
 import { Tag } from '../../types';
 import TagMultiSelect from '../tags/TagMultiSelect';
 
-interface SearchBarProps {
-  categoryId: number;
+export interface SearchFilter {
+  body: string;
+  tags: Tag[];
 }
 
-const CardSearchBar: React.FC<SearchBarProps> = ({ categoryId
-}): JSX.Element => {
-  const [input, setInput] = useState('');
-  const [tagsFilter, setTagsFilter] = useState<Tag[]>([]);
+interface CardSearchBarProps {
+  filter: SearchFilter;
+  setFilter: (newFilter: SearchFilter) => void;
+}
 
+const CardSearchBar: React.FC<CardSearchBarProps> = ({
+  filter,
+  setFilter
+}): JSX.Element => {
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
-    setInput(event.target.value);
+    setFilter({ ...filter, body: event.target.value });
   };
 
   const handleSelectChange = (selected: Tag[]): void => {
-    setTagsFilter(selected);
+    setFilter({ ...filter, tags: selected });
   };
 
   return (
-    <>
-      <Form inline>
-        <InputGroup>
-          <Form.Control
-            type='text'
-            placeholder='Search for a card...'
-            onChange={handleInputChange}
+    <Form inline>
+      <InputGroup>
+        <Form.Control
+          type='text'
+          placeholder='Search for a card...'
+          value={filter.body}
+          onChange={handleInputChange}
+        />
+        <InputGroup.Append>
+          <TagMultiSelect
+            selected={filter.tags}
+            onChange={handleSelectChange}
           />
-          <InputGroup.Append>
-            <TagMultiSelect selected={tagsFilter} onChange={handleSelectChange} />
-          </InputGroup.Append>
-        </InputGroup>
-      </Form>
-      <CardPreviewsList input={input} tagsFilter={tagsFilter} categoryId={categoryId} />
-    </>
+        </InputGroup.Append>
+      </InputGroup>
+    </Form>
   );
 };
 

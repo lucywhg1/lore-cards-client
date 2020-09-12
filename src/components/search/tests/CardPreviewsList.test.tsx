@@ -27,8 +27,18 @@ describe(CardPreviewsList, () => {
     InfoCardPreviewFactory.build({ title: uniqueTitle.toUpperCase(), tags: [] })
   ];
 
-  const renderComponent = async (input: string = '', categoryId?: number, tagsFilter: Tag[] = []): Promise<void> => {
-    render(<CardPreviewsList input={input} tagsFilter={tagsFilter} categoryId={categoryId} />);
+  const renderComponent = async (
+    categoryId?: number,
+    input: string = '',
+    tagsFilter: Tag[] = []
+  ): Promise<void> => {
+    render(
+      <CardPreviewsList
+        bodyFilter={input}
+        tagsFilter={tagsFilter}
+        categoryId={categoryId}
+      />
+    );
 
     await screen.findAllByTestId('card-preview-item');
   };
@@ -37,20 +47,20 @@ describe(CardPreviewsList, () => {
     mockGetAll.mockResolvedValue(cardList);
   });
 
-  describe("fetching cards", () => {
+  describe('card fetching', () => {
     it('calls #InfoCardService with no category id', () => {
-      renderComponent('', 1);
+      renderComponent();
 
-      expect(mockGetAll).toHaveBeenCalledWith(1);
+      expect(mockGetAll).toHaveBeenCalledWith({ categoryId: undefined });
     });
 
     it('calls #InfoCardService with category id', () => {
-      renderComponent('');
+      const categoryId = 1;
+      renderComponent(categoryId);
 
-      expect(mockGetAll).toHaveBeenLastCalledWith(undefined);
+      expect(mockGetAll).toHaveBeenLastCalledWith({ categoryId });
     });
   });
-
 
   it('loads all available cards with no input or tag filter', async () => {
     await renderComponent();
@@ -62,7 +72,7 @@ describe(CardPreviewsList, () => {
 
   it('filters cards with lowercased input', async () => {
     const [excludedCard, ...matchingCards] = cardList;
-    await renderComponent(uniqueTitle);
+    await renderComponent(1, uniqueTitle);
 
     expect(screen.queryByText(excludedCard.title)).not.toBeInTheDocument();
     matchingCards.forEach((card) => {
@@ -72,7 +82,7 @@ describe(CardPreviewsList, () => {
 
   it('filters cards with tag selection', async () => {
     const [includedCard, ...matchingCards] = cardList;
-    await renderComponent('', 1, [includedCard.tags[0]]);
+    await renderComponent(1, '', [includedCard.tags[0]]);
 
     expect(screen.getByText(includedCard.title)).toBeInTheDocument();
     matchingCards.forEach((card) => {
@@ -84,6 +94,6 @@ describe(CardPreviewsList, () => {
     await renderComponent();
     userEvent.click(screen.getByText(cardList[0].title));
 
-    expect(mockHistoryPush).toHaveBeenCalledWith(`/cards/${ cardList[0].id }`);
+    expect(mockHistoryPush).toHaveBeenCalledWith(`/cards/${cardList[0].id}`);
   });
 });

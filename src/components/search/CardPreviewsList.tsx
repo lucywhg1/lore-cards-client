@@ -9,13 +9,13 @@ import { isInPreviewBody, hasAllTags } from '../../types/InfoCard';
 
 interface CardPreviewsListProps {
   categoryId?: number;
-  input: string;
+  bodyFilter: string;
   tagsFilter: Tag[];
 }
 
 const CardPreviewsList: React.FC<CardPreviewsListProps> = ({
   categoryId,
-  input,
+  bodyFilter,
   tagsFilter
 }): JSX.Element => {
   const history = useHistory();
@@ -26,7 +26,7 @@ const CardPreviewsList: React.FC<CardPreviewsListProps> = ({
       const infoCardService = new InfoCardService();
 
       infoCardService
-        .getAll(categoryId)
+        .getAll({ categoryId })
         .then((response) => {
           setAvailableCards(response);
         })
@@ -41,7 +41,7 @@ const CardPreviewsList: React.FC<CardPreviewsListProps> = ({
   };
 
   const filteredCards = (): JSX.Element[] => {
-    const query = input.toLowerCase();
+    const query = bodyFilter.toLowerCase();
     const filtered: JSX.Element[] = [];
 
     availableCards.forEach((card) => {

@@ -1,4 +1,5 @@
 import React from 'react';
+import ListGroup from 'react-bootstrap/ListGroup';
 import { Category } from '../../types';
 
 import CategoryButtonList from './CategoryButtonList';
@@ -14,9 +15,12 @@ const SideBar: React.FC<SideBarProps> = ({ setCategory }): JSX.Element => {
   };
 
   return (
-    <div>
+    <ListGroup
+      variant='flush'
+      className='flex-column border-mid-width border-primary'
+    >
       <CategoryButtonList onSelect={handleCategorySelect} />
-    </div>
+    </ListGroup>
   );
 };
 
