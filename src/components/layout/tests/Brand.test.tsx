@@ -14,7 +14,7 @@ describe(Brand, () => {
   });
 
   it('displays text and icon component when src provided', () => {
-    render(<Brand renderIcon={() => <img src='fake' />} text='Some Text' />);
+    render(<Brand icon={<img src='fake' />} text='Some Text' />);
 
     expect(screen.getByRole('img')).toHaveAttribute('src', 'fake');
     expect(screen.getByText('Some Text')).toBeInTheDocument();

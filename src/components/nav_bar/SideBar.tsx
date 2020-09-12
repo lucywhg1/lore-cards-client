@@ -15,10 +15,7 @@ const SideBar: React.FC<SideBarProps> = ({ setCategory }): JSX.Element => {
   };
 
   return (
-    <ListGroup
-      variant='flush'
-      className='flex-column border-mid-width border-primary'
-    >
+    <ListGroup variant='flush' className=''>
       <CategoryButtonList onSelect={handleCategorySelect} />
     </ListGroup>
   );

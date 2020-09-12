@@ -1,9 +1,10 @@
 import React, { ChangeEvent } from 'react';
 import { Form, Button, Col } from 'react-bootstrap';
-import { PlusSquare, DashSquare } from 'react-bootstrap-icons';
 import Section from '../../../types/Section';
 import { DeepMap } from 'react-hook-form/dist/types/utils';
 import { FieldError } from 'react-hook-form';
+import Brand from '../../layout/Brand';
+import { TiMinus, TiPlus } from 'react-icons/ti';
 
 interface additionalSectionsInputProps {
   sections?: Section[];
@@ -70,13 +71,13 @@ const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({
             </Form.Group>
             <Form.Group as={Col} controlId={`section-${index}-remove-button`}>
               <Button
-                variant='outline-danger'
+                variant='warning'
                 size='sm'
                 type='button'
                 title='Remove section'
                 onClick={() => removeSection(index)}
               >
-                <DashSquare />
+                <Brand text='Remove' icon={<TiMinus />} />
               </Button>
             </Form.Group>
           </Form.Row>
@@ -103,14 +104,8 @@ const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({
   return (
     <>
       {mapSectionsToInputs()}
-      <Button
-        variant='outline-secondary'
-        size='sm'
-        type='button'
-        onClick={addSection}
-      >
-        <PlusSquare className='mr-2' />
-        Add Section
+      <Button variant='secondary' size='sm' type='button' onClick={addSection}>
+        <Brand text='Add' icon={<TiPlus />} />
       </Button>
     </>
   );

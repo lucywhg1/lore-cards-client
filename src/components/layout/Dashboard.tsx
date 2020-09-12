@@ -10,7 +10,7 @@ const Dashboard: React.FC = (): JSX.Element => {
 
   return (
     <Row>
-      <Col xs={2}>
+      <Col className='pr-0 bg-dark rounded' xs={2}>
         <SideBar category={category} setCategory={setCategory} />
       </Col>
       <Col className='bg-light p-2' md={4}>

@@ -15,7 +15,6 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({
 }): JSX.Element => {
   return (
     <NavButton
-      className='border-bottom border-secondary'
       active={active}
       variant='secondary'
       onClick={onClick}

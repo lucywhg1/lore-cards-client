@@ -19,18 +19,21 @@ const NavButton: React.FC<NavButtonProps> = ({
   variant,
   active = false
 }): JSX.Element => {
-  const renderImg = (): React.ReactNode => (
+  const mergedClassName = className;
+  const imgIcon = (
     <img alt={`${text} Icon`} src={iconSrc} width='32' height='32' />
   );
 
   return (
     <ListGroup.Item
-      className={active ? className + ' bg-primary text-light' : className}
+      className={
+        active ? mergedClassName + ' bg-primary text-light' : mergedClassName
+      }
       action
       variant={variant}
       onClick={onClick}
     >
-      <Brand renderIcon={iconSrc ? renderImg : undefined} text={text} />
+      <Brand icon={iconSrc ? imgIcon : undefined} text={text} />
     </ListGroup.Item>
   );
 };
