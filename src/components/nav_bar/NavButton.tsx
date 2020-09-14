@@ -19,15 +19,13 @@ const NavButton: React.FC<NavButtonProps> = ({
   variant,
   active = false
 }): JSX.Element => {
-  const mergedClassName = 'pl-0 ' + className;
-
   return (
     <ListGroup.Item
       className={
         active
-          ? mergedClassName +
+          ? className +
             ' bg-primary-translucent text-light border-left-thick-light'
-          : mergedClassName
+          : className
       }
       action
       variant={variant}

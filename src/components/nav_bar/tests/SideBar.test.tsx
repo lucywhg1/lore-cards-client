@@ -7,9 +7,21 @@ import SideBar from '../SideBar';
 
 const mockSetCategory = jest.fn();
 
+jest.mock('../../../services/CategoryService', () => {
+  return jest.fn().mockImplementation(() => {
+    return { getAll: jest.fn().mockResolvedValue([]) };
+  });
+});
+
 describe(SideBar, () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     render(<SideBar setCategory={mockSetCategory} />);
+
+    await screen.findAllByRole('button');
+  });
+
+  it('has a #NewCardModal button', () => {
+    expect(screen.getByRole('button', { name: /New Card/ }));
   });
 
   describe('#CategoryButtonList behavior', () => {

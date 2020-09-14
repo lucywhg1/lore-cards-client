@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { TiPlus } from 'react-icons/ti';
 import { InfoCardInput } from '../../types/InfoCard';
+import Brand from '../layout/Brand';
 import InfoCardForm from './form/InfoCardForm';
 
 const NewCardModal: React.FC = () => {
@@ -17,13 +19,13 @@ const NewCardModal: React.FC = () => {
   return (
     <>
       <Button
-        variant='primary'
-        className='text-light'
+        className='rounded-0'
+        variant='success'
         onClick={() => {
           setShow(true);
         }}
       >
-        New Info Card
+        <Brand text='New Card' icon={<TiPlus />} />
       </Button>
 
       <Modal
@@ -33,8 +35,8 @@ const NewCardModal: React.FC = () => {
         backdrop='static'
         size='lg'
       >
-        <Modal.Header closeButton className='bg-primary'>
-          <Modal.Title className='text-light'>Create an Info Card</Modal.Title>
+        <Modal.Header closeButton className='bg-success'>
+          <Modal.Title className='text-dark'>Create a Card</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <InfoCardForm onSubmit={create} onCancel={cancel} />

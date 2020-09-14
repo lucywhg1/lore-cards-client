@@ -17,12 +17,12 @@ const Brand: React.FC<BrandProps> = ({ icon, text }): JSX.Element => {
   }, [icon, text]);
 
   return (
-    <Container className='ml-0'>
+    <Container className='pl-0'>
       <span className='mr-2'>
         {icon ? (
           icon
         ) : (
-          <span className='font-weight-bold rounded-circle border-mid-width p-1'>
+          <span className='font-weight-bold rounded-pill border-mid-width p-1 align-middle'>
             {initials}
           </span>
         )}
