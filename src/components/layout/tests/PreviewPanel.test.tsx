@@ -12,11 +12,15 @@ jest.mock('../../../services/InfoCardService', () => {
   });
 });
 
-describe(PreviewPanel, () => {
-  const categoryId = 1;
+const categoryId = 1;
+React.useContext = jest.fn().mockReturnValue({
+  selectedCategory: { id: categoryId },
+  setSelectedCategory: jest.fn()
+});
 
+describe(PreviewPanel, () => {
   beforeEach(async () => {
-    render(<PreviewPanel categoryId={categoryId} />);
+    render(<PreviewPanel />);
 
     await screen.findAllByTestId('card-preview-item');
   });

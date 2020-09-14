@@ -13,7 +13,11 @@ jest.mock('../../../services/CategoryService', () => {
   });
 });
 
-const mockOnSelect = jest.fn();
+const mockSetSelectedCategory = jest.fn();
+React.useContext = jest.fn().mockReturnValue({
+  selectedCategory: undefined,
+  setSelectedCategory: mockSetSelectedCategory
+});
 
 describe(CategoryButtonList, () => {
   const availableCategories = CategoryFactory.buildList(2);
@@ -23,7 +27,7 @@ describe(CategoryButtonList, () => {
   });
 
   beforeEach(async () => {
-    render(<CategoryButtonList onSelect={mockOnSelect} />);
+    render(<CategoryButtonList />);
 
     await screen.findByText(availableCategories[0].name);
   });
@@ -33,10 +37,10 @@ describe(CategoryButtonList, () => {
       expect(screen.getByText(/All/)).toBeInTheDocument();
     });
 
-    it('invokes #onSelect with empty params', () => {
+    it('invokes context #setSelectedCategory with empty params', () => {
       userEvent.click(screen.getByText(/All/));
 
-      expect(mockOnSelect).toHaveBeenCalledWith(undefined);
+      expect(mockSetSelectedCategory).toHaveBeenCalledWith(undefined);
     });
   });
 
@@ -47,11 +51,11 @@ describe(CategoryButtonList, () => {
       });
     });
 
-    it('invokes #onSelect with each category', () => {
+    it('invokes context #setSelectedCategory for each button', () => {
       availableCategories.forEach((category) => {
         userEvent.click(screen.getByText(category.name));
 
-        expect(mockOnSelect).toHaveBeenCalledWith(category);
+        expect(mockSetSelectedCategory).toHaveBeenCalledWith(category);
       });
     });
   });

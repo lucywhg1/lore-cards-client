@@ -6,20 +6,14 @@ import { Category } from '../../types';
 import CategoryButton from './CategoryButton';
 import NavButton from './NavButton';
 import { GiBookshelf } from 'react-icons/gi';
+import { useCategory } from '../../helpers/hooks';
 
-const ALL_CATEGORIES_KEY = 'category-all';
+const CategoryButtonList: React.FC = (): JSX.Element => {
+  const { selectedCategory, setSelectedCategory } = useCategory()!;
 
-interface CategoryButtonList {
-  onSelect: (category?: Category) => void;
-}
-
-const CategoryButtonList: React.FC<CategoryButtonList> = ({
-  onSelect
-}): JSX.Element => {
   const [availableCategories, setAvailableCategories] = useState<Category[]>(
     []
   );
-  const [activeKey, setActiveKey] = useState(ALL_CATEGORIES_KEY);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -36,30 +30,22 @@ const CategoryButtonList: React.FC<CategoryButtonList> = ({
     fetchCategories();
   }, []);
 
-  const getButtonKey = (category?: Category): string =>
-    category ? `category-${category.id}` : 'category-all';
-
-  const handleCategorySelect = (category?: Category) => {
-    setActiveKey(getButtonKey(category));
-    onSelect(category);
-  };
-
   return (
     <>
       <NavButton
         className='bg-primary text-light'
-        key={ALL_CATEGORIES_KEY}
-        onClick={() => handleCategorySelect()}
-        active={activeKey === getButtonKey()}
+        key='category-all'
+        onClick={() => setSelectedCategory(undefined)}
+        active={selectedCategory === undefined}
         icon={<GiBookshelf />}
         text='All Categories'
       />
       {availableCategories.map((category) => (
         <CategoryButton
-          key={getButtonKey(category)}
+          key={`category-${category.id}`}
           category={category}
-          onClick={() => handleCategorySelect(category)}
-          active={activeKey === getButtonKey(category)}
+          onClick={() => setSelectedCategory(category)}
+          active={selectedCategory === category}
         />
       ))}
     </>
