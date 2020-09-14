@@ -40,13 +40,11 @@ describe(AdditionalSectionsInput, () => {
     });
 
     it('renders an Add Section button', () => {
-      expect(
-        screen.getByRole('button', { name: 'Add Section' })
-      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Add/ })).toBeInTheDocument();
     });
 
     it('invokes #onChange when section is added', () => {
-      userEvent.click(screen.getByRole('button', { name: 'Add Section' }));
+      userEvent.click(screen.getByRole('button', { name: /Add/ }));
       expect(mockOnChange).toHaveBeenCalledWith([
         {
           heading: '',
@@ -120,7 +118,7 @@ describe(AdditionalSectionsInput, () => {
     });
 
     it('invokes #onChange when section is removed', () => {
-      const removeButton = screen.getByTitle('Remove section');
+      const removeButton = screen.getByTitle(/Remove/);
 
       userEvent.click(removeButton);
 

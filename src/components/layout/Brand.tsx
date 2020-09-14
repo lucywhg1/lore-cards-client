@@ -22,7 +22,7 @@ const Brand: React.FC<BrandProps> = ({ icon, text }): JSX.Element => {
         {icon ? (
           icon
         ) : (
-          <span className='font-weight-bold rounded-pill border-mid-width p-1'>
+          <span className='font-weight-bold rounded-circle border-mid-width p-1'>
             {initials}
           </span>
         )}

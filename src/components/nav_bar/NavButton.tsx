@@ -3,7 +3,7 @@ import { ListGroup } from 'react-bootstrap';
 import Brand from '../layout/Brand';
 
 interface NavButtonProps {
-  iconSrc?: string;
+  icon?: React.ReactNode;
   text: string;
   onClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
   className?: string;
@@ -12,28 +12,28 @@ interface NavButtonProps {
 }
 
 const NavButton: React.FC<NavButtonProps> = ({
-  iconSrc,
+  icon,
   text,
   onClick,
   className,
   variant,
   active = false
 }): JSX.Element => {
-  const mergedClassName = className;
-  const imgIcon = (
-    <img alt={`${text} Icon`} src={iconSrc} width='32' height='32' />
-  );
+  const mergedClassName = 'pl-0 ' + className;
 
   return (
     <ListGroup.Item
       className={
-        active ? mergedClassName + ' bg-primary text-light' : mergedClassName
+        active
+          ? mergedClassName +
+            ' bg-primary-translucent text-light border-left-thick-light'
+          : mergedClassName
       }
       action
       variant={variant}
       onClick={onClick}
     >
-      <Brand icon={iconSrc ? imgIcon : undefined} text={text} />
+      <Brand icon={icon} text={text} />
     </ListGroup.Item>
   );
 };

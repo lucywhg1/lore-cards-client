@@ -1,6 +1,7 @@
 import React from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { Category } from '../../types';
+import NewCardModal from '../info_cards/NewCardModal';
 
 import CategoryButtonList from './CategoryButtonList';
 
@@ -15,7 +16,8 @@ const SideBar: React.FC<SideBarProps> = ({ setCategory }): JSX.Element => {
   };
 
   return (
-    <ListGroup variant='flush' className=''>
+    <ListGroup variant='flush' className='bg-dark'>
+      <NewCardModal />
       <CategoryButtonList onSelect={handleCategorySelect} />
     </ListGroup>
   );

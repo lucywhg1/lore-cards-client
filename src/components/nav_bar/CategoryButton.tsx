@@ -16,9 +16,8 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({
   return (
     <NavButton
       active={active}
-      variant='secondary'
+      className='bg-primary text-light'
       onClick={onClick}
-      iconSrc={category.iconUrl}
       text={category.name}
     />
   );

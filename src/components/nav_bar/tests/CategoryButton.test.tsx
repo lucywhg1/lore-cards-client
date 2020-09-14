@@ -20,10 +20,6 @@ describe(CategoryButton, () => {
     expect(screen.getByText(category.name)).toBeInTheDocument();
   });
 
-  it('displays category icon image', () => {
-    expect(screen.getByRole('img')).toHaveAttribute('src', category.iconUrl);
-  });
-
   it('invokes #onClick', () => {
     userEvent.click(screen.getByText(category.name));
 

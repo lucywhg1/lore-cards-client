@@ -5,6 +5,7 @@ import CategoryService from '../../services/CategoryService';
 import { Category } from '../../types';
 import CategoryButton from './CategoryButton';
 import NavButton from './NavButton';
+import { GiBookshelf } from 'react-icons/gi';
 
 const ALL_CATEGORIES_KEY = 'category-all';
 
@@ -46,10 +47,12 @@ const CategoryButtonList: React.FC<CategoryButtonList> = ({
   return (
     <>
       <NavButton
+        className='bg-primary text-light'
         key={ALL_CATEGORIES_KEY}
         onClick={() => handleCategorySelect()}
-        text='All Categories'
         active={activeKey === getButtonKey()}
+        icon={<GiBookshelf />}
+        text='All Categories'
       />
       {availableCategories.map((category) => (
         <CategoryButton

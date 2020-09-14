@@ -105,7 +105,7 @@ const AdditionalSectionsInput: React.FC<additionalSectionsInputProps> = ({
     <>
       {mapSectionsToInputs()}
       <Button variant='secondary' size='sm' type='button' onClick={addSection}>
-        <Brand text='Add' icon={<TiPlus />} />
+        <Brand text='Add section' icon={<TiPlus />} />
       </Button>
     </>
   );

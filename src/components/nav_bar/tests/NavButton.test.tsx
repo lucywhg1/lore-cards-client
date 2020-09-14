@@ -11,8 +11,8 @@ const mockOnClick = jest.fn();
 describe(NavButton, () => {
   const text = Faker.company.bsNoun();
 
-  const renderComponent = (iconSrc?: string): void => {
-    render(<NavButton iconSrc={iconSrc} text={text} onClick={mockOnClick} />);
+  const renderComponent = (icon?: React.ReactNode): void => {
+    render(<NavButton icon={icon} text={text} onClick={mockOnClick} />);
   };
 
   it('displays text', () => {
@@ -22,10 +22,10 @@ describe(NavButton, () => {
   });
 
   it('displays icon image if provided', () => {
-    const imgUrl = Faker.image.imageUrl();
-    renderComponent(imgUrl);
+    const img = <img src='fake' />;
+    renderComponent(img);
 
-    expect(screen.getByRole('img')).toHaveAttribute('src', imgUrl);
+    expect(screen.getByRole('img')).toHaveAttribute('src', 'fake');
   });
 
   it('displays icon initials if not provided', () => {

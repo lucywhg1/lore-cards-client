@@ -3,3 +3,20 @@
 .border-mid-width {
   border: 0.2rem solid;
 }
+
+@each $color, $value in $theme-colors {
+  .border-left-thick-#{$color} {
+    border-left-width: 0.2rem !important;
+    border-left-color: $value;
+  }
+}
+
+@mixin bg-translucify($parent, $color) {
+  #{$parent} {
+    background-color: scale-color($color, $lightness: -30%) !important;
+  }
+}
+
+@each $color, $value in $theme-colors {
+  @include bg-translucify('.bg-#{$color}-translucent', $value);
+}
