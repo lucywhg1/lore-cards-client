@@ -4,7 +4,6 @@ import { Factory } from 'fishery';
 import Faker from 'faker';
 import { InfoCardInput } from '../types/InfoCard';
 import SectionFactory from './SectionFactory';
-import ImageFactory from './FileFactory';
 import TagFactory from './TagFactory';
 import CategoryFactory from './CategoryFactory';
 
@@ -36,7 +35,7 @@ export const InfoCardInputFactory = Factory.define<
       title: '',
       category: emptyCategory,
       tags: [],
-      avatar: null,
+      avatarUrl: '',
       subtitle: '',
       summary: '',
       description: '',
@@ -47,7 +46,7 @@ export const InfoCardInputFactory = Factory.define<
       title: Faker.company.companyName(),
       category: CategoryFactory.build(),
       tags: TagFactory.buildList(2),
-      avatar: ImageFactory.build(),
+      avatarUrl: Faker.image.imageUrl(),
       subtitle: Faker.company.catchPhraseDescriptor(),
       summary: Faker.lorem.words(10),
       description: Faker.lorem.paragraphs(2),

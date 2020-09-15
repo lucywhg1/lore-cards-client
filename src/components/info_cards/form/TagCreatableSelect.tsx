@@ -17,7 +17,7 @@ interface TagOption {
 const getAsOptions = (tags: TagBase[]): OptionsType<TagOption> => {
   return tags.map((tag) => ({
     label: tag.name,
-    value: `option-${ tag.name }`,
+    value: `option-${tag.name}`,
     data: tag
   }));
 };
@@ -51,16 +51,17 @@ const TagCreatableSelect: React.FC<TagCreatableSelectProps> = ({
       tagService
         .getAll()
         .then((response) => setLoadedTags(response))
-        .catch((e: Error) => toast.error(`Unable to get Tags. ${ e.message }`));
+        .catch((e: Error) => toast.error(`Unable to get Tags. ${e.message}`));
     };
 
     fetchTags();
   }, []);
 
   const handleChange = (newOptions: ValueType<TagOption>): void => {
-    const selectedOptions = newOptions !== null ? (newOptions as OptionsType<TagOption>) : [];
+    const selectedOptions =
+      newOptions !== null ? (newOptions as OptionsType<TagOption>) : [];
 
-    onChange((selectedOptions).map((option) => option.data) || []);
+    onChange(selectedOptions.map((option) => option.data) || []);
   };
 
   const handleCreate = (inputValue: string): void => {
@@ -78,8 +79,9 @@ const TagCreatableSelect: React.FC<TagCreatableSelectProps> = ({
         value={getAsOptions(selected)}
         onCreateOption={handleCreate}
         onChange={handleChange}
+        placeholder='Add...'
         formatCreateLabel={(inputValue) =>
-          `create "${ inputValue.toLowerCase() }"`
+          `create "${inputValue.toLowerCase()}"`
         }
         styles={optionStyle}
       />

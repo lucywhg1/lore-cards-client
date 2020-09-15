@@ -1,47 +1,23 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { ChangeEvent } from 'react';
 import { startCase } from 'lodash';
 import { Form, Image, Col, Row } from 'react-bootstrap';
 import { PREVIEW_IMG } from '../../theme';
 
-interface Preview {
-  label: string;
-  url: string;
-}
-
 interface ImageUploadProps {
   name: string;
-  onChange: (updatedFile: File | null) => void;
-  value: File;
+  onChange: (value: string) => void;
+  value: string;
   subtext?: string;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
   name,
   onChange,
+  value,
   subtext
 }) => {
-  const empty: Preview = {
-    label: `upload ${name}`,
-    url: PREVIEW_IMG
-  };
-  const [preview, setPreview] = useState<Preview>(empty);
-
-  const updatePreview = (file: File | null): void => {
-    if (preview.url) {
-      URL.revokeObjectURL(preview.url); // release previous data
-    }
-
-    if (file) {
-      setPreview({ label: file.name, url: URL.createObjectURL(file) });
-    } else {
-      setPreview(empty);
-    }
-  };
-
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    const file = event.target.files?.item(0) || null;
-    updatePreview(file);
-    onChange(file);
+    onChange(event.target.value);
   };
 
   return (
@@ -49,13 +25,11 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       <Form.Label htmlFor={name}>{startCase(name)}</Form.Label>
       <Row>
         <Col>
-          <Form.File
+          <Form.Control
             name={name}
             id={name}
-            label={preview.label}
             onChange={handleChange}
             className='overflow-hidden'
-            custom
           />
           {subtext && (
             <Form.Text className='text-muted' data-testid='imageUploadSubtext'>
@@ -65,7 +39,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         </Col>
         <Col>
           <Image
-            src={preview.url}
+            src={value || PREVIEW_IMG}
             alt={`${name} preview`}
             className='h-75'
             fluid
@@ -73,6 +47,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           />
         </Col>
       </Row>
+      <Row></Row>
     </>
   );
 };

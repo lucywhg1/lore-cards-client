@@ -8,20 +8,20 @@ export interface InfoCardInput {
   subtitle: string;
   category: Category;
   tags: TagBase[];
+  avatarUrl: string;
   summary: string;
   description: string;
   additionalSections: Section[];
-  avatar: File | null;
 }
 
 interface InfoCard extends Entity {
   title: string;
+  subtitle: string;
   category: Category;
-  description: Section;
-  summary: string;
   tags: Tag[];
-  subtitle?: string;
-  avatarUrl?: string;
+  avatarUrl: string;
+  summary: string;
+  description: Section;
   additionalSections?: Section[];
 }
 
@@ -40,7 +40,7 @@ export const isInPreviewBody = (
   query: string
 ): boolean =>
   card.title.toLowerCase().includes(query) ||
-  card.subtitle?.toLowerCase().includes(query) ||
+  card.subtitle.toLowerCase().includes(query) ||
   card.summary.toLowerCase().includes(query);
 
 export const hasAllTags = (card: InfoCardPreview, tags: Tag[]): boolean => {
@@ -50,7 +50,3 @@ export const hasAllTags = (card: InfoCardPreview, tags: Tag[]): boolean => {
 };
 
 export default InfoCard;
-
-// 3 tags, does the card have ALL of them? Is this tag set a subset of the main set?
-// look for each tag, if matches, add 1 to len
-// break when all

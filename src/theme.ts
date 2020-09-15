@@ -6,4 +6,4 @@ export const colors = {
 };
 
 export const PREVIEW_IMG =
-  'https://www.pngkit.com/png/detail/1007-10071948_woman-avatar-female-profile-picture-placeholder.png';
+  'https://www.pngkit.com/png/detail/1007-10071948_woman-avatarUrl-female-profile-picture-placeholder.png';

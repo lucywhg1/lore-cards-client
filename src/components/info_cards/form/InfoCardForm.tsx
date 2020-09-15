@@ -42,7 +42,7 @@ const emptyFields: InfoCardInput = {
   category: emptyCategory,
   tags: [],
   summary: '',
-  avatar: null,
+  avatarUrl: '',
   description: '',
   additionalSections: []
 };
@@ -73,7 +73,7 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
     }
   };
 
-  const handleInput = ({ summary, ...data }: InfoCardInput) => {
+  const handleCreate = ({ summary, ...data }: InfoCardInput) => {
     let formData = {
       summary: summary || generateSummary(data.description),
       ...data
@@ -102,7 +102,7 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
       <Form
         noValidate
         className='m-3'
-        onSubmit={handleSubmit(handleInput)}
+        onSubmit={handleSubmit(handleCreate)}
         data-testid='info-card-form'
       >
         <Form.Row>
@@ -149,10 +149,15 @@ const InfoCardForm: React.FC<InfoCardFormProps> = ({
         <Form.Row>
           <Form.Group as={Col}>
             <Controller
-              name='avatar'
+              name='avatarUrl'
               control={control}
               render={({ onChange, value }) => (
-                <ImageUpload name='avatar' onChange={onChange} value={value} />
+                <ImageUpload
+                  name='avatarUrl'
+                  onChange={onChange}
+                  value={value}
+                  subtext='Image URL'
+                />
               )}
             />
           </Form.Group>

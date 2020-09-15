@@ -27,7 +27,7 @@ const CardPreview: React.FC<CardPreviewProps> = ({
             <Col>
               <Card.Title className='text-primary'>
                 <strong>{title}</strong>
-                <Badge variant='secondary' className='ml-2 text-light'>
+                <Badge variant='secondary' className='ml-2 text-dark'>
                   {category.name}
                 </Badge>
               </Card.Title>

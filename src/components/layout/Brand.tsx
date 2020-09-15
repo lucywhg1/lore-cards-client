@@ -18,7 +18,7 @@ const Brand: React.FC<BrandProps> = ({ icon, text }): JSX.Element => {
 
   return (
     <Container className='d-flex pl-0'>
-      <span className='mr-2 align-middle'>
+      <span className='mr-2'>
         {icon ? (
           icon
         ) : (
