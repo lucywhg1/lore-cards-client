@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, InputGroup } from 'react-bootstrap';
+import { Col, Form } from 'react-bootstrap';
 import { Tag } from '../../types';
 import TagMultiSelect from '../tags/TagMultiSelect';
 
@@ -28,21 +28,23 @@ const CardSearchBar: React.FC<CardSearchBarProps> = ({
   };
 
   return (
-    <Form inline>
-      <InputGroup>
-        <Form.Control
-          type='text'
-          placeholder='Search for a card...'
-          value={filter.body}
-          onChange={handleInputChange}
-        />
-        <InputGroup.Append>
+    <Form>
+      <Form.Row>
+        <Col xs={8}>
+          <Form.Control
+            type='text'
+            placeholder='Search by body or title...'
+            value={filter.body}
+            onChange={handleInputChange}
+          />
+        </Col>
+        <Col>
           <TagMultiSelect
             selected={filter.tags}
             onChange={handleSelectChange}
           />
-        </InputGroup.Append>
-      </InputGroup>
+        </Col>
+      </Form.Row>
     </Form>
   );
 };

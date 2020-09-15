@@ -17,17 +17,15 @@ const Brand: React.FC<BrandProps> = ({ icon, text }): JSX.Element => {
   }, [icon, text]);
 
   return (
-    <Container className='pl-0'>
-      <span className='mr-2'>
+    <Container className='d-flex pl-0'>
+      <span className='mr-2 align-middle'>
         {icon ? (
           icon
         ) : (
-          <span className='font-weight-bold rounded-pill border-mid-width p-1 align-middle'>
-            {initials}
-          </span>
+          <span className='d-sm-none font-weight-bold p-1'>{initials}</span>
         )}
       </span>
-      <span className='d-none d-md-inline align-middle'>{text}</span>
+      <span className='d-none d-sm-inline text-truncate'>{text}</span>
     </Container>
   );
 };

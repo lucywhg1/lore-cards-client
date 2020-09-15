@@ -41,7 +41,7 @@ describe(CardSearchBar, () => {
       />
     );
 
-    searchInput = screen.getByPlaceholderText('Search for a card...');
+    searchInput = screen.getByPlaceholderText(/Search/);
     selectMenu = await screen.findByText(includedTag.name);
   });
 

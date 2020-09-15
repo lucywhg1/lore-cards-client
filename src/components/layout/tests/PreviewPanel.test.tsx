@@ -26,9 +26,7 @@ describe(PreviewPanel, () => {
   });
 
   it('displays a card search bar and preview list', () => {
-    expect(
-      screen.getByPlaceholderText('Search for a card...')
-    ).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Search/)).toBeInTheDocument();
     expect(screen.getAllByTestId('card-preview-item').length).toEqual(2);
   });
 

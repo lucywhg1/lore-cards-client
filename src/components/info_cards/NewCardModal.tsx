@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Container } from 'react-bootstrap';
 import { TiPlus } from 'react-icons/ti';
 import { InfoCardInput } from '../../types/InfoCard';
 import Brand from '../layout/Brand';
@@ -25,7 +25,9 @@ const NewCardModal: React.FC = () => {
           setShow(true);
         }}
       >
-        <Brand text='New Card' icon={<TiPlus />} />
+        <Container className='pl-2'>
+          <Brand text='New Card' icon={<TiPlus className='mb-1' />} />
+        </Container>
       </Button>
 
       <Modal

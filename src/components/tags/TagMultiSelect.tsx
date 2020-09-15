@@ -39,14 +39,18 @@ const TagMultiSelect: React.FC<TagMultiSelectProps> = ({
       tagService
         .getAll()
         .then((response) => setLoadedTags(response))
-        .catch((e: Error) => toast.error(`Unable to get Tags. ${ e.message }`));
+        .catch((e: Error) => toast.error(`Unable to get Tags. ${e.message}`));
     };
 
     fetchTags();
   }, []);
 
   const handleChange = (newOptions: ValueType<TagOption>): void => {
-    onChange((newOptions as OptionsType<TagOption> || []).map((option) => option.data) || []);
+    onChange(
+      ((newOptions as OptionsType<TagOption>) || []).map(
+        (option) => option.data
+      ) || []
+    );
   };
 
   return (
@@ -56,6 +60,7 @@ const TagMultiSelect: React.FC<TagMultiSelectProps> = ({
       value={getAsOptions(selected)}
       onChange={handleChange}
       filterOption={filterConfig}
+      placeholder='Tags...'
     />
   );
 };
