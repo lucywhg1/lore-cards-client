@@ -4,21 +4,21 @@ import { InfoCardPreview, Tag } from '../../types';
 import InfoCardService from '../../services/InfoCardService';
 import { toast } from 'react-toastify';
 import CardPreview from './CardPreview';
-import { useHistory } from 'react-router-dom';
 import { isInPreviewBody, hasAllTags } from '../../types/InfoCard';
 
 interface CardPreviewsListProps {
   categoryId?: number;
   bodyFilter: string;
   tagsFilter: Tag[];
+  onCardSelect: (id: number) => void;
 }
 
 const CardPreviewsList: React.FC<CardPreviewsListProps> = ({
   categoryId,
   bodyFilter,
-  tagsFilter
+  tagsFilter,
+  onCardSelect
 }): JSX.Element => {
-  const history = useHistory();
   const [availableCards, setAvailableCards] = useState<InfoCardPreview[]>([]);
 
   useEffect(() => {
@@ -36,8 +36,9 @@ const CardPreviewsList: React.FC<CardPreviewsListProps> = ({
     fetchPreviews();
   }, [categoryId]);
 
-  const handleSelect = (cardId: number): void => {
-    history.push(`/cards/${cardId}`);
+  const handleClick = (event: React.MouseEvent): void => {
+    const { id } = event.currentTarget;
+    onCardSelect(Number(id));
   };
 
   const filteredCards = (): JSX.Element[] => {
@@ -46,16 +47,14 @@ const CardPreviewsList: React.FC<CardPreviewsListProps> = ({
 
     availableCards.forEach((card) => {
       if (isInPreviewBody(card, query) && hasAllTags(card, tagsFilter)) {
-        filtered.push(
-          <CardPreview key={card.id} preview={card} onClick={handleSelect} />
-        );
+        filtered.push(<CardPreview preview={card} onClick={handleClick} />);
       }
     });
 
     return filtered;
   };
 
-  return <ListGroup variant='flush'>{filteredCards()}</ListGroup>;
+  return <ListGroup>{filteredCards()}</ListGroup>;
 };
 
 export default CardPreviewsList;

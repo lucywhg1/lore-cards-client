@@ -37,7 +37,7 @@ const CategoryButtonList: React.FC = (): JSX.Element => {
         key='category-all'
         onClick={() => setSelectedCategory(undefined)}
         active={selectedCategory === undefined}
-        icon={<GiBookshelf className='mb-1' />}
+        icon={<GiBookshelf />}
         text='All Categories'
       />
       {availableCategories.map((category) => (

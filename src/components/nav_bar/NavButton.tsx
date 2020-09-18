@@ -23,8 +23,7 @@ const NavButton: React.FC<NavButtonProps> = ({
     <ListGroup.Item
       className={
         active
-          ? className +
-            ' bg-primary-translucent text-light border-left-thick-light'
+          ? className + ' bg-primary-darker text-light border-left-thick-light'
           : className
       }
       action

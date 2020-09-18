@@ -4,9 +4,11 @@ $theme-colors: (
   'success': #a7dca5,
   'danger': #ffc4ba,
   'warning': #ffe7ad,
-  'info': #c0ecff,
+  'info': #9fd4e9c4,
   'light': #ebebeb,
   'dark': #495057
 );
+
+$font-size-base: 1.2rem;
 
 @import '~bootstrap/scss/bootstrap';

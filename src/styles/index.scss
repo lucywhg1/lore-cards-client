@@ -1,5 +1,9 @@
 @import 'custom-bootstrap';
 
+.height-full {
+  height: 100vh;
+}
+
 .border-mid-width {
   border: 0.2rem solid;
 }
@@ -11,12 +15,12 @@
   }
 }
 
-@mixin bg-translucify($parent, $color) {
+@mixin bg-darken($parent, $color) {
   #{$parent} {
     background-color: scale-color($color, $lightness: -30%) !important;
   }
 }
 
 @each $color, $value in $theme-colors {
-  @include bg-translucify('.bg-#{$color}-translucent', $value);
+  @include bg-darken('.bg-#{$color}-darker', $value);
 }

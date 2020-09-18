@@ -40,7 +40,7 @@ export const isInPreviewBody = (
   query: string
 ): boolean =>
   card.title.toLowerCase().includes(query) ||
-  card.subtitle.toLowerCase().includes(query) ||
+  card.subtitle?.toLowerCase().includes(query) ||
   card.summary.toLowerCase().includes(query);
 
 export const hasAllTags = (card: InfoCardPreview, tags: Tag[]): boolean => {

@@ -4,7 +4,13 @@ import { useCategory } from '../../helpers/hooks';
 import CardPreviewsList from '../search/CardPreviewsList';
 import CardSearchBar, { SearchFilter } from '../search/CardSearchBar';
 
-const PreviewPanel: React.FC = (): JSX.Element => {
+interface PreviewPanelProps {
+  onCardSelect: (id: number) => void;
+}
+
+const PreviewPanel: React.FC<PreviewPanelProps> = ({
+  onCardSelect
+}): JSX.Element => {
   const { selectedCategory } = useCategory()!;
 
   const [filter, setFilter] = useState<SearchFilter>({
@@ -21,6 +27,7 @@ const PreviewPanel: React.FC = (): JSX.Element => {
         bodyFilter={filter.body}
         tagsFilter={filter.tags}
         categoryId={selectedCategory?.id}
+        onCardSelect={onCardSelect}
       />
     </>
   );

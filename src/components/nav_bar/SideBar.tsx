@@ -6,7 +6,7 @@ import CategoryButtonList from './CategoryButtonList';
 
 const SideBar: React.FC = (): JSX.Element => {
   return (
-    <ListGroup variant='flush' className='bg-dark'>
+    <ListGroup>
       <NewCardModal />
       <CategoryButtonList />
     </ListGroup>
