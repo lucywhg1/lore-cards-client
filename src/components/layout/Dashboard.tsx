@@ -2,13 +2,11 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import React, { useState } from 'react';
 import SideBar from '../nav_bar/SideBar';
-import { Category, InfoCard } from '../../types';
+import { Category } from '../../types';
 import PreviewPanel from './PreviewPanel';
 import Container from 'react-bootstrap/esm/Container';
 import CardView from '../info_cards/CardView';
-import { Jumbotron } from 'react-bootstrap';
-import { toast } from 'react-toastify';
-import InfoCardService from '../../services/InfoCardService';
+import CardPanel from './CardPanel';
 
 interface CategoryContextType {
   selectedCategory?: Category;
@@ -21,20 +19,7 @@ export const CategoryContext = React.createContext<
 
 const Dashboard: React.FC = (): JSX.Element => {
   const [category, setCategory] = useState<Category>();
-  const [shownCard, setShownCard] = useState<InfoCard>();
-
-  const handleCardSelect = (id: number): void => {
-    const infoCardService = new InfoCardService();
-
-    infoCardService
-      .get(id)
-      .then((response) => {
-        setShownCard(response);
-      })
-      .catch((e: Error) =>
-        toast.error(`Failed to get Card #${id}. ${e.message}`)
-      );
-  };
+  const [shownCardId, setShownCardId] = useState<number>(0);
 
   return (
     <CategoryContext.Provider
@@ -46,16 +31,10 @@ const Dashboard: React.FC = (): JSX.Element => {
             <SideBar />
           </Col>
           <Col className='bg-light p-2' xs={3}>
-            <PreviewPanel onCardSelect={handleCardSelect} />
+            <PreviewPanel onCardSelect={setShownCardId} />
           </Col>
           <Col className='p-2'>
-            {shownCard ? (
-              <CardView card={shownCard} />
-            ) : (
-              <Jumbotron>
-                <h3>Pick a card from the left, any card will do!</h3>
-              </Jumbotron>
-            )}
+            <CardPanel id={shownCardId} />
           </Col>
         </Row>
       </Container>
