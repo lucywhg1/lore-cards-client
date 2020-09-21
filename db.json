@@ -34,8 +34,8 @@
       "subtitle": "The One Above",
       "summary": "Goddess of moonlight, serenity, etc. Watches over every single Lunelle ever and has great croissant recipes.",
       "category": {
-        "id": 0,
-        "name": "Religion"
+        "id": 2,
+        "name": "Rumors"
       },
       "avatarUrl": "https://i.pinimg.com/564x/39/f6/c9/39f6c9282aef73df69039a3160d9fb98.jpg",
       "tags": []
@@ -45,8 +45,8 @@
       "title": "Selune and Shar are sisters",
       "summary": "You heard Selune and Shar are.... sisters!",
       "category": {
-        "id": 2,
-        "name": "Rumors"
+        "id": 1,
+        "name": "Magic"
       },
       "tags": [
         {

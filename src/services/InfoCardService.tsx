@@ -19,7 +19,7 @@ class InfoCardService extends ApiService {
   }
 
   public async getAll(filter: InfoCardFilter): Promise<InfoCardPreview[]> {
-    if (filter.categoryId) {
+    if (filter.categoryId !== undefined) {
       return await super.getAllModels<InfoCardPreview>(
         `?category.id=${filter.categoryId}`
       );
