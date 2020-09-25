@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Jumbotron } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
 import InfoCardService from '../../services/InfoCardService';

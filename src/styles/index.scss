@@ -1,13 +1,5 @@
 @import 'custom-bootstrap';
 
-.height-full {
-  height: 100vh;
-}
-
-.border-mid-width {
-  border: 0.2rem solid;
-}
-
 @each $color, $value in $theme-colors {
   .border-left-thick-#{$color} {
     border-left-width: 0.2rem !important;
@@ -23,4 +15,29 @@
 
 @each $color, $value in $theme-colors {
   @include bg-darken('.bg-#{$color}-darker', $value);
+}
+
+em {
+  font-weight: 600;
+}
+
+.height-full {
+  height: 100vh;
+}
+
+.border-mid-width {
+  border: 0.2rem solid;
+}
+
+.small-caps {
+  font-variant: small-caps;
+}
+
+.card-margins {
+  // border-bottom: 0.15rem solid map-get($theme-colors, 'light');
+  padding: 0.5rem 0.75rem;
+}
+
+.max-card-img-height {
+  max-height: 30rem;
 }
