@@ -30,11 +30,7 @@ const CardPanel: React.FC<CardPanelProps> = ({ id }): JSX.Element => {
     fetchCard();
   }, [id]);
 
-  return card ? (
-    <CardView card={card} />
-  ) : (
-    <Jumbotron>You haven't chosen a card yet, but you can!</Jumbotron>
-  );
+  return card ? <CardView card={card} /> : <p>Loading...</p>;
 };
 
 export default CardPanel;

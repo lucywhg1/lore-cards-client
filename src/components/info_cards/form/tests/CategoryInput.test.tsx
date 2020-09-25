@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { render, screen, RenderResult } from '@testing-library/react';
 import CategoryInput from '../CategoryInput';
 

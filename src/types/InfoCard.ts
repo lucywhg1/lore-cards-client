@@ -21,7 +21,7 @@ interface InfoCard extends Entity {
   tags: Tag[];
   avatarUrl: string;
   summary: string;
-  description: Section;
+  description: string;
   additionalSections?: Section[];
 }
 

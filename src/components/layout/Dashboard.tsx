@@ -4,8 +4,7 @@ import React, { useState } from 'react';
 import SideBar from '../nav_bar/SideBar';
 import { Category } from '../../types';
 import PreviewPanel from './PreviewPanel';
-import Container from 'react-bootstrap/esm/Container';
-import CardView from '../info_cards/CardView';
+import Container from 'react-bootstrap/Container';
 import CardPanel from './CardPanel';
 
 interface CategoryContextType {

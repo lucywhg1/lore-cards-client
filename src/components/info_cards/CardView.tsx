@@ -41,11 +41,9 @@ const CardView: React.FC<CardViewProps> = ({ card }): JSX.Element => {
           {subtitle}
           <span className='float-right'>
             {tags.map((tag) => (
-              <h5>
-                <Badge variant='info' key={tag.id}>
-                  {tag.name}
-                </Badge>
-              </h5>
+              <Badge variant='info' key={tag.id}>
+                {tag.name}
+              </Badge>
             ))}
           </span>
         </Card.Title>
