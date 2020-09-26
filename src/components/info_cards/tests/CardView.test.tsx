@@ -36,7 +36,7 @@ describe(CardView, () => {
     expect(screen.getByText(category.name)).toBeInTheDocument();
     expect(screen.getByRole('img')).toHaveAttribute('src', avatarUrl);
     tags.forEach((tag) => {
-      expect(screen.getByText(tag.name)).toBeInTheDocument();
+      expect(screen.getByText(tag.name, { exact: false })).toBeInTheDocument();
     });
   });
 });

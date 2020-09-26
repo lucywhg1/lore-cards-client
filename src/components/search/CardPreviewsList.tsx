@@ -47,7 +47,9 @@ const CardPreviewsList: React.FC<CardPreviewsListProps> = ({
 
     availableCards.forEach((card) => {
       if (isInPreviewBody(card, query) && hasAllTags(card, tagsFilter)) {
-        filtered.push(<CardPreview preview={card} onClick={handleClick} />);
+        filtered.push(
+          <CardPreview key={card.id} preview={card} onClick={handleClick} />
+        );
       }
     });
 

@@ -1,16 +1,7 @@
 import React from 'react';
-import {
-  Badge,
-  Image,
-  Col,
-  Container,
-  Row,
-  Media,
-  Jumbotron
-} from 'react-bootstrap';
+import { Image, Col, Container, Row } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import { InfoCard } from '../../types';
-import Faker from 'faker';
 
 interface CardViewProps {
   card: InfoCard;
@@ -30,9 +21,20 @@ const CardView: React.FC<CardViewProps> = ({ card }): JSX.Element => {
 
   return (
     <Container className='text-dark border border-light py-2' fluid>
-      <Media>
-        <Media.Body as={Col} xs='auto'>
-          <Card border='light' className='border-mid-width'>
+      {avatarUrl && (
+        <Col>
+          <Image
+            fluid
+            src={avatarUrl}
+            alt={`card${id}-avatar`}
+            rounded
+            className='float-right max-w-45 mb-3 ml-1'
+          />
+        </Col>
+      )}
+      <Col>
+        <Row>
+          <Card border='light' className='border-mid-width float-left mr-2'>
             <Card.Body>
               <Card.Title>{title}</Card.Title>
               <Card.Subtitle>{subtitle}</Card.Subtitle>
@@ -47,25 +49,22 @@ const CardView: React.FC<CardViewProps> = ({ card }): JSX.Element => {
               </em>
             </Card.Footer>
           </Card>
-          <div className='card-margins'>
-            <h4 className='small-caps pb-2 border-bottom'>Description</h4>
-            <p>{description}</p>
-            {additionalSections?.map((section) => (
-              <section>
-                <h4 className='small-caps pb-2 border-bottom'>
-                  {section.heading}
-                </h4>
-                <p>{section.body}</p>
-              </section>
-            ))}
-          </div>
-        </Media.Body>
-        {avatarUrl && (
-          <Col className='align-self-start'>
-            <Image fluid src={avatarUrl} alt={`card${id}-avatar`} rounded />
-          </Col>
-        )}
-      </Media>
+        </Row>
+        <div className='card-margins'>
+          <h4 className='d-inline-block small-caps pb-2 border-bottom'>
+            Description
+          </h4>
+          <p>{description}</p>
+          {additionalSections?.map((section) => (
+            <section key={`section-${section.heading}`}>
+              <h4 className='small-caps pb-2 border-bottom'>
+                {section.heading}
+              </h4>
+              <p>{section.body}</p>
+            </section>
+          ))}
+        </div>
+      </Col>
     </Container>
   );
 };
