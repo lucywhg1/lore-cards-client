@@ -5,7 +5,7 @@ import { InfoCardPreview } from '../../types';
 
 interface CardPreviewProps {
   preview: InfoCardPreview;
-  onClick: (event: React.MouseEvent) => void;
+  onClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
 }
 
 const CardPreview: React.FC<CardPreviewProps> = ({
@@ -18,11 +18,11 @@ const CardPreview: React.FC<CardPreviewProps> = ({
     <ListGroup.Item
       action
       as={Button}
-      onClick={onClick}
       variant='light'
       id={id}
       key={id}
       data-testid='card-preview-item'
+      onClick={onClick}
     >
       <Row>
         <Col className='text-wrap'>

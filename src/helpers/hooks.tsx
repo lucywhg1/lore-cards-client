@@ -1,4 +1,4 @@
 import React from 'react';
-import { CategoryContext } from '../components/layout/Dashboard';
+import { SelectionContext } from '../components/dashboard/Dashboard';
 
-export const useCategory = () => React.useContext(CategoryContext);
+export const useSelectionContext = () => React.useContext(SelectionContext);

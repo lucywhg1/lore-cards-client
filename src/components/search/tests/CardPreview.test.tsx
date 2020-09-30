@@ -29,6 +29,6 @@ describe(CardPreview, () => {
   it('invokes onClick with card id', () => {
     userEvent.click(screen.getByTestId('card-preview-item'));
 
-    expect(mockOnClick).toHaveBeenCalledWith(id);
+    expect(mockOnClick).toHaveBeenCalled();
   });
 });

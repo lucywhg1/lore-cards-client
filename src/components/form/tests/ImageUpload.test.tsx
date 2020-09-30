@@ -3,58 +3,45 @@ import ImageUpload from '../ImageUpload';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { startCase } from 'lodash';
-import ImageFactory from '../../../factories/FileFactory';
 import Faker from 'faker';
 
 const mockOnChange = jest.fn();
 
 describe(ImageUpload, () => {
-  it('displays a file input, a placeholder image, and no subtext', () => {
-    render(<ImageUpload name='imageUpload' onChange={mockOnChange} url='' />);
-    const preview = screen.getByRole('img');
+  const name = Faker.commerce.color();
+  const value = Faker.image.imageUrl();
+  const subtext = Faker.lorem.sentence();
 
-    expect(screen.getByLabelText(startCase('imageUpload'))).toBeInTheDocument();
-    expect(preview).toBeInTheDocument();
-    expect(screen.queryByTestId('imageUploadSubtext')).not.toBeInTheDocument();
-  });
-
-  it('displays subtext if supplied', () => {
-    const fakeSubtext = Faker.lorem.sentence();
+  beforeEach(() => {
     render(
       <ImageUpload
-        name='imageUpload'
+        name={name}
+        value={value}
+        subtext={subtext}
         onChange={mockOnChange}
-        url=''
-        subtext={fakeSubtext}
       />
     );
-
-    expect(screen.getByText(fakeSubtext)).toBeInTheDocument();
   });
 
-  describe('upload behavior', () => {
-    const imageUrl = Faker.image.imageUrl();
-    let upload: HTMLElement;
+  it('displays a label with the name', () => {
+    expect(screen.getByText(startCase(name))).toBeInTheDocument();
+  });
 
-    beforeEach(() => {
-      render(
-        <ImageUpload
-          name='imageUpload'
-          onChange={mockOnChange}
-          url={imageUrl}
-        />
-      );
-      upload = screen.getByLabelText(startCase('imageUpload'));
+  it('displays subtext', () => {
+    expect(screen.getByText(subtext)).toBeInTheDocument();
+  });
 
-      userEvent.type(upload, imageUrl);
-    });
+  it('displays current input', () => {
+    expect(screen.getByDisplayValue(value)).toBeInTheDocument();
+  });
 
-    it('calls onChange with typed url', () => {
-      expect(mockOnChange).toHaveBeenCalledWith(imageUrl);
-    });
+  it('displays image with given src', () => {
+    expect(screen.getByRole('img')).toHaveAttribute('src', value);
+  });
 
-    it('sets preview image to passed in url', () => {
-      expect(screen.getByRole('img')).toHaveAttribute('src', imageUrl);
-    });
+  it('invokes #onChange when user inputs URL', () => {
+    userEvent.type(screen.getByRole('textbox'), 'a');
+
+    expect(mockOnChange).toHaveBeenLastCalledWith(value + 'a');
   });
 });

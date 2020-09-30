@@ -5,20 +5,18 @@ import InfoCardService from '../../services/InfoCardService';
 import { toast } from 'react-toastify';
 import CardPreview from './CardPreview';
 import { isInPreviewBody, hasAllTags } from '../../types/InfoCard';
+import { useSelectionContext } from '../../helpers/hooks';
 
 interface CardPreviewsListProps {
-  categoryId?: number;
   bodyFilter: string;
   tagsFilter: Tag[];
-  onCardSelect: (id: number) => void;
 }
 
 const CardPreviewsList: React.FC<CardPreviewsListProps> = ({
-  categoryId,
   bodyFilter,
-  tagsFilter,
-  onCardSelect
+  tagsFilter
 }): JSX.Element => {
+  const { selectionContext, setSelectionContext } = useSelectionContext()!;
   const [availableCards, setAvailableCards] = useState<InfoCardPreview[]>([]);
 
   useEffect(() => {
@@ -26,7 +24,7 @@ const CardPreviewsList: React.FC<CardPreviewsListProps> = ({
       const infoCardService = new InfoCardService();
 
       infoCardService
-        .getAll({ categoryId })
+        .getAll({ categoryId: selectionContext?.category?.id })
         .then((response) => {
           setAvailableCards(response);
         })
@@ -34,11 +32,11 @@ const CardPreviewsList: React.FC<CardPreviewsListProps> = ({
     };
 
     fetchPreviews();
-  }, [categoryId]);
+  }, [selectionContext]);
 
-  const handleClick = (event: React.MouseEvent): void => {
-    const { id } = event.currentTarget;
-    onCardSelect(Number(id));
+  const handleClick = (event: React.MouseEvent<Element, MouseEvent>): void => {
+    const cardId = Number(event.currentTarget.id);
+    setSelectionContext({ ...selectionContext, cardId });
   };
 
   const filteredCards = (): JSX.Element[] => {

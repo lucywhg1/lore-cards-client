@@ -7,22 +7,26 @@ import PreviewPanel from './PreviewPanel';
 import Container from 'react-bootstrap/Container';
 import CardPanel from './CardPanel';
 
-interface CategoryContextType {
-  selectedCategory?: Category;
-  setSelectedCategory: (value?: Category) => void;
+interface SelectionContext {
+  category?: Category;
+  cardId?: number;
 }
 
-export const CategoryContext = React.createContext<
-  CategoryContextType | undefined
+interface SelectionContextType {
+  selectionContext?: SelectionContext;
+  setSelectionContext: (value?: SelectionContext) => void;
+}
+
+export const SelectionContext = React.createContext<
+  SelectionContextType | undefined
 >(undefined);
 
 const Dashboard: React.FC = (): JSX.Element => {
-  const [category, setCategory] = useState<Category>();
-  const [shownCardId, setShownCardId] = useState<number>(0);
+  const [context, setContext] = useState<SelectionContext>();
 
   return (
-    <CategoryContext.Provider
-      value={{ selectedCategory: category, setSelectedCategory: setCategory }}
+    <SelectionContext.Provider
+      value={{ selectionContext: context, setSelectionContext: setContext }}
     >
       <Container fluid className='p-0'>
         <Row className='height-full'>
@@ -30,14 +34,18 @@ const Dashboard: React.FC = (): JSX.Element => {
             <SideBar />
           </Col>
           <Col className='bg-light p-2' xs={3}>
-            <PreviewPanel onCardSelect={setShownCardId} />
+            <PreviewPanel />
           </Col>
           <Col className='p-2'>
-            <CardPanel id={shownCardId} />
+            {context?.cardId === undefined ? (
+              <p>No card selected.</p>
+            ) : (
+              <CardPanel id={context?.cardId} />
+            )}
           </Col>
         </Row>
       </Container>
-    </CategoryContext.Provider>
+    </SelectionContext.Provider>
   );
 };
 

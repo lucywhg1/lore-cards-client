@@ -1,8 +1,15 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import PreviewPanel from '../PreviewPanel';
+import PreviewPanel from '../../dashboard/PreviewPanel';
 import { InfoCardPreviewFactory } from '../../../factories';
-import userEvent from '@testing-library/user-event';
+
+React.useContext = jest.fn().mockReturnValue({
+  selectionContext: {
+    category: undefined,
+    cardId: undefined
+  },
+  setSelectionContext: jest.fn()
+});
 
 const mockGetAll = jest.fn();
 jest.mock('../../../services/InfoCardService', () => {
@@ -11,14 +18,7 @@ jest.mock('../../../services/InfoCardService', () => {
   });
 });
 
-const categoryId = 1;
-React.useContext = jest.fn().mockReturnValue({
-  selectedCategory: { id: categoryId },
-  setSelectedCategory: jest.fn()
-});
-
 describe(PreviewPanel, () => {
-  const mockOnSelect = jest.fn();
   const infoCardPreviews = InfoCardPreviewFactory.buildList(2);
 
   beforeAll(() => {
@@ -26,7 +26,7 @@ describe(PreviewPanel, () => {
   });
 
   beforeEach(async () => {
-    render(<PreviewPanel onCardSelect={mockOnSelect} />);
+    render(<PreviewPanel />);
 
     await screen.findAllByTestId('card-preview-item');
   });
@@ -34,15 +34,5 @@ describe(PreviewPanel, () => {
   it('displays a card search bar and preview list', () => {
     expect(screen.getByPlaceholderText(/Search/)).toBeInTheDocument();
     expect(screen.getAllByTestId('card-preview-item').length).toEqual(2);
-  });
-
-  it('fetches card previews with category', () => {
-    expect(mockGetAll).toHaveBeenCalledWith({ categoryId });
-  });
-
-  it('invokes #onSelect when card is clicked', () => {
-    userEvent.click(screen.getByText(infoCardPreviews[0].title));
-
-    expect(mockOnSelect).toHaveBeenCalledWith(infoCardPreviews[0].id);
   });
 });

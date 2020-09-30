@@ -1,7 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { startCase } from 'lodash';
 import { Form, Image, Col, Row } from 'react-bootstrap';
-import { PREVIEW_IMG } from '../../theme';
 
 interface ImageUploadProps {
   name: string;
@@ -28,6 +27,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           <Form.Control
             name={name}
             id={name}
+            value={value}
             onChange={handleChange}
             className='overflow-hidden'
           />
@@ -39,7 +39,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         </Col>
         <Col>
           <Image
-            src={value || PREVIEW_IMG}
+            src={value}
             alt={`${name} preview`}
             className='h-75'
             fluid

@@ -61,6 +61,7 @@ const TagMultiSelect: React.FC<TagMultiSelectProps> = ({
       onChange={handleChange}
       filterOption={filterConfig}
       placeholder='Tags...'
+      data-testid='tag-multi-select'
     />
   );
 };

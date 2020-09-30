@@ -6,10 +6,10 @@ import { Category } from '../../types';
 import CategoryButton from './CategoryButton';
 import NavButton from './NavButton';
 import { GiBookshelf } from 'react-icons/gi';
-import { useCategory } from '../../helpers/hooks';
+import { useSelectionContext } from '../../helpers/hooks';
 
 const CategoryButtonList: React.FC = (): JSX.Element => {
-  const { selectedCategory, setSelectedCategory } = useCategory()!;
+  const { selectionContext, setSelectionContext } = useSelectionContext()!;
 
   const [availableCategories, setAvailableCategories] = useState<Category[]>(
     []
@@ -30,13 +30,17 @@ const CategoryButtonList: React.FC = (): JSX.Element => {
     fetchCategories();
   }, []);
 
+  const setSelectedCategory = (category?: Category): void => {
+    setSelectionContext({ ...selectionContext, category });
+  };
+
   return (
     <>
       <NavButton
         className='bg-primary text-light'
         key='category-all'
         onClick={() => setSelectedCategory(undefined)}
-        active={selectedCategory === undefined}
+        active={selectionContext?.category === undefined}
         icon={<GiBookshelf />}
         text='All Categories'
       />
@@ -45,7 +49,7 @@ const CategoryButtonList: React.FC = (): JSX.Element => {
           key={`category-${category.id}`}
           category={category}
           onClick={() => setSelectedCategory(category)}
-          active={selectedCategory === category}
+          active={selectionContext?.category === category}
         />
       ))}
     </>

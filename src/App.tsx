@@ -3,7 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import Dashboard from './components/layout/Dashboard';
+import Dashboard from './components/dashboard/Dashboard';
 
 const CustomToastContainer: React.FC = () => {
   return (

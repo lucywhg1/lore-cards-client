@@ -5,19 +5,22 @@ import { render, screen } from '@testing-library/react';
 import { InfoCardPreview, Tag } from '../../../types';
 import userEvent from '@testing-library/user-event';
 
+const categoryId = 1;
+const mockSetSelectionContext = jest.fn();
+React.useContext = jest.fn().mockReturnValue({
+  selectionContext: {
+    category: { id: categoryId },
+    cardId: undefined
+  },
+  setSelectionContext: mockSetSelectionContext
+});
+
 const mockGetAll = jest.fn();
 jest.mock('../../../services/InfoCardService', () => {
   return jest.fn().mockImplementation(() => {
     return { getAll: mockGetAll };
   });
 });
-
-const mockHistoryPush = jest.fn();
-jest.mock('react-router-dom', () => ({
-  useHistory: (): {} => ({
-    push: mockHistoryPush
-  })
-}));
 
 describe(CardPreviewsList, () => {
   const uniqueTitle = 'shar123';
@@ -28,17 +31,10 @@ describe(CardPreviewsList, () => {
   ];
 
   const renderComponent = async (
-    categoryId?: number,
     input: string = '',
     tagsFilter: Tag[] = []
   ): Promise<void> => {
-    render(
-      <CardPreviewsList
-        bodyFilter={input}
-        tagsFilter={tagsFilter}
-        categoryId={categoryId}
-      />
-    );
+    render(<CardPreviewsList bodyFilter={input} tagsFilter={tagsFilter} />);
 
     await screen.findAllByTestId('card-preview-item');
   };
@@ -47,19 +43,10 @@ describe(CardPreviewsList, () => {
     mockGetAll.mockResolvedValue(cardList);
   });
 
-  describe('card fetching', () => {
-    it('calls #InfoCardService with no category id', () => {
-      renderComponent();
+  it('calls #InfoCardService with category id', () => {
+    renderComponent();
 
-      expect(mockGetAll).toHaveBeenCalledWith({ categoryId: undefined });
-    });
-
-    it('calls #InfoCardService with category id', () => {
-      const categoryId = 1;
-      renderComponent(categoryId);
-
-      expect(mockGetAll).toHaveBeenLastCalledWith({ categoryId });
-    });
+    expect(mockGetAll).toHaveBeenCalledWith({ categoryId });
   });
 
   it('loads all available cards with no input or tag filter', async () => {
@@ -72,7 +59,7 @@ describe(CardPreviewsList, () => {
 
   it('filters cards with lowercased input', async () => {
     const [excludedCard, ...matchingCards] = cardList;
-    await renderComponent(1, uniqueTitle);
+    await renderComponent(uniqueTitle);
 
     expect(screen.queryByText(excludedCard.title)).not.toBeInTheDocument();
     matchingCards.forEach((card) => {
@@ -82,7 +69,7 @@ describe(CardPreviewsList, () => {
 
   it('filters cards with tag selection', async () => {
     const [includedCard, ...matchingCards] = cardList;
-    await renderComponent(1, '', [includedCard.tags[0]]);
+    await renderComponent('', [includedCard.tags[0]]);
 
     expect(screen.getByText(includedCard.title)).toBeInTheDocument();
     matchingCards.forEach((card) => {
@@ -90,10 +77,12 @@ describe(CardPreviewsList, () => {
     });
   });
 
-  it('pushes to card page when selected', async () => {
+  it('updates card context on preview selection', async () => {
     await renderComponent();
     userEvent.click(screen.getByText(cardList[0].title));
 
-    expect(mockHistoryPush).toHaveBeenCalledWith(`/cards/${cardList[0].id}`);
+    expect(mockSetSelectionContext).toHaveBeenCalledWith(
+      expect.objectContaining({ cardId: cardList[0].id })
+    );
   });
 });

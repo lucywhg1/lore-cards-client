@@ -13,10 +13,13 @@ jest.mock('../../../services/CategoryService', () => {
   });
 });
 
-const mockSetSelectedCategory = jest.fn();
+const mockSetSelectionContext = jest.fn();
 React.useContext = jest.fn().mockReturnValue({
-  selectedCategory: undefined,
-  setSelectedCategory: mockSetSelectedCategory
+  selectionContext: {
+    category: undefined,
+    cardId: undefined
+  },
+  setSelectionContext: mockSetSelectionContext
 });
 
 describe(CategoryButtonList, () => {
@@ -40,7 +43,9 @@ describe(CategoryButtonList, () => {
     it('invokes context #setSelectedCategory with empty params', () => {
       userEvent.click(screen.getByText(/All/));
 
-      expect(mockSetSelectedCategory).toHaveBeenCalledWith(undefined);
+      expect(mockSetSelectionContext).toHaveBeenCalledWith(
+        expect.objectContaining({ category: undefined })
+      );
     });
   });
 
@@ -55,7 +60,9 @@ describe(CategoryButtonList, () => {
       availableCategories.forEach((category) => {
         userEvent.click(screen.getByText(category.name));
 
-        expect(mockSetSelectedCategory).toHaveBeenCalledWith(category);
+        expect(mockSetSelectionContext).toHaveBeenCalledWith(
+          expect.objectContaining({ category })
+        );
       });
     });
   });

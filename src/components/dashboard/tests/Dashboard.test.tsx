@@ -25,7 +25,7 @@ describe(Dashboard, () => {
     mockGetAll.mockResolvedValue(InfoCardPreviewFactory.buildList(2));
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     render(<Dashboard />);
   });
 
@@ -42,8 +42,6 @@ describe(Dashboard, () => {
   });
 
   it('has a card view', async () => {
-    expect(
-      await screen.findByText(new RegExp(infoCard.description.substr(0, 10)))
-    );
+    expect(screen.getByText(/No card selected/));
   });
 });
