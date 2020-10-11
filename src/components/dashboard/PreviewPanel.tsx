@@ -3,7 +3,7 @@ import { useState } from 'react';
 import CardPreviewsList from '../search/CardPreviewsList';
 import CardSearchBar, { SearchFilter } from '../search/CardSearchBar';
 
-const PreviewPanel: React.FC = ({}): JSX.Element => {
+const PreviewPanel: React.FC = (): JSX.Element => {
   const [filter, setFilter] = useState<SearchFilter>({
     body: '',
     tags: []

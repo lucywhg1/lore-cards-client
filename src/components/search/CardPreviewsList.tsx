@@ -39,22 +39,26 @@ const CardPreviewsList: React.FC<CardPreviewsListProps> = ({
     setSelectionContext({ ...selectionContext, cardId });
   };
 
-  const filteredCards = (): JSX.Element[] => {
+  const getFilteredCards = (): InfoCardPreview[] => {
     const query = bodyFilter.toLowerCase();
-    const filtered: JSX.Element[] = [];
 
-    availableCards.forEach((card) => {
-      if (isInPreviewBody(card, query) && hasAllTags(card, tagsFilter)) {
-        filtered.push(
-          <CardPreview key={card.id} preview={card} onClick={handleClick} />
-        );
-      }
-    });
-
-    return filtered;
+    return availableCards.filter(
+      (card) => isInPreviewBody(card, query) && hasAllTags(card, tagsFilter)
+    );
   };
 
-  return <ListGroup>{filteredCards()}</ListGroup>;
+  return (
+    <ListGroup>
+      {getFilteredCards().map((card) => (
+        <CardPreview
+          key={card.id}
+          preview={card}
+          onClick={handleClick}
+          active={selectionContext?.cardId === card.id}
+        />
+      ))}
+    </ListGroup>
+  );
 };
 
 export default CardPreviewsList;

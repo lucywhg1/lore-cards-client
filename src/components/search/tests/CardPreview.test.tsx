@@ -10,20 +10,30 @@ const mockOnClick = jest.fn();
 
 describe(CardPreview, () => {
   const preview = InfoCardPreviewFactory.build();
-  const { id, title, subtitle, category, tags, avatarUrl } = preview;
+  const { title, subtitle, category, tags, avatarUrl, summary, id } = preview;
 
   beforeEach(() => {
     render(<CardPreview preview={preview} onClick={mockOnClick} />);
   });
 
-  it('displays card info', () => {
+  it('displays basic card info', () => {
     expect(screen.getByText(title)).toBeInTheDocument();
     expect(screen.getByText(subtitle)).toBeInTheDocument();
     expect(screen.getByText(category.name)).toBeInTheDocument();
     expect(screen.getByRole('img')).toHaveAttribute('src', avatarUrl);
+    expect(screen.getByText(summary)).toBeInTheDocument();
+  });
+
+  it('loads card tags', () => {
     tags.forEach((tag) => {
       expect(screen.getByText(tag.name)).toBeInTheDocument();
     });
+  });
+
+  it('shows card summary on hover', async () => {
+    userEvent.hover(screen.getByText(title));
+
+    expect(await screen.findByRole('tooltip')).toHaveTextContent(summary);
   });
 
   it('invokes onClick with card id', () => {

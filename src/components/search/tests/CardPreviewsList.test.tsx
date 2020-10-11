@@ -6,11 +6,12 @@ import { InfoCardPreview, Tag } from '../../../types';
 import userEvent from '@testing-library/user-event';
 
 const categoryId = 1;
+const firstCardId = 0;
 const mockSetSelectionContext = jest.fn();
 React.useContext = jest.fn().mockReturnValue({
   selectionContext: {
     category: { id: categoryId },
-    cardId: undefined
+    cardId: firstCardId
   },
   setSelectionContext: mockSetSelectionContext
 });
@@ -25,7 +26,7 @@ jest.mock('../../../services/InfoCardService', () => {
 describe(CardPreviewsList, () => {
   const uniqueTitle = 'shar123';
   const cardList: InfoCardPreview[] = [
-    InfoCardPreviewFactory.build(),
+    InfoCardPreviewFactory.build({ id: firstCardId }),
     InfoCardPreviewFactory.build({ title: uniqueTitle, tags: [] }),
     InfoCardPreviewFactory.build({ title: uniqueTitle.toUpperCase(), tags: [] })
   ];
@@ -55,6 +56,13 @@ describe(CardPreviewsList, () => {
     cardList.forEach((card) => {
       expect(screen.getByText(card.title)).toBeInTheDocument();
     });
+  });
+
+  it('passes active prop to selected card', async () => {
+    await renderComponent();
+
+    expect(screen.getAllByRole('button')[0]).toHaveClass('active');
+    expect(screen.getAllByRole('button')[1]).not.toHaveClass('active');
   });
 
   it('filters cards with lowercased input', async () => {

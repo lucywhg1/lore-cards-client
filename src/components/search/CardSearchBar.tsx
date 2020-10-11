@@ -33,7 +33,7 @@ const CardSearchBar: React.FC<CardSearchBarProps> = ({
         <Col xs={8}>
           <Form.Control
             type='text'
-            placeholder='Search by body or title...'
+            placeholder='Search by summary or title...'
             value={filter.body}
             onChange={handleInputChange}
           />
