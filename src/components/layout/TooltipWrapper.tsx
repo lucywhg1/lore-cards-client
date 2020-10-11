@@ -19,11 +19,7 @@ const TooltipWrapper: React.FC<TooltipWrapperProps> = ({
   );
 
   return (
-    <OverlayTrigger
-      placement='left'
-      delay={{ show: 100, hide: 200 }}
-      overlay={renderTooltip}
-    >
+    <OverlayTrigger placement='left' delay={200} overlay={renderTooltip}>
       {children}
     </OverlayTrigger>
   );
