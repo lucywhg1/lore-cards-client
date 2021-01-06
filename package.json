@@ -20,7 +20,7 @@
     "@types/react-select": "^3.0.15",
     "@types/react-toastify": "^4.1.0",
     "@types/yup": "^0.29.3",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.0",
     "bootstrap-icons": "^1.0.0-alpha5",
     "chroma-js": "^2.1.0",
